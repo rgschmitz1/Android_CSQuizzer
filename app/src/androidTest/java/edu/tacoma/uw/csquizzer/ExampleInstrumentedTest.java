@@ -1,4 +1,4 @@
-package edu.tacoma.uw.githublab;
+package edu.tacoma.uw.csquizzer;
 
 import android.content.Context;
 

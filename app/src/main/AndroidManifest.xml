@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.tacoma.uw.githublab">
+    package="edu.tacoma.uw.csquizzer">
 
     <application
         android:allowBackup="true"
@@ -9,22 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AboutUsActivity"></activity>
-        <activity android:name=".NewPasswordActivity"
+        <activity android:name="edu.tacoma.uw.csquizzer.AboutUsActivity"></activity>
+        <activity android:name="edu.tacoma.uw.csquizzer.NewPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".RecoveryPasswordActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".RegisterActivity"
+        <activity android:name="edu.tacoma.uw.csquizzer.RecoveryPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="edu.tacoma.uw.csquizzer.RegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name="edu.tacoma.uw.csquizzer.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
+        <activity android:name="edu.tacoma.uw.csquizzer.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

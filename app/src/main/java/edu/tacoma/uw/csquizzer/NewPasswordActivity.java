@@ -1,14 +1,14 @@
-package edu.tacoma.uw.githublab;
+package edu.tacoma.uw.csquizzer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class AboutUsActivity extends AppCompatActivity {
+public class NewPasswordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about_us);
+        setContentView(R.layout.activity_new_password);
     }
 }

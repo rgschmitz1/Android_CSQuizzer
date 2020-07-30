@@ -13,11 +13,13 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="@drawable/edittext_bg"
-        android:hint="First Name ..."
+        android:hint="@string/first_name_hint"
+        android:inputType="textPersonName"
         android:padding="10dp"
         android:textColor="@color/colorText"
-        android:textColorHint="#ddd"
-        android:textSize="20sp" />
+        android:textColorHint="@color/colorTextHint"
+        android:textSize="20sp"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/et_lastname"
@@ -26,11 +28,13 @@
         android:layout_below="@+id/et_firstname"
         android:layout_centerHorizontal="true"
         android:background="@drawable/edittext_bg"
-        android:hint="Last Name ..."
+        android:hint="@string/last_name_hint"
+        android:inputType="textPersonName"
         android:padding="10dp"
         android:textColor="@color/colorText"
-        android:textColorHint="#ddd"
-        android:textSize="20sp" />
+        android:textColorHint="@color/colorTextHint"
+        android:textSize="20sp"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/et_email"
@@ -39,12 +43,13 @@
         android:layout_below="@+id/et_lastname"
         android:layout_centerHorizontal="true"
         android:background="@drawable/edittext_bg"
-        android:hint="Email ..."
+        android:hint="@string/email_hint"
         android:inputType="textEmailAddress"
         android:padding="10dp"
         android:textColor="@color/colorText"
-        android:textColorHint="#ddd"
-        android:textSize="20sp" />
+        android:textColorHint="@color/colorTextHint"
+        android:textSize="20sp"
+        android:autofillHints="emailAddress" />
 
     <EditText
         android:id="@+id/et_username"
@@ -53,11 +58,13 @@
         android:layout_below="@+id/et_email"
         android:layout_centerHorizontal="true"
         android:background="@drawable/edittext_bg"
-        android:hint="Username ..."
+        android:hint="@string/username_hint"
+        android:inputType="textNoSuggestions"
         android:padding="10dp"
         android:textColor="@color/colorText"
-        android:textColorHint="#ddd"
-        android:textSize="20sp" />
+        android:textColorHint="@color/colorTextHint"
+        android:textSize="20sp"
+        android:autofillHints="username" />
 
     <EditText
         android:id="@+id/et_password"
@@ -66,25 +73,26 @@
         android:layout_below="@+id/et_username"
         android:layout_centerHorizontal="true"
         android:background="@drawable/edittext_bg"
-        android:hint="Password ..."
+        android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:padding="10dp"
         android:textColor="@color/colorText"
-        android:textColorHint="#ddd"
-        android:textSize="20sp" />
+        android:textColorHint="@color/colorTextHint"
+        android:textSize="20sp"
+        android:autofillHints="password" />
 
     <Button
-            android:id="@+id/btn_register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/et_password"
-            android:layout_centerHorizontal="true"
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_password"
+        android:layout_centerHorizontal="true"
 
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="REGISTER"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/btn_register"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tv_loginme"
@@ -93,7 +101,7 @@
         android:layout_below="@+id/btn_register"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:text="Already registered? Click to Login!"
+        android:text="@string/login"
         android:textAlignment="center"
         android:textColor="@color/colorText"
         android:textSize="20sp" />

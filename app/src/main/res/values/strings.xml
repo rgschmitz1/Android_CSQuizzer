@@ -1,5 +1,17 @@
 <resources>
-    <string name="app_name">GitHub Lab</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">CS Quizzer</string>
+
+    <!-- Login/Register activity hints -->
+    <string name="first_name_hint">First Name …</string>
+    <string name="last_name_hint">Last Name …</string>
+    <string name="email_hint">Email …</string>
+    <string name="username_hint">Username …</string>
+    <string name="password_hint">Password …</string>
+    <string name="btn_register">Register</string>
+    <string name="btn_login">Login</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="register">Not a member? Click to register!</string>
+    <string name="login">Already registered? Click to Login!</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
