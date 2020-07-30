@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_notifications"
-        android:title="Home" />
+        android:id="@+id/mnHome"
+        android:icon="@drawable/ic_home"
+        android:enabled="true"
+        android:title="Home"/>
     <item
-        android:id="@+id/navigation_sms"
-        android:icon="@drawable/ic_notifications"
-        android:title="SMS" />
+        android:id="@+id/mnUser"
+        android:icon="@drawable/ic_user"
+        android:title="User"/>
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications"
-        android:title="Notification" />
+        android:id="@+id/mnRepo"
+        android:icon="@drawable/ic_repo"
+        android:title="Repository"/>
+    <item
+        android:id="@+id/mnQuiz"
+        android:icon="@drawable/ic_decision"
+        android:title="Quiz"/>
+    <item
+        android:id="@+id/mnInfo"
+        android:icon="@drawable/ic_info"
+        android:title="Profile"/>
 </menu>
