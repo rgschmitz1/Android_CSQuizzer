@@ -3,6 +3,7 @@ package edu.tacoma.uw.csquizzer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +37,16 @@ public class LoginActivity extends AppCompatActivity {
     private static final String LOGIN = "LOGIN";
 
     private class AuthenticateUserAsyncTask extends AsyncTask<String, Void, String> {
+        ProgressDialog pdLoading = new ProgressDialog(LoginActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // This method will be running on UI thread
+            pdLoading.setMessage(getString(R.string.wait_msg));
+            pdLoading.setCancelable(false);
+            pdLoading.show();
+        }
 
         @Override
         protected String doInBackground(String... strings) {
@@ -79,6 +90,8 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
+            // Disable modal message
+            pdLoading.dismiss();
             // For Debugging
 //            Log.i(LOGIN, s);
             if (s.startsWith("Unable to login")) {
