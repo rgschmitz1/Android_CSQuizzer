@@ -10,8 +10,13 @@
     <string name="btn_register">Register</string>
     <string name="btn_login">Login</string>
     <string name="forgot_password">Forgot your password?</string>
-    <string name="register">Not a member? Click to register!</string>
+    <string name="register">Not a member? Click here to register!</string>
     <string name="login">Already registered? Click to Login!</string>
+
+    <!-- Persistent preferences -->
+    <string name="LOGIN_PREFS">edu.tacoma.uw.csquizzer.PREFS</string>
+    <string name="LOGGEDIN">loggedin</string>
+    <string name="USERNAME">username</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
