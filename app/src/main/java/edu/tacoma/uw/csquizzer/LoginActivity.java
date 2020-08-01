@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
             for (String url : strings) {
                 try {
                     // For Debugging
-                    Log.i(LOGIN, mUserJSON.toString());
+//                    Log.i(LOGIN, mUserJSON.toString());
 
                     URL urlObject = new URL(url);
                     urlConnection = (HttpURLConnection) urlObject.openConnection();
@@ -61,8 +61,9 @@ public class LoginActivity extends AppCompatActivity {
                     InputStream content = urlConnection.getInputStream();
 
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    while (buffer.ready()) {
-                        response.append(buffer.readLine());
+                    String s;
+                    while ((s = buffer.readLine()) != null) {
+                        response.append(s);
                     }
                     buffer.close();
                 } catch (Exception e) {
@@ -78,6 +79,8 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
+            // For Debugging
+//            Log.i(LOGIN, s);
             if (s.startsWith("Unable to login")) {
                 Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
                 return;
