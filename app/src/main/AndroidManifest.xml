@@ -22,12 +22,12 @@
 
         </activity>
         <activity
-            android:name="edu.tacoma.uw.csquizzer.RegisterActivity"
+            android:name="edu.tacoma.uw.csquizzer.authentication.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
-            android:name="edu.tacoma.uw.csquizzer.LoginActivity"
+            android:name="edu.tacoma.uw.csquizzer.authentication.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

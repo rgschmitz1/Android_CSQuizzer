@@ -1,5 +1,5 @@
 
-package edu.tacoma.uw.csquizzer;
+package edu.tacoma.uw.csquizzer.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +27,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import edu.tacoma.uw.csquizzer.MainActivity;
+import edu.tacoma.uw.csquizzer.R;
+import edu.tacoma.uw.csquizzer.RecoveryPasswordActivity;
 import edu.tacoma.uw.csquizzer.model.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -165,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(v.getContext(), "Enter a username",
                                 Toast.LENGTH_SHORT).show();
                         username.requestFocus();
-                    } else if (TextUtils.isEmpty(passwordText)) {
+                    } else if (TextUtils.isEmpty(passwordText) || passwordText.length() < 6) {
                         Toast.makeText(v.getContext(),
                                 "Enter a password at least 6 characters long",
                                 Toast.LENGTH_SHORT).show();
@@ -173,6 +176,17 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         login(usernameText, passwordText);
                     }
+                }
+            });
+
+            // Configure onClickListener for password recovery
+            TextView recovery = findViewById(R.id.tv_forgotpassword);
+            recovery.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), RecoveryPasswordActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
             });
 

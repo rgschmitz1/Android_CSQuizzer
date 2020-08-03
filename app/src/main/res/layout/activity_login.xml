@@ -7,7 +7,7 @@
     android:background="@color/colorPrimary"
     android:fillViewport="true"
     android:gravity="center"
-    tools:context=".LoginActivity">
+    tools:context=".authentication.LoginActivity">
 
     <ImageView
         android:id="@+id/logo"
