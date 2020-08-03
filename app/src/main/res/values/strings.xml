@@ -12,6 +12,7 @@
     <string name="forgot_password">Forgot your password?</string>
     <string name="register">Not a member? Click here to register!</string>
     <string name="login">Already registered? Click to Login!</string>
+    <string name="btn_resetpassword">Reset Password</string>
 
     <!-- Persistent preferences -->
     <string name="LOGIN_PREFS">edu.tacoma.uw.csquizzer.PREFS</string>

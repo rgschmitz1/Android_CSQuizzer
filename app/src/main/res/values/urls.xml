@@ -2,4 +2,5 @@
 <resources>
     <string name="post_login">https://phucbob-csquizzer.herokuapp.com/login</string>
     <string name="post_register">https://phucbob-csquizzer.herokuapp.com/register</string>
+    <string name="post_reset">https://phucbob-csquizzer.herokuapp.com/resetpassword</string>
 </resources>
