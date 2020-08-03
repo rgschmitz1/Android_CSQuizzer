@@ -82,7 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             // Disable modal message
             pdLoading.dismiss();
-            // For Debugging
             if (s.startsWith("Unable to register")) {
                 Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
                 return;
@@ -175,14 +174,12 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        // Configure onClickListener for registration
+        // Configure onClickListener for login textview
         TextView login = findViewById(R.id.tv_loginme);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
+                launchLoginActivity();
             }
         });
     }
