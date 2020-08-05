@@ -3,4 +3,10 @@
     <string name="post_login">https://phucbob-csquizzer.herokuapp.com/login</string>
     <string name="post_register">https://phucbob-csquizzer.herokuapp.com/register</string>
     <string name="post_reset">https://phucbob-csquizzer.herokuapp.com/resetpassword</string>
+    <string name="get_questions">https://phucbob-csquizzer.herokuapp.com/get-questions</string>
+    <string name="get_courses">https://phucbob-csquizzer.herokuapp.com/get-courses</string>
+    <string name="get_topics">https://phucbob-csquizzer.herokuapp.com/get-topics</string>
+    <string name="get_difficulties">https://phucbob-csquizzer.herokuapp.com/get-difficulties</string>
+    <string name="get_answers">https://phucbob-csquizzer.herokuapp.com/get-answers</string>
+    <string name="get_subquestions">https://phucbob-csquizzer.herokuapp.com/get-subquestions</string>
 </resources>

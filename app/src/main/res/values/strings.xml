@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">CS Quizzer</string>
+    <!-- Home Fragment -->
+    <string name="btn_find_questions">Find Questions</string>
+
 
     <!-- Login/Register activity -->
     <string name="first_name_hint">First Name …</string>
@@ -12,6 +15,7 @@
     <string name="forgot_password">Forgot your password?</string>
     <string name="register">Not a member? Click here to register!</string>
     <string name="login">Already registered? Click to Login!</string>
+    <string name="logout">Sign Out</string>
 
     <!-- Reset/New Password activity -->
     <string name="vt_tologin">Back to Login!</string>
@@ -20,6 +24,11 @@
     <string name="new_password">New Password …</string>
     <string name="confirm_password">Confirm Password …</string>
     <string name="btn_submit">Submit</string>
+
+    <!-- About Us Fragment -->
+    <string name="developer">Developer</string>
+    <string name="developer_1">Bob Schimtz</string>
+    <string name="developer_2">Phuc Pham N</string>
 
     <!-- Persistent preferences -->
     <string name="LOGIN_PREFS">edu.tacoma.uw.csquizzer.PREFS</string>
@@ -30,4 +39,27 @@
     <string name="wait_msg">\tPlease wait…</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Bottom Menubar -->
+    <string name="bmb_Home">Home</string>
+    <string name="bmb_User">User</string>
+    <string name="bmb_Repo">Repository</string>
+    <string name="bmb_AboutUs">About Us</string>
+
+    <!-- Number of Questions -->
+    <string-array name="numQuestion">
+        <item>--- Choose Number Questions ---</item>
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
+
+    <!-- Show Question Detail -->
+    <string name="tv_Question">Question </string>
+    <string name="tv_Course">Course: </string>
+    <string name="tv_Topic">Topic: </string>
+    <string name="tv_Difficulty">Difficulty: </string>
+    <string name="btn_CheckQuestion">Check Question</string>
+    <string name="btn_Report">Report</string>
 </resources>

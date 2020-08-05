@@ -1,6 +1,10 @@
 package edu.tacoma.uw.csquizzer;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -13,6 +17,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import edu.tacoma.uw.csquizzer.authentication.AuthenticationActivity;
 
 //see this link for navigation bar https://androidwave.com/bottom-navigation-bar-android-example/
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +35,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            SharedPreferences sharedPreferences =
+                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+            sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), false)
+                    .commit();
+
+            Intent i = new Intent(this, AuthenticationActivity.class);
+            startActivity(i);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -43,9 +70,6 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.mnRepo:
                             selectedFragment = new RepositoryFragment();
-                            break;
-                        case R.id.mnQuiz:
-                            selectedFragment = new QuizFragment();
                             break;
                         case R.id.mnInfo:
                             selectedFragment = new InformationFragment();
