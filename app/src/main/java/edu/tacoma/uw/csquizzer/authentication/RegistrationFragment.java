@@ -16,14 +16,19 @@ import android.widget.Toast;
 import edu.tacoma.uw.csquizzer.R;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the  factory method to
- * create an instance of this fragment.
+ * RegistrationFragment sets up the action listener for user registration
+ *
+ * @author Bob Schmitz
+ * @version 1.0
  */
 public class RegistrationFragment extends Fragment {
-
+    /* This is the action listener member variable */
     private RegistrationFragmentListener mRegistrationFragmentListener;
 
+    /**
+     * This is the interface for the action listener,
+     * methods will be implemented in Authentication Activity
+     */
     public interface RegistrationFragmentListener {
         void register(String firstname, String lastname, String email,
                       String username, String password);
@@ -33,12 +38,26 @@ public class RegistrationFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Initializes the mRegistrationFragmentListener
+     *
+     * @param savedInstanceState the savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRegistrationFragmentListener = (RegistrationFragmentListener) getActivity();
     }
 
+    /**
+     * onCreateView sets up action listener for register button as well as
+     * back to login view
+     *
+     * @param inflater the inflater
+     * @param container the container
+     * @param savedInstanceState the savedInstanceState
+     * @return view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

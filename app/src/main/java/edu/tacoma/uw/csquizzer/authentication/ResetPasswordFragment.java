@@ -16,14 +16,19 @@ import android.widget.Toast;
 import edu.tacoma.uw.csquizzer.R;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the  factory method to
- * create an instance of this fragment.
+ * ResetPasswordFragment sets up the action listener for password reset
+ *
+ * @author Bob Schmitz
+ * @version 1.0
  */
 public class ResetPasswordFragment extends Fragment {
-
+    /* This is the action listener member variable */
     private ResetPasswordListener mResetPasswordListener;
 
+    /**
+     * This is the interface for the action listener,
+     * methods will be implemented in Authentication Activity
+     */
     public interface ResetPasswordListener {
         void resetPassword(String email);
     }
@@ -32,12 +37,26 @@ public class ResetPasswordFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Initializes the mResetPasswordListener
+     *
+     * @param savedInstanceState the savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mResetPasswordListener = (ResetPasswordListener) getActivity();
     }
 
+    /**
+     * onCreateView sets up action listener for submit button as well as
+     * back to login view
+     *
+     * @param inflater the inflater
+     * @param container the container
+     * @param savedInstanceState the savedInstanceState
+     * @return view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

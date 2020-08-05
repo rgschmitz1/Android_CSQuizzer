@@ -1,4 +1,3 @@
-
 package edu.tacoma.uw.csquizzer.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,17 +25,37 @@ import edu.tacoma.uw.csquizzer.MainActivity;
 import edu.tacoma.uw.csquizzer.R;
 import edu.tacoma.uw.csquizzer.model.User;
 
+/**
+ * AuthenticationActivity provides all functionality for logging into the application
+ * as well as registration and reset password support.
+ *
+ * @author Bob Schmitz
+ * @version 1.0
+ */
 public class AuthenticationActivity extends AppCompatActivity implements
         LoginFragment.LoginFragmentListener,
         RegistrationFragment.RegistrationFragmentListener,
         ResetPasswordFragment.ResetPasswordListener {
 
+    /* Shared preferences member field will be used to store user login information */
     private SharedPreferences mSharedPreferences;
+    /* This field will be used to store JSON information about the user to be sent to backend */
     private JSONObject mUserJSON;
 
+    /**
+     * AuthenticateUserAsyncTask will handle all backend transactions as well as transitioning
+     * between the login, registration, reset password, and main menu views.
+     *
+     * @author Bob Schmitz and Phuc Pham
+     * @version 1.0
+     */
     private class AuthenticateUserAsyncTask extends AsyncTask<String, Void, String> {
+        /* This member field will be used to display onscreen progress to the user */
         ProgressDialog pdLoading = new ProgressDialog(AuthenticationActivity.this);
 
+        /**
+         * onPreExecute will be used to setup and display the onscreen progress of backend task.
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -46,6 +65,12 @@ public class AuthenticationActivity extends AppCompatActivity implements
             pdLoading.show();
         }
 
+        /**
+         * doInBackground is sending JSON data via a POST to the backend server.
+         *
+         * @param strings A URL to send the JSON POST
+         * @return String a JSON formatted string for parsing status of POST request
+         */
         @Override
         protected String doInBackground(String... strings) {
             StringBuilder response = new StringBuilder();
@@ -83,6 +108,13 @@ public class AuthenticationActivity extends AppCompatActivity implements
             return response.toString();
         }
 
+        /**
+         * onPostExecute will navigate to the login screen or start the MainActivity if
+         * doInBackground reports that the login mode was successful.  If doInBackground reports
+         * success = false, an error message will be displayed for the user.
+         *
+         * @param s The JSON formatted data from the do in doInBackground method
+         */
         @Override
         protected void onPostExecute(String s) {
             // Disable modal message
@@ -93,12 +125,12 @@ public class AuthenticationActivity extends AppCompatActivity implements
                     String mode = jsonObject.optString("mode", "undefined");
                     switch(mode) {
                         case "login":
-//                            mSharedPreferences
-//                                    .edit()
-//                                    .putBoolean(getString(R.string.LOGGEDIN), true)
-//                                    .putString(getString(R.string.USERNAME),
-//                                            mUserJSON.getString("username"))
-//                                    .apply();
+                            mSharedPreferences
+                                    .edit()
+                                    .putBoolean(getString(R.string.LOGGEDIN), true)
+                                    .putString(getString(R.string.USERNAME),
+                                            mUserJSON.getString("username"))
+                                    .apply();
                             launchMainMenu();
                             break;
                         case "register":
@@ -128,6 +160,16 @@ public class AuthenticationActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * register will create a JSON object using user provided information, then pass the JSON to
+     * an instance of AuthenticateUserAsyncTask
+     *
+     * @param firstname the first name
+     * @param lastname the last name
+     * @param email the email
+     * @param username the username
+     * @param password the password
+     */
     @Override
     public void register(String firstname, String lastname, String email, String username, String password) {
         StringBuilder url = new StringBuilder(getString(R.string.post_register));
@@ -140,9 +182,11 @@ public class AuthenticationActivity extends AppCompatActivity implements
     }
 
     /**
-     * Set persistent parameters and launches the MainActivity
-     * @param username user provided username
-     * @param password user provided password
+     * login will create a JSON object using user provided information, then pass the JSON to
+     * an instance of AuthenticateUserAsyncTask
+     *
+     * @param username the username
+     * @param password the password
      */
     @Override
     public void login(String username, String password) {
@@ -156,8 +200,10 @@ public class AuthenticationActivity extends AppCompatActivity implements
     }
 
     /**
-     * Set resets user password and goes back to login screen
-     * @param email user provided email
+     * resetPassword will create a JSON object using user provided information, then pass the
+     * JSON to an instance of AuthenticateUserAsyncTask
+     *
+     * @param email the email
      */
     @Override
     public void resetPassword(String email) {
@@ -171,6 +217,9 @@ public class AuthenticationActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * launchRegistration will replace the login fragment with the registration fragment
+     */
     @Override
     public void launchRegistration() {
         getSupportFragmentManager().beginTransaction()
@@ -179,6 +228,9 @@ public class AuthenticationActivity extends AppCompatActivity implements
                 .commit();
     }
 
+    /**
+     * launchResetPassword will replace the login fragment with the reset password fragment
+     */
     @Override
     public void launchResetPassword() {
         getSupportFragmentManager().beginTransaction()
@@ -187,12 +239,21 @@ public class AuthenticationActivity extends AppCompatActivity implements
                 .commit();
     }
 
+    /**
+     * launchMainMenu will start the main activity
+     */
     private void launchMainMenu() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
+    /**
+     * onCreate will initialize the mSharedPreferences member field and either load the
+     * login fragment or start the main activity
+     *
+     * @param savedInstanceState the savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
