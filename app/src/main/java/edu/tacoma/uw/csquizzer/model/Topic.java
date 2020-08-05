@@ -4,6 +4,11 @@ public class Topic {
     private int TopicId;
     private String TopicDescription;
 
+    /**
+     * Topic class
+     * @param topicId Topic Id
+     * @param topicDescription Topic Description
+     */
     public Topic(int topicId, String topicDescription) {
         TopicId = topicId;
         TopicDescription = topicDescription;

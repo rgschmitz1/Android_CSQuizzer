@@ -4,6 +4,11 @@ public class Type {
     private int TypeId;
     private String TypeDescription;
 
+    /**
+     * Type Class
+     * @param typeId Type Id
+     * @param typeDescription Type Description
+     */
     public Type(int typeId, String typeDescription) {
         TypeId = typeId;
         TypeDescription = typeDescription;

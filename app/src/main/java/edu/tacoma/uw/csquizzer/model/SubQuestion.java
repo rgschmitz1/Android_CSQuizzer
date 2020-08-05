@@ -5,6 +5,12 @@ public class SubQuestion {
     private int QuestionId;
     private String SubQuestionText;
 
+    /**
+     * SubQuestions Class
+     * @param subQuestionId SubQuesion Id
+     * @param questionId Quesion Id
+     * @param subQuestionText SubQuestion Text
+     */
     public SubQuestion(int subQuestionId, int questionId, String subQuestionText) {
         SubQuestionId = subQuestionId;
         QuestionId = questionId;

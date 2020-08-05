@@ -86,9 +86,9 @@ public class ShowQuestionFragment extends Fragment {
                     if (jsonQuestionObj != null) {
                         JSONArray questions = jsonQuestionObj
                                 .getJSONArray("questions");
-                        List<Answer> answersList = new ArrayList<>();
-                        List<SubQuestion> subQuestionsList = new ArrayList<>();
                         for (int i = 0; i < questions.length(); i++) {
+                            List<Answer> answersList = new ArrayList<>();
+                            List<SubQuestion> subQuestionsList = new ArrayList<>();
                             JSONObject questionObj = (JSONObject) questions.get(i);
                             List<NameValuePair> qid = new ArrayList<NameValuePair>();
                             int questionId = Integer.parseInt(questionObj.getString("questionid"));
@@ -101,7 +101,7 @@ public class ShowQuestionFragment extends Fragment {
                                         JSONArray ans = jsonAnswerObj
                                                 .getJSONArray("answers");
                                         for (int j = 0; j < ans.length(); j++) {
-                                            JSONObject answerObj = (JSONObject) ans.get(i);
+                                            JSONObject answerObj = (JSONObject) ans.get(j);
                                             Answer ansobj = new Answer(answerObj.getInt("answerid"),
                                                     questionId, answerObj.getString("answertext"));
                                             answersList.add(ansobj);
@@ -123,7 +123,7 @@ public class ShowQuestionFragment extends Fragment {
                                         JSONArray subs = jsonSubQuestionObj
                                                 .getJSONArray("subquestions");
                                         for (int k = 0; k < subs.length(); k++) {
-                                            JSONObject subQObj = (JSONObject) subs.get(i);
+                                            JSONObject subQObj = (JSONObject) subs.get(k);
                                             SubQuestion subqobj = new SubQuestion(subQObj.getInt("subquestionid"),
                                                     questionId, subQObj.getString("subquestiontext"));
                                             subQuestionsList.add(subqobj);

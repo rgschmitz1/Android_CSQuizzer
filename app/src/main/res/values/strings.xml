@@ -61,5 +61,6 @@
     <string name="tv_Topic">Topic: </string>
     <string name="tv_Difficulty">Difficulty: </string>
     <string name="btn_CheckQuestion">Check Question</string>
+    <string name="btn_ShowAnswer">Show Answer</string>
     <string name="btn_Report">Report</string>
 </resources>

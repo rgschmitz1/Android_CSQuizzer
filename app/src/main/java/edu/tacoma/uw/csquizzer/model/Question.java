@@ -14,6 +14,18 @@ public class Question {
     private List<Answer> listAnswers = new ArrayList<>();
     private List<SubQuestion> listSubQuestions = new ArrayList<>();
 
+    /**
+     * Question class relative to answer class and subquestion class
+     * @param questionId Question Id
+     * @param questionTitle Question Title
+     * @param questionBody Question Body
+     * @param courseName Course Name
+     * @param topicDescription Topic Description
+     * @param difficultyDescription Difficulty Description
+     * @param typeDescription Type Description
+     * @param answers List Answers having the same Question ID
+     * @param subQuestions List Questions having the same Question ID
+     */
     public Question(int questionId, String questionTitle, String questionBody, String courseName,
                     String topicDescription, String difficultyDescription, String typeDescription,
                     List<Answer> answers, List<SubQuestion> subQuestions) {

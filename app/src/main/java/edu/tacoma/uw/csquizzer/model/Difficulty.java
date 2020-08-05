@@ -4,6 +4,11 @@ public class Difficulty {
     private int DifficultiesId;
     private String DifficultiesDescription;
 
+    /**
+     * Difficulty Class
+     * @param difficultiesId Difficulty Id
+     * @param difficultiesDescription Difficulty Description
+     */
     public Difficulty(int difficultiesId, String difficultiesDescription) {
         DifficultiesId = difficultiesId;
         DifficultiesDescription = difficultiesDescription;

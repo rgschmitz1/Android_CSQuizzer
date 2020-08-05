@@ -5,6 +5,12 @@ public class Answer {
     private int QuestionId;
     private String AnswerText;
 
+    /**
+     * Answer class
+     * @param answerId Answer Id
+     * @param questionId Question Id
+     * @param answerText Answer Text
+     */
     public Answer(int answerId, int questionId, String answerText) {
         AnswerId = answerId;
         QuestionId = questionId;

@@ -3,6 +3,12 @@ package edu.tacoma.uw.csquizzer.model;
 public class Course {
     private int CourseId;
     private String CourseName;
+
+    /**
+     * Course class
+     * @param courseId Course Id
+     * @param courseName Course Name
+     */
     public Course(int courseId, String courseName) {
         CourseId = courseId;
         CourseName = courseName;
