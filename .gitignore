@@ -12,3 +12,6 @@
 /captures
 .externalNativeBuild
 .cxx
+android.keystore
+android.keystore.old
+app/release
