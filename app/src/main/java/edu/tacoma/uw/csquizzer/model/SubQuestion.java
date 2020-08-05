@@ -1,5 +1,11 @@
 package edu.tacoma.uw.csquizzer.model;
-
+/**
+ * The SubQuestion class
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class SubQuestion {
     private int SubQuestionId;
     private int QuestionId;

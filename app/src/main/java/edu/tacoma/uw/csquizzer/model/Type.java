@@ -1,5 +1,12 @@
 package edu.tacoma.uw.csquizzer.model;
 
+/**
+ * The Type class
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class Type {
     private int TypeId;
     private String TypeDescription;

@@ -24,7 +24,23 @@ import edu.tacoma.uw.csquizzer.model.Course;
 import edu.tacoma.uw.csquizzer.model.Difficulty;
 import edu.tacoma.uw.csquizzer.model.Topic;
 
-// Lifecycle OnCreate ->  onPreExecute -> doInBackground -> onPostExecute -> onCreateView
+
+/**
+ * The HomeFragment is placed in MainActivity. It contains four spinners and a button search question.
+ * The first three spinners are getting json data.
+ * The first spinner shows courses' name.
+ * The second spinner shows topics' description.
+ * The third spinner shows difficulties' description.
+ * When hitting button search question. It is going to show all questions matching with conditions.
+ * The questions will show in ShowQuestionFragment.
+ *
+ * The HomeFragment class basically get courses' name, topics' description, difficulties' description
+ * and attach to spinners.
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class HomeFragment extends Fragment {
     View rootView;
     private Spinner spinnerCourses;
@@ -35,18 +51,41 @@ public class HomeFragment extends Fragment {
     private List<Topic> topicsList;
     private List<Difficulty> difficultiesList;
     ProgressDialog pDialog;
+
+    /**
+     * Execute GetData with no argument which extends AsyncTask to
+     *      get courses' name in course table and attach data to spinner
+     *      get topics' description in topic table and attach data to spinner
+     *      get difficulties' description in difficulty and attach data to spinner
+     * @param savedInstanceState a reference to a Bundle object that is passed into the onCreate method.
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // GetData will extend AsyncTask.
-        /**
-         * get course name in course table and attach data to spinner
-         * get topic description in topic table and attach data to spinner
-         * get difficulty description in difficulty and attach data to spinner
-         */
+
+        // Store list courses, topics, difficulty
+        coursesList = new ArrayList<>();
+        topicsList = new ArrayList<>();
+        difficultiesList = new ArrayList<>();
+
         new GetData().execute();
     }
 
+    /**
+     * Render components to GUI
+     * @param inflater a class used to instantiate layout XML file into its corresponding view objects
+     * @param container a special view that can contain other views
+     * @param savedInstanceState a reference to a Bundle object that is passed into the onCreate method.
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,11 +95,6 @@ public class HomeFragment extends Fragment {
         spinnerTopics = (Spinner) rootView.findViewById(R.id.sn_topics);
         spinnerDifficulties = (Spinner) rootView.findViewById(R.id.sn_difficulty);
         spinnerNumQuestions = (Spinner) rootView.findViewById(R.id.sn_num);
-
-        // Store list courses, topics, difficulty
-        coursesList = new ArrayList<>();
-        topicsList = new ArrayList<>();
-        difficultiesList = new ArrayList<>();
 
         // Listen button action
         Button button = (Button)rootView.findViewById(R.id.button);
@@ -99,7 +133,22 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * The GetData class to get json data (courses' name, topics' description, difficulties' description)
+     * and attach to spinners.
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     private class GetData extends AsyncTask<Void, Void, Void> {
+        /**
+         * Shows Progress Dialog when getting json data.
+         *
+         * @author  Phuc Pham N
+         * @version 1.0
+         * @since   2020-08-05
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -109,6 +158,16 @@ public class HomeFragment extends Fragment {
             pDialog.show();
         }
 
+        /**
+         * Read json data from get_courses and add them to a list of courses.
+         * Read json data from get_topics and add them to a list of topics.
+         * Read json data from get_difficulties and add them to a list of difficulties.
+         *
+         * @param arg0 there are no argument
+         * @author  Phuc Pham N
+         * @version 1.0
+         * @since   2020-08-05
+         */
         @Override
         protected Void doInBackground(Void... arg0) {
             ServiceHandler jsonParser = new ServiceHandler();
@@ -173,6 +232,14 @@ public class HomeFragment extends Fragment {
             }
             return null;
         }
+
+        /**
+         * Finish reading json data and attach them to spinner
+         * @param result
+         * @author  Phuc Pham N
+         * @version 1.0
+         * @since   2020-08-05
+         */
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
@@ -182,7 +249,12 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    /** Adding spinner data */
+    /**
+     * Attach data to spinners
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     private void populateSpinner() {
         //Get list course name and attach to course spinner
         List<String> courseNames = new ArrayList<String>();
@@ -223,4 +295,5 @@ public class HomeFragment extends Fragment {
         // attaching data adapter to spinner
         spinnerDifficulties.setAdapter(spinnerDifficultyAdapter);
     }
+
 }

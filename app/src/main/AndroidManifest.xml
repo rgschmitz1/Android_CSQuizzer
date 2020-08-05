@@ -13,10 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="edu.tacoma.uw.csquizzer.NewPasswordActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name="edu.tacoma.uw.csquizzer.authentication.AuthenticationActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

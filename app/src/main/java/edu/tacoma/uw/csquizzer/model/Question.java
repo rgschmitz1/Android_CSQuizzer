@@ -3,6 +3,13 @@ package edu.tacoma.uw.csquizzer.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Question class
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class Question {
     private int QuestionId;
     private String QuestionTitle;

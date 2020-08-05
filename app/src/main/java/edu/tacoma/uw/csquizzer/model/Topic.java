@@ -1,5 +1,12 @@
 package edu.tacoma.uw.csquizzer.model;
 
+/**
+ * The Topic class
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class Topic {
     private int TopicId;
     private String TopicDescription;

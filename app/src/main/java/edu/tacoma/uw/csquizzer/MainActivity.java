@@ -12,8 +12,24 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import edu.tacoma.uw.csquizzer.authentication.AuthenticationActivity;
 
-//see this link for navigation bar https://androidwave.com/bottom-navigation-bar-android-example/
+/**
+ * The MainActivity contains HomeFragment, ShowQuestionFragment, QuizFragment,
+ * RepositoryFragment, AboutUsFragment.
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class MainActivity extends AppCompatActivity {
+    /**
+     * Render components to GUI
+     *
+     * @param savedInstanceState a reference to a Bundle object that is passed into the onCreate method.
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +43,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Add bottom navigation menu to main activity.
+     *
+     * @param menu BottomNavigation menu.
+     * @return true
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         /* Add bottom toolbar to authentication activity*/
@@ -34,6 +60,16 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Listen menu item actions.
+     *
+     * @param item Menu item.
+     * @return boolean
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // When user clicks on Sign out button, redirect to Authentication Activity
@@ -66,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new RepositoryFragment();
                             break;
                         case R.id.mnInfo:
-                            selectedFragment = new InformationFragment();
+                            selectedFragment = new AbousUsFragment();
                             break;
                         default:
                             selectedFragment = new HomeFragment();

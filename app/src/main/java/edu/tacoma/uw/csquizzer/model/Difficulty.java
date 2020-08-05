@@ -1,14 +1,16 @@
 package edu.tacoma.uw.csquizzer.model;
 
+/**
+ * The Difficulty class
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class Difficulty {
     private int DifficultiesId;
     private String DifficultiesDescription;
 
-    /**
-     * Difficulty Class
-     * @param difficultiesId Difficulty Id
-     * @param difficultiesDescription Difficulty Description
-     */
     public Difficulty(int difficultiesId, String difficultiesDescription) {
         DifficultiesId = difficultiesId;
         DifficultiesDescription = difficultiesDescription;

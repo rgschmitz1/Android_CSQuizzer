@@ -1,16 +1,17 @@
 package edu.tacoma.uw.csquizzer.model;
 
+/**
+ * The Answer class
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class Answer {
     private int AnswerId;
     private int QuestionId;
     private String AnswerText;
 
-    /**
-     * Answer class
-     * @param answerId Answer Id
-     * @param questionId Question Id
-     * @param answerText Answer Text
-     */
     public Answer(int answerId, int questionId, String answerText) {
         AnswerId = answerId;
         QuestionId = questionId;

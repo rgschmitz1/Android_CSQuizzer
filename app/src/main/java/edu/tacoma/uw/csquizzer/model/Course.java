@@ -1,14 +1,15 @@
 package edu.tacoma.uw.csquizzer.model;
-
+/**
+ * The Course class
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class Course {
     private int CourseId;
     private String CourseName;
 
-    /**
-     * Course class
-     * @param courseId Course Id
-     * @param courseName Course Name
-     */
     public Course(int courseId, String courseName) {
         CourseId = courseId;
         CourseName = courseName;

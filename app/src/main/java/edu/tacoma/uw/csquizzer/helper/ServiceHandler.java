@@ -1,6 +1,9 @@
 package edu.tacoma.uw.csquizzer.helper;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

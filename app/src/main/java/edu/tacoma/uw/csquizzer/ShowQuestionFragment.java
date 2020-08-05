@@ -7,27 +7,39 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Answer;
 import edu.tacoma.uw.csquizzer.model.Question;
 import edu.tacoma.uw.csquizzer.model.SubQuestion;
 
+/**
+ * The ShowQuestionFragment is placed in MainActivity. It contains a recyler. A cycler contains
+ * question id, question title, question body, course name, topic description,
+ * difficulty description, type of question (true false or single choice or multiple choice)
+ * and "View Answer" Button and "Report" Button
+ *
+ * When hitting the search button in HomeFragment, it will send conditions such as easy question
+ * and Collections topic which a user wants to find to ShowQuestionFragment. Based on these conditions,
+ * take all questions that matches to conditions and shows on recyler.
+ *
+ * On the recyler, a user can report a question or check the correct answer or finish the quiz.
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class ShowQuestionFragment extends Fragment {
     View rootView;
     ProgressDialog pDialog;
@@ -35,6 +47,17 @@ public class ShowQuestionFragment extends Fragment {
     private List<Question> questionsList = new ArrayList<>();
     QuestionAdapter adapter;
 
+    /**
+     * Execute GetQuestions with CourseName or TopicDescription or DifficultyDescription
+     * or NumberQuestion conditions which extends AsyncTask to
+     *      get question information based on these conditions
+     *
+     * @param savedInstanceState a reference to a Bundle object that is passed into the onCreate method.
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +66,17 @@ public class ShowQuestionFragment extends Fragment {
         new ShowQuestionFragment.GetQuestions().execute(args);
     }
 
+    /**
+     * Render components to GUI
+     * @param inflater a class used to instantiate layout XML file into its corresponding view objects
+     * @param container a special view that can contain other views
+     * @param savedInstanceState a reference to a Bundle object that is passed into the onCreate method.
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,7 +85,22 @@ public class ShowQuestionFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * The GetQuestions class to get json data (question id, question title, question body,
+     * course name, topic description, difficulty description, type of question) and attach to reclyer.
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     private class GetQuestions extends AsyncTask<String, Void, Void> {
+        /**
+         * Shows Progress Dialog when getting json data.
+         *
+         * @author  Phuc Pham N
+         * @version 1.0
+         * @since   2020-08-05
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -61,6 +110,19 @@ public class ShowQuestionFragment extends Fragment {
             pDialog.show();
         }
 
+        /**
+         * Read json data from get_questions to get all questions matching the conditions.
+         * For every question, we read
+         *      + json data from get_answers based on question id and add them to a list of answers.
+         *      + json data from get_subquestions based on question id and add them to a list of subquestions.
+         *      + create new question object contains question information and list of answers
+         *          and list of subquestions relating to this question.
+         *
+         * @param arg0 there are 4 arguments
+         * @author  Phuc Pham N
+         * @version 1.0
+         * @since   2020-08-05
+         */
         @Override
         protected Void doInBackground(String... arg0) {
             ServiceHandler jsonParser = new ServiceHandler();
@@ -79,13 +141,13 @@ public class ShowQuestionFragment extends Fragment {
             } else {
                 list.add(new BasicNameValuePair("limit","20"));
             }
-            String jsonQuestion = jsonParser.makeServiceCall(getString((R.string.get_questions)), ServiceHandler.GET, list);
+            String jsonQuestion = jsonParser.makeServiceCall(
+                                    getString((R.string.get_questions)), ServiceHandler.GET, list);
             if (jsonQuestion != null) {
                 try {
                     JSONObject jsonQuestionObj = new JSONObject(jsonQuestion);
                     if (jsonQuestionObj != null) {
-                        JSONArray questions = jsonQuestionObj
-                                .getJSONArray("questions");
+                        JSONArray questions = jsonQuestionObj.getJSONArray("questions");
                         for (int i = 0; i < questions.length(); i++) {
                             List<Answer> answersList = new ArrayList<>();
                             List<SubQuestion> subQuestionsList = new ArrayList<>();
@@ -93,13 +155,14 @@ public class ShowQuestionFragment extends Fragment {
                             List<NameValuePair> qid = new ArrayList<NameValuePair>();
                             int questionId = Integer.parseInt(questionObj.getString("questionid"));
                             qid.add(new BasicNameValuePair("qid", Integer.toString( questionId)));
-                            String jsonAnswer = jsonParser.makeServiceCall(getString((R.string.get_answers)), ServiceHandler.GET, qid);
+                            String jsonAnswer = jsonParser.makeServiceCall(
+                                    getString((R.string.get_answers)),
+                                    ServiceHandler.GET, qid);
                             if (jsonAnswer != null) {
                                 try {
                                     JSONObject jsonAnswerObj = new JSONObject(jsonAnswer);
                                     if (jsonAnswerObj != null) {
-                                        JSONArray ans = jsonAnswerObj
-                                                .getJSONArray("answers");
+                                        JSONArray ans = jsonAnswerObj.getJSONArray("answers");
                                         for (int j = 0; j < ans.length(); j++) {
                                             JSONObject answerObj = (JSONObject) ans.get(j);
                                             Answer ansobj = new Answer(answerObj.getInt("answerid"),
@@ -114,7 +177,9 @@ public class ShowQuestionFragment extends Fragment {
                                 break;
                             }
 
-                            String jsonSubQuestion = jsonParser.makeServiceCall(getString((R.string.get_subquestions)), ServiceHandler.GET, qid);
+                            String jsonSubQuestion = jsonParser.makeServiceCall(
+                                    getString((R.string.get_subquestions)),
+                                    ServiceHandler.GET, qid);
 
                             if (jsonSubQuestion != null) {
                                 try {
@@ -155,6 +220,13 @@ public class ShowQuestionFragment extends Fragment {
             return null;
         }
 
+        /**
+         * Finish reading json data and attach them to recyler
+         * @param result
+         * @author  Phuc Pham N
+         * @version 1.0
+         * @since   2020-08-05
+         */
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
@@ -164,6 +236,12 @@ public class ShowQuestionFragment extends Fragment {
         }
     }
 
+    /**
+     * Attach data to cycler
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     private void loadQuestions() {
         adapter = new QuestionAdapter(getActivity(), questionsList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());

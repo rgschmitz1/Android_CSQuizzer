@@ -10,13 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * The UserFragment is placed in MainActivity.
+ * The AbousUsFragment is placed in MainActivity.
  *
  * @author  Phuc Pham N
  * @version 1.0
  * @since   2020-08-05
  */
-public class UserFragment extends Fragment {
+public class AbousUsFragment extends Fragment {
     /**
      * Render components to GUI
      * @param inflater a class used to instantiate layout XML file into its corresponding view objects
@@ -31,6 +31,6 @@ public class UserFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user, container, false);
+        return inflater.inflate(R.layout.fragment_about_us, container, false);
     }
 }

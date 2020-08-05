@@ -10,29 +10,39 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+
 import edu.tacoma.uw.csquizzer.model.Question;
 
+/**
+ * The QuestionAdapter renders question information to recycler.
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyViewHolder>{
-    /*
-     *  Question Object contains Question ID, Question Title, Question Body, Course Name,
-     *  Topic Description, Difficulty Description, Type Description, List Answer, List SubQuestion
-     */
     private List<Question> mQuestions;
     private Context mContext;
-    // True/False
-    public static final int TYPE1 = 0;
 
-    // Single Choice
-    public static final int TYPE2 = 1;
-
-    // Multiple Choice
-    public static final int TYPE3 = 2;
+    public static final int TYPE1 = 0;  // True/False
+    public static final int TYPE2 = 1;  // Single Choice
+    public static final int TYPE3 = 2;  // Multiple Choice
 
     public QuestionAdapter(Context mContext, List<Question> mQuestions) {
         this.mQuestions = mQuestions;
         this.mContext = mContext;
     }
 
+    /**
+     * Get question in a list at position, and return a type of question.
+     *
+     * @param position the current position of the recyler.
+     * @return type of question 0: true/ false, 1: single choice, 2: multiple choice
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     @Override
     public int getItemViewType(int position) {
         if (mQuestions.get(position).getTypeDescription().equals("True/False"))
@@ -43,6 +53,17 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             return TYPE3;
     }
 
+    /**
+     * Based on type of question, render view on GUI
+     *
+     * @param parent MainActivity
+     * @param viewType type of question
+     * @return viewHolder
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -65,6 +86,18 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
         return viewHolder;
     }
 
+    /**
+     * We have three templates and the different between
+     * them is type of questions (true/false, single choice, multiple choice)
+     * Render view on recyler.
+     *
+     * @param holder recycler
+     * @param position type of question
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-05
+     */
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         /**
@@ -111,6 +144,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
         private TextView tvDifficultyDescription;
         private TextView tvQuestionBody;
         private Button btnCheckQuestion;
+        private Button btnReport;
+        private Button btnShowAnswer;
         private RadioButton rbTrue;
         private RadioButton rbFalse;
         private RadioButton rbSubQuestion1;
@@ -132,6 +167,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             this.tvDifficultyDescription = itemView.findViewById(R.id.tv_DifficultyDescription);
             this.tvQuestionBody = itemView.findViewById(R.id.tv_QuestionBody);
             this.btnCheckQuestion = itemView.findViewById(R.id.btn_CheckQuestion);
+            this.btnReport = itemView.findViewById(R.id.btn_Report);
+            this.btnShowAnswer = itemView.findViewById(R.id.btn_ShowAnswer);
             if(viewType == TYPE1) {
                 this.rbTrue = itemView.findViewById(R.id.radio_true);
                 this.rbFalse = itemView.findViewById(R.id.radio_false);
@@ -152,13 +189,13 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
 
                 }
             });
-            this.btnCheckQuestion.setOnClickListener(new View.OnClickListener() {
+            this.btnReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                 }
             });
-            this.btnCheckQuestion.setOnClickListener(new View.OnClickListener() {
+            this.btnShowAnswer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
