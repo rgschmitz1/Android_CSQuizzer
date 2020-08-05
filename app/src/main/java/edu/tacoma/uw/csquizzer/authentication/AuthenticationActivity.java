@@ -9,12 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -29,18 +24,18 @@ import java.net.URL;
 
 import edu.tacoma.uw.csquizzer.MainActivity;
 import edu.tacoma.uw.csquizzer.R;
-import edu.tacoma.uw.csquizzer.RecoveryPasswordActivity;
 import edu.tacoma.uw.csquizzer.model.User;
 
-public class LoginActivity extends AppCompatActivity {
+public class AuthenticationActivity extends AppCompatActivity implements
+        LoginFragment.LoginFragmentListener,
+        RegistrationFragment.RegistrationFragmentListener,
+        ResetPasswordFragment.ResetPasswordListener {
 
     private SharedPreferences mSharedPreferences;
     private JSONObject mUserJSON;
 
-    private static final String LOGIN = "LOGIN";
-
     private class AuthenticateUserAsyncTask extends AsyncTask<String, Void, String> {
-        ProgressDialog pdLoading = new ProgressDialog(LoginActivity.this);
+        ProgressDialog pdLoading = new ProgressDialog(AuthenticationActivity.this);
 
         @Override
         protected void onPreExecute() {
@@ -57,9 +52,6 @@ public class LoginActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             for (String url : strings) {
                 try {
-                    // For Debugging
-//                    Log.i(LOGIN, mUserJSON.toString());
-
                     URL urlObject = new URL(url);
                     urlConnection = (HttpURLConnection) urlObject.openConnection();
                     urlConnection.setRequestMethod("POST");
@@ -95,49 +87,104 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             // Disable modal message
             pdLoading.dismiss();
-            // For Debugging
-//            Log.i(LOGIN, s);
-            if (s.startsWith("Unable to login")) {
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-                return;
-            }
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 if (jsonObject.getBoolean("success")) {
-                    Toast.makeText(getApplicationContext(), "User login successfully"
-                            , Toast.LENGTH_SHORT).show();
-//                    mSharedPreferences
-//                            .edit()
-//                            .putBoolean(getString(R.string.LOGGEDIN), true)
-//                            .putString(getString(R.string.USERNAME), username)
-//                            .commit();
-                    launchMainMenu();
+                    String mode = jsonObject.optString("mode", "undefined");
+                    switch(mode) {
+                        case "login":
+//                            mSharedPreferences
+//                                    .edit()
+//                                    .putBoolean(getString(R.string.LOGGEDIN), true)
+//                                    .putString(getString(R.string.USERNAME),
+//                                            mUserJSON.getString("username"))
+//                                    .apply();
+                            launchMainMenu();
+                            break;
+                        case "register":
+                            Toast.makeText(getApplicationContext(),
+                                    "Registration successful!",
+                                    Toast.LENGTH_SHORT).show();
+                            getSupportFragmentManager().popBackStack();
+                            break;
+                        case "reset":
+                            Toast.makeText(getApplicationContext(),
+                                    "Password reset successful!",
+                                    Toast.LENGTH_SHORT).show();
+                            getSupportFragmentManager().popBackStack();
+                            break;
+                        default:
+                            Log.e("AuthenticationActivity",
+                                    "Invalid mode passed to AsyncTask");
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), jsonObject.getString("error")
                             , Toast.LENGTH_LONG).show();
-                    //Log.e(LOGIN, jsonObject.getString("error"));
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "JSON Parsing error on login: "
+                Toast.makeText(getApplicationContext(), "JSON Parsing error: "
                         + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    /**
-     * Set persistent parameters and execute the MainActivity
-     * @param username user provided username
-     * @param password user provided password
-     */
-    public void login(String username, String password) {
-        StringBuilder url = new StringBuilder(getString(R.string.post_login));
+    @Override
+    public void register(String firstname, String lastname, String email, String username, String password) {
+        StringBuilder url = new StringBuilder(getString(R.string.post_register));
         try {
-            mUserJSON = new User(username, password).getUserJson();
-            Log.i("USERJSON", mUserJSON.toString());
+            mUserJSON = new User(firstname, lastname, email, username, password).getUserJson();
             new AuthenticateUserAsyncTask().execute(url.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Set persistent parameters and launches the MainActivity
+     * @param username user provided username
+     * @param password user provided password
+     */
+    @Override
+    public void login(String username, String password) {
+        StringBuilder url = new StringBuilder(getString(R.string.post_login));
+        try {
+            mUserJSON = new User(username, password).getUserJson();
+            new AuthenticateUserAsyncTask().execute(url.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set resets user password and goes back to login screen
+     * @param email user provided email
+     */
+    @Override
+    public void resetPassword(String email) {
+        StringBuilder url = new StringBuilder(getString(R.string.post_reset));
+        mUserJSON = new JSONObject();
+        try {
+            mUserJSON.put("email", email);
+            new AuthenticateUserAsyncTask().execute(url.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void launchRegistration() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.authentication_fragment_id, new RegistrationFragment())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void launchResetPassword() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.authentication_fragment_id, new ResetPasswordFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     private void launchMainMenu() {
@@ -149,57 +196,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_authentication);
 
         // Access login preferences to determine if user has already logged in
         mSharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS),
                 Context.MODE_PRIVATE);
+
         if (!mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false)) {
-            // Configure an onClickListener for the Login button
-            Button btnLogin = findViewById(R.id.btn_Login);
-            final EditText username = findViewById(R.id.et_username);
-            final EditText password = findViewById(R.id.et_password);
-            btnLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String usernameText = username.getText().toString();
-                    String passwordText = password.getText().toString();
-                    if (TextUtils.isEmpty(usernameText)) {
-                        Toast.makeText(v.getContext(), "Enter a username",
-                                Toast.LENGTH_SHORT).show();
-                        username.requestFocus();
-                    } else if (TextUtils.isEmpty(passwordText) || passwordText.length() < 6) {
-                        Toast.makeText(v.getContext(),
-                                "Enter a password at least 6 characters long",
-                                Toast.LENGTH_SHORT).show();
-                        password.requestFocus();
-                    } else {
-                        login(usernameText, passwordText);
-                    }
-                }
-            });
-
-            // Configure onClickListener for password recovery
-            TextView recovery = findViewById(R.id.tv_forgotpassword);
-            recovery.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), RecoveryPasswordActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            });
-
-            // Configure onClickListener for registration
-            TextView register = findViewById(R.id.tv_signup);
-            register.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), RegisterActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            });
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.authentication_fragment_id, new LoginFragment())
+                    .commit();
         } else {
             launchMainMenu();
         }

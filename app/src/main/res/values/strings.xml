@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">CS Quizzer</string>
 
-    <!-- Login/Register activity hints -->
+    <!-- Login/Register activity -->
     <string name="first_name_hint">First Name …</string>
     <string name="last_name_hint">Last Name …</string>
     <string name="email_hint">Email …</string>
@@ -12,7 +12,14 @@
     <string name="forgot_password">Forgot your password?</string>
     <string name="register">Not a member? Click here to register!</string>
     <string name="login">Already registered? Click to Login!</string>
+
+    <!-- Reset/New Password activity -->
+    <string name="vt_tologin">Back to Login!</string>
     <string name="btn_resetpassword">Reset Password</string>
+    <string name="old_password">Old Password …</string>
+    <string name="new_password">New Password …</string>
+    <string name="confirm_password">Confirm Password …</string>
+    <string name="btn_submit">Submit</string>
 
     <!-- Persistent preferences -->
     <string name="LOGIN_PREFS">edu.tacoma.uw.csquizzer.PREFS</string>
