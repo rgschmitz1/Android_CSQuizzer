@@ -13,21 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="edu.tacoma.uw.csquizzer.AboutUsActivity" />
-        <activity android:name="edu.tacoma.uw.csquizzer.NewPasswordActivity"
+        <activity
+            android:name="edu.tacoma.uw.csquizzer.NewPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity android:name="edu.tacoma.uw.csquizzer.RecoveryPasswordActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
         <activity
-            android:name="edu.tacoma.uw.csquizzer.authentication.RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name="edu.tacoma.uw.csquizzer.authentication.LoginActivity"
+            android:name="edu.tacoma.uw.csquizzer.authentication.AuthenticationActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,9 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="edu.tacoma.uw.csquizzer.MainActivity"
+        <activity
+            android:name="edu.tacoma.uw.csquizzer.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
     </application>
 
