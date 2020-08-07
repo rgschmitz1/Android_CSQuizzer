@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         //I added this if statement to keep the selected fragment when rotating the device
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
+                    new QuizFragment()).commit();
         }
     }
 
@@ -93,10 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     Fragment selectedFragment = null;
                     switch (item.getItemId()) {
                         case R.id.mnHome:
-                            selectedFragment = new HomeFragment();
-                            break;
-                        case R.id.mnUser:
-                            selectedFragment = new UserFragment();
+                            selectedFragment = new QuizFragment();
                             break;
                         case R.id.mnRepo:
                             selectedFragment = new RepositoryFragment();
@@ -105,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new AbousUsFragment();
                             break;
                         default:
-                            selectedFragment = new HomeFragment();
+                            selectedFragment = new QuizFragment();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

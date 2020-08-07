@@ -136,7 +136,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <RadioButton android:id="@+id/radio_subquestion_1"
-                android:checked="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RadioButton android:id="@+id/radio_subquestion_2"
@@ -158,12 +157,6 @@
         android:layout_marginTop="@dimen/size_16dp"
         android:gravity="center"
         android:orientation="vertical">
-        <Button
-            android:id="@+id/btn_CheckQuestion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_CheckQuestion"
-            android:textColor="@color/colorPrimary"/>
         <Button
             android:id="@+id/btn_ShowAnswer"
             android:layout_width="wrap_content"

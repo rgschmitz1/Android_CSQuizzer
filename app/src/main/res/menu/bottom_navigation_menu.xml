@@ -6,10 +6,6 @@
         android:enabled="true"
         android:title="@string/bmb_Home"/>
     <item
-        android:id="@+id/mnUser"
-        android:icon="@drawable/ic_user"
-        android:title="@string/bmb_User"/>
-    <item
         android:id="@+id/mnRepo"
         android:icon="@drawable/ic_repo"
         android:title="@string/bmb_Repo"/>

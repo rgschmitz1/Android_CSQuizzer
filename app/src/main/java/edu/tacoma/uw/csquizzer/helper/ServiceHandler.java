@@ -1,27 +1,30 @@
 package edu.tacoma.uw.csquizzer.helper;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * The ServiceHandler is a helper class. The purpose of this class is to get json data.
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class ServiceHandler {
 
     static InputStream is = null;
@@ -46,62 +49,65 @@ public class ServiceHandler {
      * @method - http request method
      * @params - http request params
      * */
-    public String makeServiceCall(String url, int method,
-                                  List<NameValuePair> params) {
+    public String makeServiceCall(String url, int method, Map<String, String> mapConditions) {
+        // http client
+        StringBuilder response = new StringBuilder();
+        HttpURLConnection urlConnection = null;
         try {
-            // http client
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpEntity httpEntity = null;
-            HttpResponse httpResponse = null;
-
             // Checking http request method type
             if (method == POST) {
-                HttpPost httpPost = new HttpPost(url);
-                // adding post params
-                if (params != null) {
-                    httpPost.setEntity(new UrlEncodedFormEntity(params));
+                URL urlObject = new URL(url);
+                urlConnection = (HttpURLConnection) urlObject.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setDoOutput(true);
+                JSONObject mJSON = new JSONObject();
+                for (Map.Entry<String,String> entry : mapConditions.entrySet()){
+                    mJSON.put(entry.getKey(),entry.getValue());
                 }
-
-                httpResponse = httpClient.execute(httpPost);
-
+                OutputStreamWriter wr =
+                        new OutputStreamWriter(urlConnection.getOutputStream());
+                wr.write(mJSON.toString());
+                wr.flush();
+                wr.close();
+                InputStream content = urlConnection.getInputStream();
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                String s;
+                while ((s = buffer.readLine()) != null) {
+                    response.append(s);
+                }
+                buffer.close();
             } else if (method == GET) {
-                // appending params to url
-                if (params != null) {
-                    String paramString = URLEncodedUtils
-                            .format(params, "utf-8");
-                    url += "?" + paramString;
+                if(mapConditions != null) {
+                    for (Map.Entry<String,String> entry : mapConditions.entrySet()){
+                        url = Uri.parse(url)
+                                .buildUpon()
+                                .appendQueryParameter(entry.getKey(), entry.getValue())
+                                .build().toString();
+                    }
                 }
-                HttpGet httpGet = new HttpGet(url);
-
-                httpResponse = httpClient.execute(httpGet);
-
+                URL urlObject = new URL(url);
+                urlConnection = (HttpURLConnection) urlObject.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                InputStream content = urlConnection.getInputStream();
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                String s;
+                while ((s = buffer.readLine()) != null) {
+                    response.append(s);
+                }
+                buffer.close();
             }
-            httpEntity = httpResponse.getEntity();
-            is = httpEntity.getContent();
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    is, "UTF-8"), 8);
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-            is.close();
-            response = sb.toString();
         } catch (Exception e) {
-            Log.e("Buffer Error", "Error: " + e.toString());
+            response.append("Authentication exception occurred: ");
+            response.append(e.getMessage());
+        } finally {
+            if (urlConnection != null)
+                urlConnection.disconnect();
         }
 
-        return response;
+        return response.toString();
 
     }
+
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -143,7 +144,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
         private TextView tvTopicDescription;
         private TextView tvDifficultyDescription;
         private TextView tvQuestionBody;
-        private Button btnCheckQuestion;
         private Button btnReport;
         private Button btnShowAnswer;
         private RadioButton rbTrue;
@@ -152,10 +152,10 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
         private RadioButton rbSubQuestion2;
         private RadioButton rbSubQuestion3;
         private RadioButton rbSubQuestion4;
-        private RadioButton cbSubQuestion1;
-        private RadioButton cbSubQuestion2;
-        private RadioButton cbSubQuestion3;
-        private RadioButton cbSubQuestion4;
+        private CheckBox cbSubQuestion1;
+        private CheckBox cbSubQuestion2;
+        private CheckBox cbSubQuestion3;
+        private CheckBox cbSubQuestion4;
         public MyViewHolder(View itemView, int viewType) {
             super(itemView);
             //Listen recyler item
@@ -166,7 +166,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             this.tvTopicDescription = itemView.findViewById(R.id.tv_TopicDescription);
             this.tvDifficultyDescription = itemView.findViewById(R.id.tv_DifficultyDescription);
             this.tvQuestionBody = itemView.findViewById(R.id.tv_QuestionBody);
-            this.btnCheckQuestion = itemView.findViewById(R.id.btn_CheckQuestion);
             this.btnReport = itemView.findViewById(R.id.btn_Report);
             this.btnShowAnswer = itemView.findViewById(R.id.btn_ShowAnswer);
             if(viewType == TYPE1) {
@@ -183,12 +182,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
                 this.cbSubQuestion3 = itemView.findViewById(R.id.cb_subquestion_3);
                 this.cbSubQuestion4 = itemView.findViewById(R.id.cb_subquestion_4);
             }
-            this.btnCheckQuestion.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
             this.btnReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

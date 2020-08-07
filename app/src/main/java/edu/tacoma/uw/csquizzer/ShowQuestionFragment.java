@@ -12,13 +12,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Answer;
 import edu.tacoma.uw.csquizzer.model.Question;
@@ -46,6 +48,7 @@ public class ShowQuestionFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Question> questionsList = new ArrayList<>();
     QuestionAdapter adapter;
+    FloatingActionButton btnFag;
 
     /**
      * Execute GetQuestions with CourseName or TopicDescription or DifficultyDescription
@@ -81,6 +84,7 @@ public class ShowQuestionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_show_question, container, false);
+        btnFag = (FloatingActionButton) rootView.findViewById(R.id.btn_fag);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_quetions);
         return rootView;
     }
@@ -126,23 +130,23 @@ public class ShowQuestionFragment extends Fragment {
         @Override
         protected Void doInBackground(String... arg0) {
             ServiceHandler jsonParser = new ServiceHandler();
-            List<NameValuePair> list = new ArrayList<NameValuePair>();
+            Map<String, String> mapConditions = new HashMap<>();
             if(!arg0[0].equals("--- Choose Course ---")) {
-                list.add(new BasicNameValuePair("course",arg0[0]));
+                mapConditions.put("course",arg0[0]);
             }
             if(!arg0[1].equals("--- Choose Topic ---")) {
-                list.add(new BasicNameValuePair("topic",arg0[1]));
+                mapConditions.put("topic",arg0[1]);
             }
             if(!arg0[2].equals("--- Choose Difficulty ---")) {
-                list.add(new BasicNameValuePair("difficulty",arg0[2]));
+                mapConditions.put("difficulty",arg0[2]);
             }
             if(!arg0[3].equals("--- Choose Number Questions ---")) {
-                list.add(new BasicNameValuePair("limit",arg0[3]));
+                mapConditions.put("limit",arg0[3]);
             } else {
-                list.add(new BasicNameValuePair("limit","20"));
+                mapConditions.put("limit","20");
             }
             String jsonQuestion = jsonParser.makeServiceCall(
-                                    getString((R.string.get_questions)), ServiceHandler.GET, list);
+                                    getString((R.string.get_questions)), ServiceHandler.GET,mapConditions);
             if (jsonQuestion != null) {
                 try {
                     JSONObject jsonQuestionObj = new JSONObject(jsonQuestion);
@@ -152,9 +156,9 @@ public class ShowQuestionFragment extends Fragment {
                             List<Answer> answersList = new ArrayList<>();
                             List<SubQuestion> subQuestionsList = new ArrayList<>();
                             JSONObject questionObj = (JSONObject) questions.get(i);
-                            List<NameValuePair> qid = new ArrayList<NameValuePair>();
+                            Map<String, String> qid = new HashMap<>();
                             int questionId = Integer.parseInt(questionObj.getString("questionid"));
-                            qid.add(new BasicNameValuePair("qid", Integer.toString( questionId)));
+                            qid.put("qid", Integer.toString( questionId));
                             String jsonAnswer = jsonParser.makeServiceCall(
                                     getString((R.string.get_answers)),
                                     ServiceHandler.GET, qid);
@@ -244,10 +248,21 @@ public class ShowQuestionFragment extends Fragment {
      */
     private void loadQuestions() {
         adapter = new QuestionAdapter(getActivity(), questionsList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (linearLayoutManager.findFirstVisibleItemPosition() == 0) {
+                    btnFag.setVisibility(View.GONE);
+                }
+                else {
+                    btnFag.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
 }

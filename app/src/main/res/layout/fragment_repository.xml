@@ -4,12 +4,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RepositoryFragment">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Repository Fragment"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
-
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/row_1"
+            android:layout_marginTop="@dimen/size_48dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/imb_users"
+                android:background="@color/colorPrimary"
+                android:layout_marginRight="@dimen/size_36dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_users"/>
+            <ImageButton
+                android:id="@+id/imb_topics"
+                android:background="@color/colorPrimary"
+                android:layout_marginRight="@dimen/size_36dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_topics"/>
+            <ImageButton
+                android:id="@+id/imb_courses"
+                android:layout_width="wrap_content"
+                android:background="@color/colorPrimary"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_courses"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/row_2"
+            android:layout_below="@id/row_1"
+            android:layout_marginTop="@dimen/size_36dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/imb_questions"
+                android:background="@color/colorPrimary"
+                android:layout_marginRight="@dimen/size_36dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_questions"/>
+            <ImageButton
+                android:id="@+id/imb_answers"
+                android:layout_marginRight="@dimen/size_36dp"
+                android:layout_width="wrap_content"
+                android:background="@color/colorPrimary"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_answers"/>
+            <ImageButton
+                android:id="@+id/imb_subquestions"
+                android:layout_width="wrap_content"
+                android:background="@color/colorPrimary"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_subquestions"/>
+        </LinearLayout>
+    </RelativeLayout>
 </FrameLayout>
