@@ -9,60 +9,138 @@
         android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/row_1"
-            android:layout_marginTop="@dimen/size_48dp"
+            android:layout_marginTop="@dimen/size_24dp"
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/imb_users"
+            <LinearLayout
+                android:layout_width="@dimen/size_100dp"
+                android:layout_height="@dimen/size_100dp"
+                android:layout_marginRight="@dimen/size_24dp"
                 android:background="@color/colorPrimary"
-                android:layout_marginRight="@dimen/size_36dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_users"/>
-            <ImageButton
-                android:id="@+id/imb_topics"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/imb_users"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:src="@drawable/ic_users"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/size_16dp"
+                    android:text="@string/tv_UserRepo"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="@dimen/size_100dp"
+                android:layout_height="@dimen/size_100dp"
+                android:layout_marginRight="@dimen/size_24dp"
                 android:background="@color/colorPrimary"
-                android:layout_marginRight="@dimen/size_36dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_topics"/>
-            <ImageButton
-                android:id="@+id/imb_courses"
-                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/imb_topics"
+                    android:background="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_topics"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/size_16dp"
+                    android:text="@string/tv_TopicRepo"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="@dimen/size_100dp"
+                android:layout_height="@dimen/size_100dp"
                 android:background="@color/colorPrimary"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_courses"/>
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/imb_courses"
+                    android:layout_width="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_courses"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/size_16dp"
+                    android:text="@string/tv_CourseRepo"/>
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/row_2"
             android:layout_below="@id/row_1"
-            android:layout_marginTop="@dimen/size_36dp"
+            android:layout_marginTop="@dimen/size_24dp"
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/imb_questions"
+            <LinearLayout
+                android:layout_width="@dimen/size_100dp"
+                android:layout_height="@dimen/size_100dp"
                 android:background="@color/colorPrimary"
-                android:layout_marginRight="@dimen/size_36dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_questions"/>
-            <ImageButton
-                android:id="@+id/imb_answers"
-                android:layout_marginRight="@dimen/size_36dp"
-                android:layout_width="wrap_content"
+                android:layout_marginRight="@dimen/size_24dp"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                        android:id="@+id/imb_questions"
+                        android:background="@color/colorPrimary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_questions"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/size_16dp"
+                    android:text="@string/tv_QuestionRepo"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="@dimen/size_100dp"
+                android:layout_height="@dimen/size_100dp"
                 android:background="@color/colorPrimary"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_answers"/>
-            <ImageButton
-                android:id="@+id/imb_subquestions"
-                android:layout_width="wrap_content"
+                android:layout_marginRight="@dimen/size_24dp"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/imb_answers"
+                    android:layout_width="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_answers"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/size_16dp"
+                    android:text="@string/tv_AnswerRepo"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="@dimen/size_100dp"
+                android:layout_height="@dimen/size_100dp"
                 android:background="@color/colorPrimary"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_subquestions"/>
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/imb_subquestions"
+                    android:layout_width="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_subquestions"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/size_16dp"
+                    android:text="@string/tv_SubQuestionRepo"/>
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>

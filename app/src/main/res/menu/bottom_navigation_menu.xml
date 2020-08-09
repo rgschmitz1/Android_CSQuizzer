@@ -7,7 +7,7 @@
         android:title="@string/bmb_Home"/>
     <item
         android:id="@+id/mnRepo"
-        android:icon="@drawable/ic_repo"
+        android:icon="@drawable/ic_settings"
         android:title="@string/bmb_Repo"/>
     <item
         android:id="@+id/mnInfo"

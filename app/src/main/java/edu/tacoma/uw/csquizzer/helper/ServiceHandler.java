@@ -61,13 +61,15 @@ public class ServiceHandler {
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setRequestProperty("Content-Type", "application/json");
                 urlConnection.setDoOutput(true);
-                JSONObject mJSON = new JSONObject();
+                urlConnection.setDoInput(true);
+
+                JSONObject mUserJSON = new JSONObject();
                 for (Map.Entry<String,String> entry : mapConditions.entrySet()){
-                    mJSON.put(entry.getKey(),entry.getValue());
+                    mUserJSON.put(entry.getKey(),entry.getValue());
                 }
                 OutputStreamWriter wr =
                         new OutputStreamWriter(urlConnection.getOutputStream());
-                wr.write(mJSON.toString());
+                wr.write(mUserJSON.toString());
                 wr.flush();
                 wr.close();
                 InputStream content = urlConnection.getInputStream();

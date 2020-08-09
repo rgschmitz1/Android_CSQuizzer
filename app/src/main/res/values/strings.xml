@@ -43,7 +43,7 @@
     <!-- Bottom Menubar -->
     <string name="bmb_Home">Home</string>
     <string name="bmb_User">User</string>
-    <string name="bmb_Repo">Repository</string>
+    <string name="bmb_Repo">System</string>
     <string name="bmb_AboutUs">About Us</string>
 
     <!-- Number of Questions -->
@@ -63,4 +63,13 @@
     <string name="btn_CheckQuestion">Check Question</string>
     <string name="btn_ShowAnswer">Show Answer</string>
     <string name="btn_Report">Report</string>
+
+
+    <!-- Repository Detail -->
+    <string name="tv_UserRepo">User</string>
+    <string name="tv_CourseRepo">Course</string>
+    <string name="tv_TopicRepo">Topic</string>
+    <string name="tv_QuestionRepo">Question</string>
+    <string name="tv_AnswerRepo">Answer</string>
+    <string name="tv_SubQuestionRepo">SubQuestion</string>
 </resources>

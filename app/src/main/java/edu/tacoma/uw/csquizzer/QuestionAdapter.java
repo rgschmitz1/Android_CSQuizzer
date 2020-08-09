@@ -1,17 +1,44 @@
 package edu.tacoma.uw.csquizzer;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
+
+import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
+import edu.tacoma.uw.csquizzer.model.Answer;
 import edu.tacoma.uw.csquizzer.model.Question;
 
 /**
@@ -185,15 +212,88 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             this.btnReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+                    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    builder.setView(inflater.inflate(R.layout.dialog_report, null));
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+                    final EditText etReport = (EditText) dialog.findViewById(R.id.et_report);
+                    final Button btnOK = (Button) dialog.findViewById(R.id.btn_ok);
+                    final Button btnCancel = (Button) dialog.findViewById(R.id.btn_cancel);
+                    btnOK.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(etReport.getText().toString().length() > 0) {
+                                AsyncConnectTask task = new AsyncConnectTask(
+                                        tvQuestionId.getText().toString(),
+                                        tvQuestionTitle.getText().toString(),
+                                        etReport.getText().toString(), dialog);
+                                task.execute();
+                                Toast.makeText(mContext, "Send error question successful", Toast.LENGTH_SHORT)
+                                        .show();
+                            } else {
+                                Toast.makeText(mContext, "Please input message", Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        }
+                    });
+
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(mContext, "Cancel sending error question", Toast.LENGTH_SHORT)
+                                    .show();
+                            dialog.cancel();
+                        }
+                    });
 
                 }
             });
+
+
             this.btnShowAnswer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Toast.makeText(mContext, "Canceled report the question", Toast.LENGTH_SHORT)
+                            .show();
                 }
             });
+        }
+    }
+
+    public interface MyInterface {
+        public void myMethod(boolean result);
+    }
+
+    private class AsyncConnectTask extends AsyncTask<Void, Void, Void> {
+        private String qid;
+        private String title;
+        private String message;
+        private AlertDialog dialog;
+        public AsyncConnectTask(String mQid, String mTitle, String mMessage, AlertDialog mdialog) {
+            this.qid = mQid;
+            this.title = mTitle;
+            this.message = mMessage;
+            this.dialog = mdialog;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            ServiceHandler jsonParser = new ServiceHandler();
+            Map<String, String> mapConditions = new HashMap<>();
+            mapConditions.put("qid", this.qid);
+            mapConditions.put("title", this.title);
+            mapConditions.put("message", this.message);
+            try {
+                JSONObject jsonSendError = new JSONObject(jsonParser.makeServiceCall(
+                        mContext.getString((R.string.report_question)), ServiceHandler.POST, mapConditions));
+                if (jsonSendError != null) {
+                    dialog.cancel();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 }
