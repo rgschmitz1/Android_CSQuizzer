@@ -27,16 +27,16 @@ import edu.tacoma.uw.csquizzer.model.Question;
 import edu.tacoma.uw.csquizzer.model.SubQuestion;
 
 /**
- * The ShowQuestionFragment is placed in MainActivity. It contains a recyler. A cycler contains
+ * The ShowQuestionFragment is placed in MainActivity. It contains a recycler. A recycler contains
  * question id, question title, question body, course name, topic description,
  * difficulty description, type of question (true false or single choice or multiple choice)
  * and "View Answer" Button and "Report" Button
  *
  * When hitting the search button in HomeFragment, it will send conditions such as easy question
  * and Collections topic which a user wants to find to ShowQuestionFragment. Based on these conditions,
- * take all questions that matches to conditions and shows on recyler.
+ * take all questions that matches to conditions and shows on recycler.
  *
- * On the recyler, a user can report a question or check the correct answer or finish the quiz.
+ * On the recycler, a user can report a question or check the correct answer or finish the quiz.
  *
  * @author  Phuc Pham N
  * @version 1.0
@@ -46,8 +46,7 @@ public class ShowQuestionFragment extends Fragment {
     View rootView;
     ProgressDialog pDialog;
     private RecyclerView recyclerView;
-    private List<Question> questionsList = new ArrayList<>();
-    QuestionAdapter adapter;
+    private List<Question> lQuestions = new ArrayList<>();
     FloatingActionButton btnFag;
 
     /**
@@ -212,7 +211,7 @@ public class ShowQuestionFragment extends Fragment {
                                     questionObj.getString("difficultydescription"),
                                     questionObj.getString("typedescription"),
                                     answersList, subQuestionsList);
-                            questionsList.add(question);
+                            lQuestions.add(question);
                         }
                     }
                 } catch (JSONException e) {
@@ -247,15 +246,15 @@ public class ShowQuestionFragment extends Fragment {
      * @since   2020-08-05
      */
     private void loadQuestions() {
-        adapter = new QuestionAdapter(getActivity(), questionsList);
+        QuestionAdapter adapter = new QuestionAdapter(getActivity(), lQuestions);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (linearLayoutManager.findFirstVisibleItemPosition() == 0) {
+                if (linearLayoutManager.findLastVisibleItemPosition() == 0) {
                     btnFag.setVisibility(View.GONE);
                 }
                 else {

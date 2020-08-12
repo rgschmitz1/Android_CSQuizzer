@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/template_true_false"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -118,7 +119,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight">
         <LinearLayout
-            android:id="@+id/child_rl_1"
+            android:id="@+id/child_rl_tf_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -130,20 +131,18 @@
                 android:textColor="@color/colorPrimary"/>
         </LinearLayout>
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/child_rl_2"
-            android:layout_below="@id/child_rl_1"
+            android:id="@+id/child_rl_tf_2"
+            android:layout_below="@id/child_rl_tf_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <RadioButton android:id="@+id/radio_true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="True"/>
+                android:layout_height="wrap_content"/>
             <RadioButton
                 android:id="@+id/radio_false"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="False" />
+                android:layout_height="wrap_content"/>
         </RadioGroup>
     </RelativeLayout>
     <LinearLayout

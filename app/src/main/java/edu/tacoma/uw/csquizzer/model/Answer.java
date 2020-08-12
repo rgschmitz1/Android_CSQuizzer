@@ -12,6 +12,7 @@ public class Answer {
     private int QuestionId;
     private String AnswerText;
 
+    public Answer() {}
     public Answer(int answerId, int questionId, String answerText) {
         AnswerId = answerId;
         QuestionId = questionId;

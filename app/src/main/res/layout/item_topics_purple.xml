@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/size_8dp"
+    android:layout_marginRight="1dp"
+    android:layout_marginLeft="1dp"
+    android:background="@color/colorPrimary"
+    android:orientation="horizontal">
+    <TextView
+        android:id="@+id/tv_TopicId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
+    <TextView
+        android:id="@+id/tv_TopicDescription"
+        android:layout_toRightOf="@id/tv_TopicId"
+        android:layout_width="wrap_content"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

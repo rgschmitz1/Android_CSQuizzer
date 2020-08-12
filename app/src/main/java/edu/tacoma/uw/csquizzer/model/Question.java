@@ -20,7 +20,7 @@ public class Question {
     private String TypeDescription;
     private List<Answer> listAnswers = new ArrayList<>();
     private List<SubQuestion> listSubQuestions = new ArrayList<>();
-
+    public Question() {}
     /**
      * Question class relative to answer class and subquestion class
      * @param questionId Question Id

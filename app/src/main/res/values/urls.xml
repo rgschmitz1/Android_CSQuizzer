@@ -10,4 +10,7 @@
     <string name="get_difficulties">https://phucbob-csquizzer.herokuapp.com/get-difficulties</string>
     <string name="get_answers">https://phucbob-csquizzer.herokuapp.com/get-answers</string>
     <string name="get_subquestions">https://phucbob-csquizzer.herokuapp.com/get-subquestions</string>
+
+    <string name="update_topics">https://phucbob-csquizzer.herokuapp.com/update-topics</string>
+    <string name="add_topics">https://phucbob-csquizzer.herokuapp.com/add-topics</string>
 </resources>
