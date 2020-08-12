@@ -13,4 +13,6 @@
 
     <string name="update_topics">https://phucbob-csquizzer.herokuapp.com/update-topics</string>
     <string name="add_topics">https://phucbob-csquizzer.herokuapp.com/add-topics</string>
+    <string name="update_courses">https://phucbob-csquizzer.herokuapp.com/update-courses</string>
+    <string name="add_courses">https://phucbob-csquizzer.herokuapp.com/add-courses</string>
 </resources>

@@ -1,44 +1,25 @@
 package edu.tacoma.uw.csquizzer;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.SearchView;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
-import edu.tacoma.uw.csquizzer.model.Answer;
-import edu.tacoma.uw.csquizzer.model.Difficulty;
-import edu.tacoma.uw.csquizzer.model.Question;
-import edu.tacoma.uw.csquizzer.model.SubQuestion;
 import edu.tacoma.uw.csquizzer.model.Topic;
 
 public class TopicFragment extends Fragment implements SearchView.OnQueryTextListener{

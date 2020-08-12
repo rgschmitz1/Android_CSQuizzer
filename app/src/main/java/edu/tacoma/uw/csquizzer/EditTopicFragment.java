@@ -23,7 +23,7 @@ import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 
 public class EditTopicFragment extends Fragment {
     TextView tvTopicId;
-    ImageButton tvBackBạkToList;
+    ImageButton tvBackToList;
     EditText tvTopicDescription;
     Button btnSubmit;
     Button btnCancel;
@@ -77,8 +77,8 @@ public class EditTopicFragment extends Fragment {
                 tvTopicDescription.setText("");
             }
         });
-        tvBackBạkToList = rootView.findViewById(R.id.imb_back_to_list);
-        tvBackBạkToList.setOnClickListener(new View.OnClickListener() {
+        tvBackToList = rootView.findViewById(R.id.imb_back_to_list);
+        tvBackToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TopicFragment topicFragment =  new TopicFragment();

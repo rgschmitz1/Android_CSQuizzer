@@ -3,10 +3,6 @@ package edu.tacoma.uw.csquizzer;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +10,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 
-public class AddTopicFragment extends Fragment {
+public class AddCourseFragment extends Fragment {
     ImageButton tvBackToList;
-    EditText tvTopicDescription;
+    EditText tvCourseName;
     Button btnSubmit;
     Button btnCancel;
     Context context;
 
-    public AddTopicFragment(Context mContext) {
+    public AddCourseFragment(Context mContext) {
         this.context = mContext;
     }
 
@@ -36,25 +37,25 @@ public class AddTopicFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_add_topic, container, false);
-        tvTopicDescription = rootView.findViewById(R.id.et_TopicDescription);
-        btnSubmit = rootView.findViewById(R.id.btn_SubmitTopic);
+        View rootView =  inflater.inflate(R.layout.fragment_add_course, container, false);
+        tvCourseName = rootView.findViewById(R.id.et_CourseName);
+        btnSubmit = rootView.findViewById(R.id.btn_SubmitCourse);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String topicDescription = tvTopicDescription.getText().toString();
-                if(topicDescription.length() == 0) {
-                    Toast.makeText(getContext(), "Please input the topic description", Toast.LENGTH_SHORT)
+                String courseName = tvCourseName.getText().toString();
+                if(courseName.length() == 0) {
+                    Toast.makeText(getContext(), "Please input the course name", Toast.LENGTH_SHORT)
                             .show();
                 } else{
-                    String[] args = new String[]{topicDescription};
-                    AddTopic task = new AddTopic(context, topicDescription, new MyInterface() {
+                    String[] args = new String[]{courseName};
+                    AddCourse task = new AddCourse(context, courseName, new MyInterface() {
                         @Override
                         public void myMethod(boolean result) {
                             if (result == true) {
-                                Toast.makeText(context, "Update topic successfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Update course successfully", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(context, "Update topic unsuccessfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Update course unsuccessfully", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -62,21 +63,21 @@ public class AddTopicFragment extends Fragment {
                 }
             }
         });
-        btnCancel = rootView.findViewById(R.id.btn_CancelTopic);
+        btnCancel = rootView.findViewById(R.id.btn_CancelCourse);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tvTopicDescription.setText("");
+                tvCourseName.setText("");
             }
         });
         tvBackToList = rootView.findViewById(R.id.imb_back_to_list);
         tvBackToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TopicFragment topicFragment =  new TopicFragment();
+                CourseFragment courseFragment =  new CourseFragment();
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
                 //Replace current fragment with a show question fragment
-                ft.replace(R.id.fragment_container, topicFragment);
+                ft.replace(R.id.fragment_container, courseFragment);
                 ft.commit();
             }
         });
@@ -87,27 +88,27 @@ public class AddTopicFragment extends Fragment {
         public void myMethod(boolean result);
     }
 
-    private class AddTopic extends AsyncTask<Void, Void, Boolean> {
+    private class AddCourse extends AsyncTask<Void, Void, Boolean> {
         private MyInterface mListener;
         Context context;
-        String topicDescription;
+        String courseName;
 
-        public AddTopic(Context mContext, String mTopicDescription, MyInterface listener) {
+        public AddCourse(Context mContext, String mCourseName, MyInterface listener) {
             this.context = mContext;
-            this.topicDescription = mTopicDescription;
+            this.courseName = mCourseName;
             this.mListener  = listener;
         }
         @Override
         protected Boolean doInBackground(Void... args) {
             ServiceHandler jsonParser = new ServiceHandler();
             Map<String, String> mapConditions = new HashMap<>();
-            mapConditions.put("description", topicDescription);
-            String jsonTopic = jsonParser.makeServiceCall(
-                    getString((R.string.add_topics)), ServiceHandler.POST,mapConditions);
-            if (jsonTopic != null) {
+            mapConditions.put("name", courseName);
+            String jsonCourse = jsonParser.makeServiceCall(
+                    getString((R.string.add_courses)), ServiceHandler.POST,mapConditions);
+            if (jsonCourse != null) {
                 try {
-                    JSONObject jsonTopicObj = new JSONObject(jsonTopic);
-                    if(jsonTopicObj.getBoolean("success")) {
+                    JSONObject jsonCourseObj = new JSONObject(jsonCourse);
+                    if(jsonCourseObj.getBoolean("success")) {
                         return true;
                     }
                 } catch (JSONException e) {
