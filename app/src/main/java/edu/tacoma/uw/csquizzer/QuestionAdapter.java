@@ -2,9 +2,7 @@ package edu.tacoma.uw.csquizzer;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +31,7 @@ import edu.tacoma.uw.csquizzer.model.Question;
  * @since   2020-08-05
  */
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyViewHolder>{
-    private List<Question> lQuestions = new ArrayList<>();
+    private List<Question> lQuestions;
     private Context mContext;
 
     public static final int TYPE1 = 0;  // True/False
@@ -55,7 +50,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
      * @return type of question 0: true/ false, 1: single choice, 2: multiple choice
      *
      * @author  Phuc Pham N
-     * @version 1.0
      * @since   2020-08-05
      */
     @Override
@@ -76,12 +70,11 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
      * @return viewHolder
      *
      * @author  Phuc Pham N
-     * @version 1.0
      * @since   2020-08-05
      */
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = null;
         switch (viewType)
         {
@@ -107,16 +100,14 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
      * @param position type of question
      *
      * @author  Phuc Pham N
-     * @version 1.0
      * @since   2020-08-05
      */
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        /**
+        /*
          * Attach data in first load, we have three templates
          * and the different between them is type of questions (true/false, single choice, multiple choice)
          */
-
         // Get question at position in the question list
         Question question = lQuestions.get(position);
         holder.tvQuestionId.setText(question.getQuestionId() + "");
@@ -155,8 +146,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
         private TextView tvTopicDescription;
         private TextView tvDifficultyDescription;
         private TextView tvQuestionBody;
-        private Button btnReport;
-        private Button btnShowAnswer;
         private RadioButton rbTrue;
         private RadioButton rbFalse;
         private RadioButton rbSubQuestion1;
@@ -178,8 +167,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             this.tvTopicDescription = itemView.findViewById(R.id.tv_TopicDescription);
             this.tvDifficultyDescription = itemView.findViewById(R.id.tv_DifficultyDescription);
             this.tvQuestionBody = itemView.findViewById(R.id.tv_QuestionBody);
-            this.btnReport = itemView.findViewById(R.id.btn_Report);
-            this.btnShowAnswer = itemView.findViewById(R.id.btn_ShowAnswer);
+            Button btnReport = itemView.findViewById(R.id.btn_Report);
+            Button btnShowAnswer = itemView.findViewById(R.id.btn_ShowAnswer);
             if(viewType == TYPE1) {
                 this.rbTrue = itemView.findViewById(R.id.radio_true);
                 this.rbFalse = itemView.findViewById(R.id.radio_false);
@@ -197,7 +186,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
                 this.cbSubQuestion4 = itemView.findViewById(R.id.cb_subquestion_4);
                 this.relativeLayout = (RelativeLayout)itemView.findViewById(R.id.template_multiple_choice);
             }
-            this.btnReport.setOnClickListener(new View.OnClickListener() {
+            btnReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
@@ -236,24 +225,27 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
                 }
             });
 
-            this.btnShowAnswer.setOnClickListener(new View.OnClickListener() {
+            btnShowAnswer.setOnClickListener(new View.OnClickListener() {
+                private AlertDialog dialog;
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
                     LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     builder.setView(inflater.inflate(R.layout.check_answer, null));
                     Map<String, Question> mQuestions = convertListToMapOfQuestions(lQuestions);
-                    final AlertDialog dialog = builder.create();
+                    dialog = builder.create();
                     dialog.show();
                     final TextView tvAnswer1 = (TextView)dialog.findViewById(R.id.tv_answer1);
                     final TextView tvAnswer2 = (TextView)dialog.findViewById(R.id.tv_answer2);
                     final TextView tvAnswer3 = (TextView)dialog.findViewById(R.id.tv_answer3);
                     final TextView tvAnswer4 = (TextView)dialog.findViewById(R.id.tv_answer4);
                     final Button btnOK = (Button) dialog.findViewById(R.id.btn_ok);
-                    if(mQuestions.get(tvQuestionId.getText().toString()).getTypeDescription().equals("True/False")) {
-                        List<Answer> answer = mQuestions.get(tvQuestionId.getText().toString()).getListAnswers();
-                        tvAnswer1.setText("Answer . " + answer.get(0).getAnswerText());
-                        tvAnswer1.setVisibility(View.VISIBLE);
+                    switch (mQuestions.get(tvQuestionId.getText().toString()).getTypeDescription()) {
+                        case "True/False":
+                        case "Single Choice": {
+                            List<Answer> answer = mQuestions.get(tvQuestionId.getText().toString()).getListAnswers();
+                            tvAnswer1.setText("Answer . " + answer.get(0).getAnswerText());
+                            tvAnswer1.setVisibility(View.VISIBLE);
 //                        Toast.makeText(mContext, "The answer is " + answer.get(0).getAnswerText(), Toast.LENGTH_SHORT).show();
 //                        if(answer.get(0).getAnswerText().equals("True")) {
 //                            rbTrue.setTypeface(null, Typeface.BOLD_ITALIC);
@@ -262,12 +254,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
 //                            rbFalse.setTypeface(null, Typeface.BOLD_ITALIC);
 //                            rbFalse.setTextColor(mContext.getResources().getColor(R.color.Green));
 //                        }
-                    } else if (mQuestions.get(tvQuestionId.getText().toString()).getTypeDescription().equals("Single Choice")) {
-                        List<Answer> answer = mQuestions.get(tvQuestionId.getText().toString()).getListAnswers();
-                        tvAnswer1.setText("Answer . " + answer.get(0).getAnswerText());
-                        tvAnswer1.setVisibility(View.VISIBLE);
-//                        Toast.makeText(mContext, "The answer is " + answer.get(0).getAnswerText(), Toast.LENGTH_SHORT).show();
-//                        if(answer.get(0).getAnswerText().equals(rbSubQuestion1.getText().toString())) {
+                            break;
+                        }//                        if(answer.get(0).getAnswerText().equals(rbSubQuestion1.getText().toString())) {
 //                            rbSubQuestion1.setTypeface(null, Typeface.BOLD_ITALIC);
 //                            rbSubQuestion1.setTextColor(mContext.getResources().getColor(R.color.Green));
 //                        } else if (answer.get(0).getAnswerText().equals(rbSubQuestion2.getText().toString())) {
@@ -279,33 +267,30 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
 //                        } else if (answer.get(0).getAnswerText().equals(rbSubQuestion4.getText().toString())) {
 //                            rbSubQuestion4.setTypeface(null, Typeface.BOLD_ITALIC);
 //                            rbSubQuestion4.setTextColor(mContext.getResources().getColor(R.color.Green));
-//                        }
-                    } else if (mQuestions.get(tvQuestionId.getText().toString()).getTypeDescription().equals("Multiple Choice")) {
-                        List<Answer> answer = mQuestions.get(tvQuestionId.getText().toString()).getListAnswers();
-                        if(answer.size() == 1) {
-                            tvAnswer1.setText("Answer 1. " + answer.get(0).getAnswerText());
-                            tvAnswer1.setVisibility(View.VISIBLE);
-                        } else if (answer.size() == 2) {
-                            tvAnswer1.setText("Answer 1. " + answer.get(0).getAnswerText());
-                            tvAnswer1.setVisibility(View.VISIBLE);
-                            tvAnswer2.setText("Answer 2. " + answer.get(1).getAnswerText());
-                            tvAnswer2.setVisibility(View.VISIBLE);
-                        } else if (answer.size() == 3) {
-                            tvAnswer1.setText("Answer 1. " + answer.get(0).getAnswerText());
-                            tvAnswer1.setVisibility(View.VISIBLE);
-                            tvAnswer2.setText("Answer 2. " + answer.get(1).getAnswerText());
-                            tvAnswer2.setVisibility(View.VISIBLE);
-                            tvAnswer3.setText("Answer 3. " + answer.get(2).getAnswerText());
-                            tvAnswer3.setVisibility(View.VISIBLE);
-                        } else if (answer.size() == 4) {
-                            tvAnswer1.setText("Answer 1. " + answer.get(0).getAnswerText());
-                            tvAnswer1.setVisibility(View.VISIBLE);
-                            tvAnswer2.setText("Answer 2. " + answer.get(1).getAnswerText());
-                            tvAnswer2.setVisibility(View.VISIBLE);
-                            tvAnswer3.setText("Answer 3. " + answer.get(2).getAnswerText());
-                            tvAnswer3.setVisibility(View.VISIBLE);
-                            tvAnswer4.setText("Answer 4. " + answer.get(3).getAnswerText());
-                            tvAnswer4.setVisibility(View.VISIBLE);
+                        case "Multiple Choice": {
+                            List<Answer> answer = mQuestions.get(
+                                    tvQuestionId.getText().toString()).getListAnswers();
+                            for (int i=1; i<=answer.size(); i++) {
+                                switch (i) {
+                                    case 1:
+                                        tvAnswer1.setText("Answer 1. " + answer.get(0).getAnswerText());
+                                        tvAnswer1.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 2:
+                                        tvAnswer2.setText("Answer 2. " + answer.get(1).getAnswerText());
+                                        tvAnswer2.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 3:
+                                        tvAnswer3.setText("Answer 3. " + answer.get(2).getAnswerText());
+                                        tvAnswer3.setVisibility(View.VISIBLE);
+                                        break;
+                                    case 4:
+                                        tvAnswer4.setText("Answer 4. " + answer.get(3).getAnswerText());
+                                        tvAnswer4.setVisibility(View.VISIBLE);
+                                        break;
+                                }
+                            }
+                            break;
                         }
                     }
                     btnOK.setOnClickListener(new View.OnClickListener() {
@@ -346,15 +331,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             mapConditions.put("qid", this.qid);
             mapConditions.put("title", this.title);
             mapConditions.put("message", this.message);
-            try {
-                JSONObject jsonSendError = new JSONObject(jsonParser.makeServiceCall(
-                        mContext.getString((R.string.report_question)), ServiceHandler.POST, mapConditions));
-                if (jsonSendError != null) {
-                    dialog.cancel();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            jsonParser.makeServiceCall(mContext.getString((R.string.report_question)),
+                    ServiceHandler.POST, mapConditions);
+            dialog.cancel();
             return null;
         }
     }

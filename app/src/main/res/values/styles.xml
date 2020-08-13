@@ -11,7 +11,15 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <dimen name="size_4sp">4sp</dimen>
+    <dimen name="size_8sp">8sp</dimen>
+    <dimen name="size_12sp">12sp</dimen>
+    <dimen name="size_16sp">16sp</dimen>
     <dimen name="size_20sp">20sp</dimen>
+    <dimen name="size_24sp">24sp</dimen>
+    <dimen name="size_36sp">36sp</dimen>
+    <dimen name="size_48sp">48sp</dimen>
+    <dimen name="size_100sp">100sp</dimen>
 
     <dimen name="size_4dp">4dp</dimen>
     <dimen name="size_8dp">8dp</dimen>
