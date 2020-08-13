@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/template_multiple_choice"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
     android:padding="@dimen/size_4dp"
     android:layout_margin="@dimen/size_4dp">
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/size_4dp"
-            android:textSize="@dimen/size_16dp"
+            android:textSize="@dimen/size_16sp"
             android:textStyle="bold"
             android:text="@string/tv_Question"
             android:textColor="@color/white"/>
@@ -34,7 +34,7 @@
             android:id="@+id/tv_CountNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/size_16dp"
+            android:textSize="@dimen/size_16sp"
             android:textStyle="bold"
             android:padding="@dimen/size_4dp"
             android:textColor="@color/white"/>
@@ -42,7 +42,7 @@
             android:id="@+id/tv_QuestionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/size_16dp"
+            android:textSize="@dimen/size_16sp"
             android:padding="@dimen/size_4dp"
             android:textColor="@color/colorTextHint"/>
     </LinearLayout>
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/size_4dp"
-            android:textSize="@dimen/size_12dp"
+            android:textSize="@dimen/size_12sp"
             android:textStyle="bold"
             android:text="@string/tv_Course"
             android:textColor="@color/white"/>
@@ -64,7 +64,7 @@
             android:id="@+id/tv_CourseName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/size_12dp"
+            android:textSize="@dimen/size_12sp"
             android:padding="@dimen/size_4dp"
             android:textColor="@color/colorTextHint"/>
     </LinearLayout>
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="@dimen/size_12dp"
+            android:textSize="@dimen/size_12sp"
             android:padding="@dimen/size_4dp"
             android:text="@string/tv_Topic"
             android:textColor="@color/white"/>
@@ -87,7 +87,7 @@
             android:padding="@dimen/size_4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/size_12dp"
+            android:textSize="@dimen/size_12sp"
             android:textColor="@color/colorTextHint"/>
     </LinearLayout>
     <LinearLayout
@@ -100,14 +100,14 @@
             android:padding="@dimen/size_4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/size_12dp"
+            android:textSize="@dimen/size_12sp"
             android:textStyle="bold"
             android:text="@string/tv_Difficulty"
             android:textColor="@color/white"/>
         <TextView
             android:id="@+id/tv_DifficultyDescription"
             android:padding="@dimen/size_4dp"
-            android:textSize="@dimen/size_12dp"
+            android:textSize="@dimen/size_12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorTextHint"/>
@@ -131,7 +131,6 @@
                 android:textColor="@color/colorPrimary"/>
         </LinearLayout>
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/child_rl_2"

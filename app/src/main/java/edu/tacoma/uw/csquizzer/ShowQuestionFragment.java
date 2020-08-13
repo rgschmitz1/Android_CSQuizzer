@@ -7,12 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+//import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +49,7 @@ public class ShowQuestionFragment extends Fragment {
     ProgressDialog pDialog;
     private RecyclerView recyclerView;
     private List<Question> lQuestions = new ArrayList<>();
-    FloatingActionButton btnFag;
+//    FloatingActionButton btnFag;
 
     /**
      * Execute GetQuestions with CourseName or TopicDescription or DifficultyDescription
@@ -57,12 +59,12 @@ public class ShowQuestionFragment extends Fragment {
      * @param savedInstanceState a reference to a Bundle object that is passed into the onCreate method.
      *
      * @author  Phuc Pham N
-     * @version 1.0
      * @since   2020-08-05
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        assert getArguments() != null;
         String[] args = new String[]{getArguments().getString("Course"), getArguments().getString("Topic"),
                 getArguments().getString("Difficulty"),getArguments().getString("NumQuestions")};
         new ShowQuestionFragment.GetQuestions().execute(args);
@@ -76,15 +78,14 @@ public class ShowQuestionFragment extends Fragment {
      * @return view
      *
      * @author  Phuc Pham N
-     * @version 1.0
      * @since   2020-08-05
      */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_show_question, container, false);
-        btnFag = (FloatingActionButton) rootView.findViewById(R.id.btn_fag);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_quetions);
+//        btnFag = (FloatingActionButton) rootView.findViewById(R.id.btn_fag);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_questions);
         return rootView;
     }
 
@@ -101,7 +102,6 @@ public class ShowQuestionFragment extends Fragment {
          * Shows Progress Dialog when getting json data.
          *
          * @author  Phuc Pham N
-         * @version 1.0
          * @since   2020-08-05
          */
         @Override
@@ -123,7 +123,6 @@ public class ShowQuestionFragment extends Fragment {
          *
          * @param arg0 there are 4 arguments
          * @author  Phuc Pham N
-         * @version 1.0
          * @since   2020-08-05
          */
         @Override
@@ -149,70 +148,64 @@ public class ShowQuestionFragment extends Fragment {
             if (jsonQuestion != null) {
                 try {
                     JSONObject jsonQuestionObj = new JSONObject(jsonQuestion);
-                    if (jsonQuestionObj != null) {
-                        JSONArray questions = jsonQuestionObj.getJSONArray("questions");
-                        for (int i = 0; i < questions.length(); i++) {
-                            List<Answer> answersList = new ArrayList<>();
-                            List<SubQuestion> subQuestionsList = new ArrayList<>();
-                            JSONObject questionObj = (JSONObject) questions.get(i);
-                            Map<String, String> qid = new HashMap<>();
-                            int questionId = Integer.parseInt(questionObj.getString("questionid"));
-                            qid.put("qid", Integer.toString( questionId));
-                            String jsonAnswer = jsonParser.makeServiceCall(
-                                    getString((R.string.get_answers)),
-                                    ServiceHandler.GET, qid);
-                            if (jsonAnswer != null) {
-                                try {
-                                    JSONObject jsonAnswerObj = new JSONObject(jsonAnswer);
-                                    if (jsonAnswerObj != null) {
-                                        JSONArray ans = jsonAnswerObj.getJSONArray("answers");
-                                        for (int j = 0; j < ans.length(); j++) {
-                                            JSONObject answerObj = (JSONObject) ans.get(j);
-                                            Answer ansobj = new Answer(answerObj.getInt("answerid"),
-                                                    questionId, answerObj.getString("answertext"));
-                                            answersList.add(ansobj);
-                                        }
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                    JSONArray questions = jsonQuestionObj.getJSONArray("questions");
+                    for (int i = 0; i < questions.length(); i++) {
+                        List<Answer> answersList = new ArrayList<>();
+                        List<SubQuestion> subQuestionsList = new ArrayList<>();
+                        JSONObject questionObj = (JSONObject) questions.get(i);
+                        Map<String, String> qid = new HashMap<>();
+                        int questionId = Integer.parseInt(questionObj.getString("questionid"));
+                        qid.put("qid", Integer.toString( questionId));
+                        String jsonAnswer = jsonParser.makeServiceCall(
+                                getString((R.string.get_answers)),
+                                ServiceHandler.GET, qid);
+                        if (jsonAnswer != null) {
+                            try {
+                                JSONObject jsonAnswerObj = new JSONObject(jsonAnswer);
+                                JSONArray ans = jsonAnswerObj.getJSONArray("answers");
+                                for (int j = 0; j < ans.length(); j++) {
+                                    JSONObject answerObj = (JSONObject) ans.get(j);
+                                    Answer ansobj = new Answer(answerObj.getInt("answerid"),
+                                            questionId, answerObj.getString("answertext"));
+                                    answersList.add(ansobj);
                                 }
-                            } else {
-                                break;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-
-                            String jsonSubQuestion = jsonParser.makeServiceCall(
-                                    getString((R.string.get_subquestions)),
-                                    ServiceHandler.GET, qid);
-
-                            if (jsonSubQuestion != null) {
-                                try {
-                                    JSONObject jsonSubQuestionObj = new JSONObject(jsonSubQuestion);
-                                    if (jsonSubQuestionObj != null) {
-                                        JSONArray subs = jsonSubQuestionObj
-                                                .getJSONArray("subquestions");
-                                        for (int k = 0; k < subs.length(); k++) {
-                                            JSONObject subQObj = (JSONObject) subs.get(k);
-                                            SubQuestion subqobj = new SubQuestion(subQObj.getInt("subquestionid"),
-                                                    questionId, subQObj.getString("subquestiontext"));
-                                            subQuestionsList.add(subqobj);
-                                        }
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
-                                break;
-                            }
-                            Question question = new Question(questionId,
-                                    questionObj.getString("questiontitle"),
-                                    questionObj.getString("questionbody"),
-                                    questionObj.getString("coursename"),
-                                    questionObj.getString("topicdescription"),
-                                    questionObj.getString("difficultydescription"),
-                                    questionObj.getString("typedescription"),
-                                    answersList, subQuestionsList);
-                            lQuestions.add(question);
+                        } else {
+                            break;
                         }
+
+                        String jsonSubQuestion = jsonParser.makeServiceCall(
+                                getString((R.string.get_subquestions)),
+                                ServiceHandler.GET, qid);
+
+                        if (jsonSubQuestion != null) {
+                            try {
+                                JSONObject jsonSubQuestionObj = new JSONObject(jsonSubQuestion);
+                                JSONArray subs = jsonSubQuestionObj
+                                        .getJSONArray("subquestions");
+                                for (int k = 0; k < subs.length(); k++) {
+                                    JSONObject subQObj = (JSONObject) subs.get(k);
+                                    SubQuestion subqobj = new SubQuestion(subQObj.getInt("subquestionid"),
+                                            questionId, subQObj.getString("subquestiontext"));
+                                    subQuestionsList.add(subqobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            break;
+                        }
+                        Question question = new Question(questionId,
+                                questionObj.getString("questiontitle"),
+                                questionObj.getString("questionbody"),
+                                questionObj.getString("coursename"),
+                                questionObj.getString("topicdescription"),
+                                questionObj.getString("difficultydescription"),
+                                questionObj.getString("typedescription"),
+                                answersList, subQuestionsList);
+                        lQuestions.add(question);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -225,9 +218,8 @@ public class ShowQuestionFragment extends Fragment {
 
         /**
          * Finish reading json data and attach them to recyler
-         * @param result
+         * @param result the result
          * @author  Phuc Pham N
-         * @version 1.0
          * @since   2020-08-05
          */
         @Override
@@ -242,7 +234,6 @@ public class ShowQuestionFragment extends Fragment {
     /**
      * Attach data to cycler
      * @author  Phuc Pham N
-     * @version 1.0
      * @since   2020-08-05
      */
     private void loadQuestions() {
@@ -253,13 +244,13 @@ public class ShowQuestionFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (linearLayoutManager.findLastVisibleItemPosition() == 0) {
-                    btnFag.setVisibility(View.GONE);
-                }
-                else {
-                    btnFag.setVisibility(View.VISIBLE);
-                }
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                if (linearLayoutManager.findLastVisibleItemPosition() == 0) {
+//                    btnFag.setVisibility(View.GONE);
+//                }
+//                else {
+//                    btnFag.setVisibility(View.VISIBLE);
+//                }
             }
         });
     }
