@@ -82,10 +82,11 @@ public class ShowQuestionFragment extends Fragment {
      */
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_show_question, container, false);
 //        btnFag = (FloatingActionButton) rootView.findViewById(R.id.btn_fag);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_questions);
+        recyclerView = rootView.findViewById(R.id.rv_questions);
         return rootView;
     }
 
@@ -239,6 +240,7 @@ public class ShowQuestionFragment extends Fragment {
     private void loadQuestions() {
         QuestionAdapter adapter = new QuestionAdapter(getActivity(), lQuestions);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setItemViewCacheSize(10);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
