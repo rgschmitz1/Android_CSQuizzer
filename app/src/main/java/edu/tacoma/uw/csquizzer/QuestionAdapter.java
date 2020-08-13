@@ -72,7 +72,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
      * @author  Phuc Pham N
      * @since   2020-08-05
      */
-    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = null;
@@ -103,7 +102,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
      * @since   2020-08-05
      */
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         /*
          * Attach data in first load, we have three templates
          * and the different between them is type of questions (true/false, single choice, multiple choice)
@@ -172,19 +171,19 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             if(viewType == TYPE1) {
                 this.rbTrue = itemView.findViewById(R.id.radio_true);
                 this.rbFalse = itemView.findViewById(R.id.radio_false);
-                this.relativeLayout = (RelativeLayout)itemView.findViewById(R.id.template_true_false);
+                this.relativeLayout = itemView.findViewById(R.id.template_true_false);
             } else if (viewType == TYPE2) {
                 this.rbSubQuestion1 = itemView.findViewById(R.id.radio_subquestion_1);
                 this.rbSubQuestion2 = itemView.findViewById(R.id.radio_subquestion_2);
                 this.rbSubQuestion3 = itemView.findViewById(R.id.radio_subquestion_3);
                 this.rbSubQuestion4 = itemView.findViewById(R.id.radio_subquestion_4);
-                this.relativeLayout = (RelativeLayout)itemView.findViewById(R.id.template_single_choice);
+                this.relativeLayout = itemView.findViewById(R.id.template_single_choice);
             } else if (viewType == TYPE3) {
                 this.cbSubQuestion1 = itemView.findViewById(R.id.cb_subquestion_1);
                 this.cbSubQuestion2 = itemView.findViewById(R.id.cb_subquestion_2);
                 this.cbSubQuestion3 = itemView.findViewById(R.id.cb_subquestion_3);
                 this.cbSubQuestion4 = itemView.findViewById(R.id.cb_subquestion_4);
-                this.relativeLayout = (RelativeLayout)itemView.findViewById(R.id.template_multiple_choice);
+                this.relativeLayout = itemView.findViewById(R.id.template_multiple_choice);
             }
             btnReport.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -194,9 +193,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
                 builder.setView(inflater.inflate(R.layout.dialog_report, null));
                 final AlertDialog dialog = builder.create();
                 dialog.show();
-                final EditText etReport = (EditText) dialog.findViewById(R.id.et_report);
-                final Button btnOK = (Button) dialog.findViewById(R.id.btn_ok);
-                final Button btnCancel = (Button) dialog.findViewById(R.id.btn_cancel);
+                final EditText etReport = dialog.findViewById(R.id.et_report);
+                final Button btnOK = dialog.findViewById(R.id.btn_ok);
+                final Button btnCancel = dialog.findViewById(R.id.btn_cancel);
                 btnOK.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -206,7 +205,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
                                 tvQuestionTitle.getText().toString(),
                                 etReport.getText().toString(), dialog);
                         task.execute();
-                        Toast.makeText(mContext, "Send error successful", Toast.LENGTH_SHORT)
+                        Toast.makeText(mContext, "Send report successful", Toast.LENGTH_SHORT)
                                 .show();
                     } else {
                         Toast.makeText(mContext, "Please input message", Toast.LENGTH_SHORT)
@@ -217,8 +216,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
                 btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(mContext, "Canceled sending error question", Toast.LENGTH_SHORT)
-                                .show();
+//                        Toast.makeText(mContext, "Canceled sending question report", Toast.LENGTH_SHORT)
+//                                .show();
                         dialog.cancel();
                     }
                 });
@@ -235,11 +234,11 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
                     Map<String, Question> mQuestions = convertListToMapOfQuestions(lQuestions);
                     dialog = builder.create();
                     dialog.show();
-                    final TextView tvAnswer1 = (TextView)dialog.findViewById(R.id.tv_answer1);
-                    final TextView tvAnswer2 = (TextView)dialog.findViewById(R.id.tv_answer2);
-                    final TextView tvAnswer3 = (TextView)dialog.findViewById(R.id.tv_answer3);
-                    final TextView tvAnswer4 = (TextView)dialog.findViewById(R.id.tv_answer4);
-                    final Button btnOK = (Button) dialog.findViewById(R.id.btn_ok);
+                    final TextView tvAnswer1 = dialog.findViewById(R.id.tv_answer1);
+                    final TextView tvAnswer2 = dialog.findViewById(R.id.tv_answer2);
+                    final TextView tvAnswer3 = dialog.findViewById(R.id.tv_answer3);
+                    final TextView tvAnswer4 = dialog.findViewById(R.id.tv_answer4);
+                    final Button btnOK = dialog.findViewById(R.id.btn_ok);
                     switch (mQuestions.get(tvQuestionId.getText().toString()).getTypeDescription()) {
                         case "True/False":
                         case "Single Choice": {
