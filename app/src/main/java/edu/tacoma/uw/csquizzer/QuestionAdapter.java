@@ -104,6 +104,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
      */
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+        // RecyclerView is not working as intended for radio buttons and check boxes,
+        // this is a quick fix until a true solution can be found.
+        holder.setIsRecyclable(false);
         /*
          * Attach data in first load, we have three templates
          * and the different between them is type of questions (true/false, single choice, multiple choice)
