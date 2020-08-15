@@ -8,13 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-//import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +47,6 @@ public class ShowQuestionFragment extends Fragment {
     ProgressDialog pDialog;
     private RecyclerView recyclerView;
     private List<Question> lQuestions = new ArrayList<>();
-//    FloatingActionButton btnFag;
 
     /**
      * Execute GetQuestions with CourseName or TopicDescription or DifficultyDescription
@@ -85,7 +82,6 @@ public class ShowQuestionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_show_question, container, false);
-//        btnFag = (FloatingActionButton) rootView.findViewById(R.id.btn_fag);
         recyclerView = rootView.findViewById(R.id.rv_questions);
         return rootView;
     }
@@ -244,17 +240,6 @@ public class ShowQuestionFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                if (linearLayoutManager.findLastVisibleItemPosition() == 0) {
-//                    btnFag.setVisibility(View.GONE);
-//                }
-//                else {
-//                    btnFag.setVisibility(View.VISIBLE);
-//                }
-            }
-        });
     }
 
 }

@@ -2,6 +2,7 @@ package edu.tacoma.uw.csquizzer;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +76,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
      * @author  Phuc Pham N
      * @since   2020-08-05
      */
+    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = null;
@@ -117,8 +122,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
         holder.tvDifficultyDescription.setText(question.getDifficultyDescription());
         holder.tvQuestionBody.setText(question.getQuestionBody());
         if (question.getTypeDescription().equals("True/False")) {
-            holder.rbTrue.setText(question.getListSubQuestions().get(0).getSubQuestionText());
-            holder.rbFalse.setText(question.getListSubQuestions().get(1).getSubQuestionText());
+            holder.rbTrue.setText(R.string.tv_true);
+            holder.rbFalse.setText(R.string.tv_false);
         } else if (question.getTypeDescription().equals("Single Choice")) {
             holder.rbSubQuestion1.setText(question.getListSubQuestions().get(0).getSubQuestionText());
             holder.rbSubQuestion2.setText(question.getListSubQuestions().get(1).getSubQuestionText());
@@ -166,8 +171,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             this.tvTopicDescription = itemView.findViewById(R.id.tv_TopicDescription);
             this.tvDifficultyDescription = itemView.findViewById(R.id.tv_DifficultyDescription);
             this.tvQuestionBody = itemView.findViewById(R.id.tv_QuestionBody);
-            Button btnReport = itemView.findViewById(R.id.btn_Report);
-            Button btnShowAnswer = itemView.findViewById(R.id.btn_ShowAnswer);
+            final Button btnReport = itemView.findViewById(R.id.btn_Report);
+            final Button btnShowAnswer = itemView.findViewById(R.id.btn_ShowAnswer);
             if(viewType == TYPE1) {
                 this.rbTrue = itemView.findViewById(R.id.radio_true);
                 this.rbFalse = itemView.findViewById(R.id.radio_false);
@@ -216,8 +221,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
                 btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        Toast.makeText(mContext, "Canceled sending question report", Toast.LENGTH_SHORT)
-//                                .show();
                         dialog.cancel();
                     }
                 });
@@ -225,79 +228,88 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             });
 
             btnShowAnswer.setOnClickListener(new View.OnClickListener() {
-                private AlertDialog dialog;
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-                    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    builder.setView(inflater.inflate(R.layout.check_answer, null));
+
+                    // Disable the check answer button once the user selects it
                     Map<String, Question> mQuestions = convertListToMapOfQuestions(lQuestions);
-                    dialog = builder.create();
-                    dialog.show();
-                    final TextView tvAnswer1 = dialog.findViewById(R.id.tv_answer1);
-                    final TextView tvAnswer2 = dialog.findViewById(R.id.tv_answer2);
-                    final TextView tvAnswer3 = dialog.findViewById(R.id.tv_answer3);
-                    final TextView tvAnswer4 = dialog.findViewById(R.id.tv_answer4);
-                    final Button btnOK = dialog.findViewById(R.id.btn_ok);
+                    List<Answer> answer = mQuestions.get(tvQuestionId.getText().toString()).getListAnswers();
+                    String answerText = answer.get(0).getAnswerText();
+                    List<RadioButton> radioButtons = new ArrayList<>();
+                    final int green = mContext.getResources().getColor(R.color.Green);
+                    final int red = mContext.getResources().getColor(R.color.Red);
+
+                    // Display correct answer in green, display incorrect selection in red
                     switch (mQuestions.get(tvQuestionId.getText().toString()).getTypeDescription()) {
                         case "True/False":
-                        case "Single Choice": {
-                            List<Answer> answer = mQuestions.get(tvQuestionId.getText().toString()).getListAnswers();
-                            tvAnswer1.setText("Answer . " + answer.get(0).getAnswerText());
-                            tvAnswer1.setVisibility(View.VISIBLE);
-//                        Toast.makeText(mContext, "The answer is " + answer.get(0).getAnswerText(), Toast.LENGTH_SHORT).show();
-//                        if(answer.get(0).getAnswerText().equals("True")) {
-//                            rbTrue.setTypeface(null, Typeface.BOLD_ITALIC);
-//                            rbTrue.setTextColor(mContext.getResources().getColor(R.color.Green));
-//                        } else if (answer.get(0).getAnswerText().equals("False")) {
-//                            rbFalse.setTypeface(null, Typeface.BOLD_ITALIC);
-//                            rbFalse.setTextColor(mContext.getResources().getColor(R.color.Green));
-//                        }
-                            break;
-                        }//                        if(answer.get(0).getAnswerText().equals(rbSubQuestion1.getText().toString())) {
-//                            rbSubQuestion1.setTypeface(null, Typeface.BOLD_ITALIC);
-//                            rbSubQuestion1.setTextColor(mContext.getResources().getColor(R.color.Green));
-//                        } else if (answer.get(0).getAnswerText().equals(rbSubQuestion2.getText().toString())) {
-//                            rbSubQuestion2.setTypeface(null, Typeface.BOLD_ITALIC);
-//                            rbSubQuestion2.setTextColor(mContext.getResources().getColor(R.color.Green));
-//                        } else if (answer.get(0).getAnswerText().equals(rbSubQuestion3.getText().toString())) {
-//                            rbSubQuestion3.setTypeface(null, Typeface.BOLD_ITALIC);
-//                            rbSubQuestion3.setTextColor(mContext.getResources().getColor(R.color.Green));
-//                        } else if (answer.get(0).getAnswerText().equals(rbSubQuestion4.getText().toString())) {
-//                            rbSubQuestion4.setTypeface(null, Typeface.BOLD_ITALIC);
-//                            rbSubQuestion4.setTextColor(mContext.getResources().getColor(R.color.Green));
-                        case "Multiple Choice": {
-                            List<Answer> answer = mQuestions.get(
-                                    tvQuestionId.getText().toString()).getListAnswers();
-                            for (int i=1; i<=answer.size(); i++) {
-                                switch (i) {
-                                    case 1:
-                                        tvAnswer1.setText("Answer 1. " + answer.get(0).getAnswerText());
-                                        tvAnswer1.setVisibility(View.VISIBLE);
-                                        break;
-                                    case 2:
-                                        tvAnswer2.setText("Answer 2. " + answer.get(1).getAnswerText());
-                                        tvAnswer2.setVisibility(View.VISIBLE);
-                                        break;
-                                    case 3:
-                                        tvAnswer3.setText("Answer 3. " + answer.get(2).getAnswerText());
-                                        tvAnswer3.setVisibility(View.VISIBLE);
-                                        break;
-                                    case 4:
-                                        tvAnswer4.setText("Answer 4. " + answer.get(3).getAnswerText());
-                                        tvAnswer4.setVisibility(View.VISIBLE);
-                                        break;
+                            if (!rbTrue.isChecked() && !rbFalse.isChecked()) {
+                                Toast.makeText(mContext, "Make a selection and try again.",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                            btnShowAnswer.setEnabled(false);
+                            radioButtons.addAll(Arrays.asList(rbTrue, rbFalse));
+                            for (RadioButton radioButton : radioButtons) {
+                                radioButton.setEnabled(false);
+                                if (answerText.equals(radioButton.getText().toString())) {
+                                    radioButton.setTypeface(null, Typeface.BOLD_ITALIC);
+                                    radioButton.setTextColor(green);
+                                } else if (radioButton.isChecked()) {
+                                    radioButton.setTextColor(red);
                                 }
                             }
                             break;
-                        }
+                        case "Single Choice":
+                            if (!rbSubQuestion1.isChecked() &&
+                                    !rbSubQuestion2.isChecked() &&
+                                    !rbSubQuestion3.isChecked() &&
+                                    !rbSubQuestion4.isChecked()) {
+                                Toast.makeText(mContext, "Make a selection and try again.",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                            btnShowAnswer.setEnabled(false);
+                            radioButtons.addAll(Arrays.asList(rbSubQuestion1, rbSubQuestion2,
+                                    rbSubQuestion3, rbSubQuestion4));
+                            for (RadioButton radioButton : radioButtons) {
+                                radioButton.setEnabled(false);
+                                if (answerText.equals(radioButton.getText().toString())) {
+                                    radioButton.setTypeface(null, Typeface.BOLD_ITALIC);
+                                    radioButton.setTextColor(green);
+                                } else if (radioButton.isChecked()) {
+                                    radioButton.setTextColor(red);
+                                }
+                            }
+                            break;
+                        case "Multiple Choice":
+                            if (!cbSubQuestion1.isChecked() &&
+                                    !cbSubQuestion2.isChecked() &&
+                                    !cbSubQuestion3.isChecked() &&
+                                    !cbSubQuestion4.isChecked()) {
+                                Toast.makeText(mContext, "Make a selection and try again.",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                            btnShowAnswer.setEnabled(false);
+                            List<CheckBox> checkBoxes = new ArrayList<>(
+                                    Arrays.asList(cbSubQuestion1, cbSubQuestion2,
+                                    cbSubQuestion3, cbSubQuestion4));
+                            for (int i = 0; i < checkBoxes.size(); i++) {
+                                CheckBox checkBox = checkBoxes.get(i);
+                                checkBox.setEnabled(false);
+                                if (checkBox.isChecked())
+                                    checkBox.setTextColor(red);
+                                for (int j = 0; j < answer.size(); j++) {
+                                    if (checkBox.getText().toString().equals(
+                                            answer.get(j).getAnswerText())) {
+                                        checkBox.setTypeface(null, Typeface.BOLD_ITALIC);
+                                        checkBox.setTextColor(green);
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
                     }
-                    btnOK.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dialog.cancel();
-                        }
-                    });
                 }
             });
         }
