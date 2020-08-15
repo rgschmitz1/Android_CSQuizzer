@@ -72,4 +72,6 @@
     <string name="tv_QuestionRepo">Question</string>
     <string name="tv_AnswerRepo">Answer</string>
     <string name="tv_SubQuestionRepo">SubQuestion</string>
+    <string name="tv_true">True</string>
+    <string name="tv_false">False</string>
 </resources>
