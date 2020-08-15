@@ -41,6 +41,8 @@ public class AuthenticationActivity extends AppCompatActivity implements
     private SharedPreferences mSharedPreferences;
     /* This field will be used to store JSON information about the user to be sent to backend */
     private JSONObject mUserJSON;
+    /* Set testing variable, set false when testing finished */
+    private boolean mTesting = false;
 
     /**
      * AuthenticateUserAsyncTask will handle all backend transactions as well as transitioning
@@ -125,12 +127,16 @@ public class AuthenticationActivity extends AppCompatActivity implements
                     String mode = jsonObject.optString("mode", "undefined");
                     switch(mode) {
                         case "login":
+                            String user = mUserJSON.getString(User.USERNAME);
                             mSharedPreferences
                                     .edit()
                                     .putBoolean(getString(R.string.LOGGEDIN), true)
-                                    .putString(getString(R.string.USERNAME),
-                                            mUserJSON.getString("username"))
+                                    .putString(getString(R.string.USERNAME), user)
                                     .apply();
+                            // Display welcome message
+                            String msg = "Welcome " + user + "!";
+                            Toast.makeText(getApplicationContext(), msg,
+                                    Toast.LENGTH_SHORT).show();
                             launchMainMenu();
                             break;
                         case "register":
@@ -176,8 +182,8 @@ public class AuthenticationActivity extends AppCompatActivity implements
         try {
             mUserJSON = new User(firstname, lastname, email, username, password).getUserJson();
             new AuthenticateUserAsyncTask().execute(url.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (IllegalArgumentException | JSONException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -194,8 +200,8 @@ public class AuthenticationActivity extends AppCompatActivity implements
         try {
             mUserJSON = new User(username, password).getUserJson();
             new AuthenticateUserAsyncTask().execute(url.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (IllegalArgumentException | JSONException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -210,10 +216,10 @@ public class AuthenticationActivity extends AppCompatActivity implements
         StringBuilder url = new StringBuilder(getString(R.string.post_reset));
         mUserJSON = new JSONObject();
         try {
-            mUserJSON.put("email", email);
+            mUserJSON = new User(email).getUserJson();
             new AuthenticateUserAsyncTask().execute(url.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (IllegalArgumentException | JSONException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -263,7 +269,7 @@ public class AuthenticationActivity extends AppCompatActivity implements
         mSharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS),
                 Context.MODE_PRIVATE);
 
-        if (!mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false)) {
+        if (mTesting || !mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false)) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.authentication_fragment_id, new LoginFragment())
                     .commit();
