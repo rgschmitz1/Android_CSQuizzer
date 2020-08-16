@@ -39,19 +39,6 @@ public class RepositoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_repository, container, false);
-
-        ImageButton imbUser = (ImageButton) view.findViewById(R.id.imb_users);
-        imbUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UserFragment userFragment =  new UserFragment();
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                //Replace current fragment with a show question fragment
-                ft.replace(R.id.fragment_container, userFragment);
-                ft.commit();
-            }
-        });
-
         ImageButton imbTopic = (ImageButton) view.findViewById(R.id.imb_topics);
         imbTopic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,31 +74,6 @@ public class RepositoryFragment extends Fragment {
                 ft.commit();
             }
         });
-
-        ImageButton imbAnswer = (ImageButton) view.findViewById(R.id.imb_answers);
-        imbAnswer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AnswerFragment answerFragment =  new AnswerFragment();
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                //Replace current fragment with a show question fragment
-                ft.replace(R.id.fragment_container, answerFragment);
-                ft.commit();
-            }
-        });
-
-        ImageButton imbSubquestion = (ImageButton) view.findViewById(R.id.imb_subquestions);
-        imbSubquestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SubQuestionFragment subQuestionFragment =  new SubQuestionFragment();
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                //Replace current fragment with a show question fragment
-                ft.replace(R.id.fragment_container, subQuestionFragment);
-                ft.commit();
-            }
-        });
-
         return view;
     }
 }

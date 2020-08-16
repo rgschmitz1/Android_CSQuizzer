@@ -1,5 +1,6 @@
 package edu.tacoma.uw.csquizzer;
 
+import android.app.ProgressDialog;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class CourseFragment extends Fragment implements SearchView.OnQueryTextLi
     private SearchView searchView;
     private CourseAdapter adapter;
     private FloatingActionButton btnFag;
+    ProgressDialog pDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,21 @@ public class CourseFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     private class GetCourses extends AsyncTask<Void, Void, Void> {
+        /**
+         * Shows Progress Dialog when getting json data.
+         *
+         * @author  Phuc Pham N
+         * @version 1.0
+         * @since   2020-08-05
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Fetching data from database..");
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
         /**
          * Read json data from get_questions to get all questions matching the conditions.
          * For every question, we read
@@ -129,6 +146,8 @@ public class CourseFragment extends Fragment implements SearchView.OnQueryTextLi
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            if (pDialog.isShowing())
+                pDialog.dismiss();
             loadCourses();
         }
     }

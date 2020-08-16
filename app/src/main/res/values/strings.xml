@@ -47,6 +47,22 @@
     <string name="bmb_Repo">System</string>
     <string name="bmb_AboutUs">About Us</string>
 
+    <!-- Number of Difficulties -->
+    <string-array name="difficulties">
+        <item>--- Choose Difficulty Questions ---</item>
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
+
+    <!-- Number of Types -->
+    <string-array name="types">
+        <item>--- Choose Type Questions ---</item>
+        <item>True/False</item>
+        <item>Single Choice</item>
+        <item>Multiple Choice</item>
+    </string-array>
+
     <!-- Number of Questions -->
     <string-array name="numQuestion">
         <item>--- Choose Number Questions ---</item>

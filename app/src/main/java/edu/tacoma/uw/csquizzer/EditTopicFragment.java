@@ -81,11 +81,11 @@ public class EditTopicFragment extends Fragment {
         tvBackToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TopicFragment topicFragment =  new TopicFragment();
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                //Replace current fragment with a show question fragment
-                ft.replace(R.id.fragment_container, topicFragment);
-                ft.commit();
+            TopicFragment topicFragment =  new TopicFragment();
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            //Replace current fragment with a show question fragment
+            ft.replace(R.id.fragment_container, topicFragment);
+            ft.commit();
             }
         });
         return rootView;
