@@ -26,25 +26,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/developer"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/size_16dp"></TextView>
+                    android:textSize="@dimen/size_16sp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_16dp"
                     android:text="@string/developer_1"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/size_36dp"></TextView>
+                    android:textSize="@dimen/size_36sp" />
             </LinearLayout>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/developer"/>
+                android:src="@drawable/avatar_bob"
+                android:layout_alignParentEnd="true"
+                tools:ignore="ContentDescription" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -61,26 +65,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/size_8dp"
                     android:text="@string/developer"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/size_16dp"></TextView>
+                    android:textSize="@dimen/size_16sp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/developer_2"
                     android:layout_marginTop="@dimen/size_16dp"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/size_36dp"></TextView>
+                    android:textSize="@dimen/size_36sp" />
             </LinearLayout>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/developer"/>
+                android:src="@drawable/avatar_phuc"
+                android:layout_alignParentEnd="true"
+                tools:ignore="ContentDescription" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
