@@ -49,7 +49,6 @@ public class QuizFragment extends Fragment {
     private Spinner spinnerNumQuestions;
     private List<Course> coursesList;
     private List<Topic> topicsList;
-    private List<Difficulty> difficultiesList;
     ProgressDialog pDialog;
 
     /**
@@ -66,12 +65,9 @@ public class QuizFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Store list courses, topics, difficulty
         coursesList = new ArrayList<>();
         topicsList = new ArrayList<>();
-        difficultiesList = new ArrayList<>();
-
         new GetData().execute();
     }
 
@@ -101,33 +97,33 @@ public class QuizFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String courseName = ((Spinner) rootView.findViewById(R.id.sn_courses))
-                                            .getSelectedItem().toString();
-                String topicDescription = ((Spinner) rootView.findViewById(R.id.sn_topics))
-                                            .getSelectedItem().toString();
-                String difficultyDescription = ((Spinner) rootView.findViewById(R.id.sn_difficulty))
-                                            .getSelectedItem().toString();
-                String numQuestions = ((Spinner) rootView.findViewById(R.id.sn_num))
-                                            .getSelectedItem().toString();
+            String courseName = ((Spinner) rootView.findViewById(R.id.sn_courses))
+                                        .getSelectedItem().toString();
+            String topicDescription = ((Spinner) rootView.findViewById(R.id.sn_topics))
+                                        .getSelectedItem().toString();
+            String difficultyDescription = ((Spinner) rootView.findViewById(R.id.sn_difficulty))
+                                        .getSelectedItem().toString();
+            String numQuestions = ((Spinner) rootView.findViewById(R.id.sn_num))
+                                        .getSelectedItem().toString();
 
-                //Store data(Course Name, Topic Description, Difficulty Description, Number Question) to bundle
-                Bundle args = new Bundle();
-                if (courseName.equals("--- Choose Course ---")
-                        && topicDescription.equals("--- Choose Topic ---")
-                        && difficultyDescription.equals("--- Choose Difficulty ---")) {
-                    Toast.makeText(getActivity(), "Please choose conditions to find questions", Toast.LENGTH_LONG ).show();
-                } else {
-                    args.putString("Course", courseName);
-                    args.putString("Topic", topicDescription);
-                    args.putString("Difficulty", difficultyDescription);
-                    args.putString("NumQuestions", numQuestions);
-                    ShowQuestionFragment showQuestionFragment =  new ShowQuestionFragment();
-                    showQuestionFragment.setArguments(args);
-                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    //Replace current fragment with a show question fragment
-                    ft.replace(R.id.fragment_container, showQuestionFragment);
-                    ft.commit();
-                }
+            //Store data(Course Name, Topic Description, Difficulty Description, Number Question) to bundle
+            Bundle args = new Bundle();
+            if (courseName.equals("--- Choose Course ---")
+                    && topicDescription.equals("--- Choose Topic ---")
+                    && difficultyDescription.equals("--- Choose Difficulty ---")) {
+                Toast.makeText(getActivity(), "Please choose conditions to find questions", Toast.LENGTH_LONG ).show();
+            } else {
+                args.putString("Course", courseName);
+                args.putString("Topic", topicDescription);
+                args.putString("Difficulty", difficultyDescription);
+                args.putString("NumQuestions", numQuestions);
+                ShowQuestionFragment showQuestionFragment =  new ShowQuestionFragment();
+                showQuestionFragment.setArguments(args);
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                //Replace current fragment with a show question fragment
+                ft.replace(R.id.fragment_container, showQuestionFragment);
+                ft.commit();
+            }
             }
         });
         return rootView;
@@ -177,11 +173,8 @@ public class QuizFragment extends Fragment {
             // Read topics using GET METHOD
             String jsonTopic = jsonParser.makeServiceCall(
                     getString((R.string.get_topics)), ServiceHandler.GET);
-            // Read difficulties using GET METHOD
-            String jsonDifficulty = jsonParser.makeServiceCall(
-                    getString((R.string.get_difficulties)), ServiceHandler.GET);
 
-            if (jsonCourse != null && jsonTopic != null && jsonDifficulty != null) {
+            if (jsonCourse != null && jsonTopic != null) {
                 try {
                     //Convert courses data string to JSON
                     JSONObject jsonCourseObj = new JSONObject(jsonCourse);
@@ -208,20 +201,6 @@ public class QuizFragment extends Fragment {
                             Topic topic = new Topic(topicObj.getInt("topicid"),
                                     topicObj.getString("topicdescription"));
                             topicsList.add(topic);
-                        }
-                    }
-
-                    //Convert difficulties data string to JSON
-                    JSONObject jsonDifficultyObj = new JSONObject(jsonDifficulty);
-                    if (jsonDifficultyObj != null) {
-                        //Get list difficulties
-                        JSONArray difficulties = jsonDifficultyObj.getJSONArray("names");
-                        for (int i = 0; i < difficulties.length(); i++) {
-                            JSONObject difficultyObjObj = (JSONObject) difficulties.get(i);
-                            //Get information a difficulty and add to a list difficulty
-                            Difficulty difficulty = new Difficulty(difficultyObjObj.getInt("difficultyid"),
-                                    difficultyObjObj.getString("difficultydescription"));
-                            difficultiesList.add(difficulty);
                         }
                     }
                 } catch (JSONException e) {
@@ -270,13 +249,6 @@ public class QuizFragment extends Fragment {
             topicDescriptions.add(topicsList.get(i).getTopicDescription());
         }
 
-        //Get list difficulty description and attach to difficulty spinner
-        List<String> difficultyDescriptions = new ArrayList<String>();
-        difficultyDescriptions.add("--- Choose Difficulty ---");
-        for (int i = 0; i < difficultiesList.size(); i++) {
-            difficultyDescriptions.add(difficultiesList.get(i).getDifficultiesDescription());
-        }
-
         // Creating adapter for spinner
         ArrayAdapter<String> spinnerCourseAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, courseNames);
         spinnerCourseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -288,12 +260,6 @@ public class QuizFragment extends Fragment {
         spinnerTopicAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // attaching data adapter to spinner
         spinnerTopics.setAdapter(spinnerTopicAdapter);
-
-        // Creating adapter for spinner
-        ArrayAdapter<String> spinnerDifficultyAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, difficultyDescriptions);
-        spinnerDifficultyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // attaching data adapter to spinner
-        spinnerDifficulties.setAdapter(spinnerDifficultyAdapter);
     }
 
 }
