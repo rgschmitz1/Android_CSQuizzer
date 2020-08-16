@@ -34,6 +34,7 @@
     <string name="LOGIN_PREFS">edu.tacoma.uw.csquizzer.PREFS</string>
     <string name="LOGGEDIN">loggedin</string>
     <string name="USERNAME">username</string>
+    <string name="ADMIN">admin</string>
 
     <!-- Loading message -->
     <string name="wait_msg">\tPlease wait…</string>

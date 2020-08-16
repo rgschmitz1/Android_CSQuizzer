@@ -132,7 +132,9 @@ public class AuthenticationActivity extends AppCompatActivity implements
                                     .edit()
                                     .putBoolean(getString(R.string.LOGGEDIN), true)
                                     .putString(getString(R.string.USERNAME), user)
-                                    .apply();
+                                    .putBoolean(getString(R.string.ADMIN),
+                                            jsonObject.optBoolean("admin", false))
+                                    .commit();
                             // Display welcome message
                             String msg = "Welcome " + user + "!";
                             Toast.makeText(getApplicationContext(), msg,

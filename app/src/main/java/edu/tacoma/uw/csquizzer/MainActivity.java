@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -21,18 +23,22 @@ import edu.tacoma.uw.csquizzer.authentication.AuthenticationActivity;
  * @since   2020-08-05
  */
 public class MainActivity extends AppCompatActivity {
+    // shared preferences member variable
+    private SharedPreferences mSharedPreferences;
+
     /**
      * Render components to GUI
      *
      * @param savedInstanceState a reference to a Bundle object that is passed into the onCreate method.
      *
      * @author  Phuc Pham N
-     * @version 1.0
      * @since   2020-08-05
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSharedPreferences =
+                getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -50,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
      * @return true
      *
      * @author  Phuc Pham N
-     * @version 1.0
      * @since   2020-08-05
      */
     @Override
@@ -67,17 +72,13 @@ public class MainActivity extends AppCompatActivity {
      * @return boolean
      *
      * @author  Phuc Pham N
-     * @version 1.0
      * @since   2020-08-05
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // When user clicks on Sign out button, redirect to Authentication Activity
         if (item.getItemId() == R.id.action_logout) {
-            SharedPreferences sharedPreferences =
-                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
-            sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), false)
-                    .commit();
+            mSharedPreferences.edit().clear().commit();
             Intent i = new Intent(this, AuthenticationActivity.class);
             startActivity(i);
             finish();
@@ -90,13 +91,18 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
+                    Fragment selectedFragment;
                     switch (item.getItemId()) {
-                        case R.id.mnHome:
-                            selectedFragment = new QuizFragment();
-                            break;
                         case R.id.mnRepo:
-                            selectedFragment = new RepositoryFragment();
+                            // System menu is for admins only
+                            if (mSharedPreferences.getBoolean(getString(R.string.ADMIN), false)) {
+                                selectedFragment = new RepositoryFragment();
+                            } else {
+                                Toast.makeText(getApplicationContext(),
+                                        "You must be an admin to access System menu",
+                                        Toast.LENGTH_SHORT).show();
+                                return true;
+                            }
                             break;
                         case R.id.mnInfo:
                             selectedFragment = new AbousUsFragment();
