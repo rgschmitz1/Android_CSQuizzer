@@ -19,6 +19,7 @@
 
     <!-- Question -->
     <string name="get_questions">https://phucbob-csquizzer.herokuapp.com/get-questions</string>
+    <string name="list_questions">https://phucbob-csquizzer.herokuapp.com/list-questions</string>
     <string name="add_questions">https://phucbob-csquizzer.herokuapp.com/add-questions</string>
     <string name="update_questions">https://phucbob-csquizzer.herokuapp.com/update-questions</string>
     <string name="update_question_type">https://phucbob-csquizzer.herokuapp.com/update-question-type</string>

@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -130,7 +131,72 @@ public class EditAnswerMultipleChoiceFragment extends Fragment {
         btnUpdateAnswers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String idQuestion = tvQuestionId.getText().toString();
+                String idSubQuestion1 = "1";
+                String idSubQuestion2 = "2";
+                String idSubQuestion3 = "3";
+                String idSubQuestion4 = "4";
+                String textSubQuestion1 = etAnswer1.getText().toString();
+                String textSubQuestion2 = etAnswer2.getText().toString();
+                String textSubQuestion3 = etAnswer3.getText().toString();
+                String textSubQuestion4 = etAnswer4.getText().toString();
 
+                List<String> checkedAnswers = new ArrayList<>();
+                boolean isChecked = false;
+                if (cbAnswer1.isChecked()) {
+                    checkedAnswers.add(textSubQuestion1);
+                    isChecked = true;
+                }
+
+                if (cbAnswer2.isChecked()) {
+                    checkedAnswers.add(textSubQuestion2);
+                    isChecked = true;
+                }
+
+                if (cbAnswer3.isChecked()) {
+                    checkedAnswers.add(textSubQuestion3);
+                    isChecked = true;
+                }
+
+                if (cbAnswer4.isChecked()) {
+                    checkedAnswers.add(textSubQuestion4);
+                    isChecked = true;
+                }
+
+                if((idQuestion.length() != 0) && (textSubQuestion1.length() != 0)
+                        && (textSubQuestion2.length() != 0) && (textSubQuestion3.length() != 0)
+                        && (textSubQuestion4.length() != 0) && (isChecked)) {
+                    List<String> subQuestions = new ArrayList<>();
+                    subQuestions.add(textSubQuestion1);
+                    subQuestions.add(textSubQuestion2);
+                    subQuestions.add(textSubQuestion3);
+                    subQuestions.add(textSubQuestion4);
+                    if(checkUniqueInput(subQuestions)) {
+                        Map<String, String> checkboxAnswers = new HashMap<>();
+                        for (int i = 0 ; i < checkedAnswers.size(); i++) {
+                            checkboxAnswers.put(Integer.toString(i+1), checkedAnswers.get(i));
+                        }
+
+                        EditAnswer task = new EditAnswer(context, idQuestion, type, lastType, idSubQuestion1, idSubQuestion2,
+                                idSubQuestion3, idSubQuestion4, textSubQuestion1, textSubQuestion2,
+                                textSubQuestion3, textSubQuestion4, checkboxAnswers, new EditQuestionFragment.MyInterface() {
+                            @Override
+                            public void myMethod(boolean result) {
+                                if (result == true) {
+                                    Toast.makeText(context, "Update answer successfully", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, "Update answer unsuccessfully", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        task.execute();
+
+                    } else {
+                        Toast.makeText(context, "Please input unique answers", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(context, "Please input data for an answer", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnCancel = rootView.findViewById(R.id.btn_CancelQuestion);
@@ -148,6 +214,229 @@ public class EditAnswerMultipleChoiceFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    public interface MyInterface {
+        public void myMethod(boolean result);
+    }
+
+    private class EditAnswer extends AsyncTask<Void, Void, Boolean> {
+        private EditQuestionFragment.MyInterface mListener;
+        Context context;
+        String questionId;
+        String typeId;
+        String lastTypeId;
+        String subQuestion1Id;
+        String subQuestion2Id;
+        String subQuestion3Id;
+        String subQuestion4Id;
+        String subQuestion1Text;
+        String subQuestion2Text;
+        String subQuestion3Text;
+        String subQuestion4Text;
+        Map<String, String> answers;
+
+        public EditAnswer(Context mContext, String mQuestionId, String mTypeId, String mLastTypeId,
+                          String mSubQuestion1Id, String mSubQuestion2Id, String mSubQuestion3Id, String mSubQuestion4Id,
+                          String mSubQuestion1Text, String mSubQuestion2Text, String mSubQuestion3Text, String mSubQuestion4Text,
+                          Map<String, String> mAnswers, EditQuestionFragment.MyInterface listener) {
+            this.context = mContext;
+            this.questionId = mQuestionId;
+            if(mTypeId.equals("True/False")) {
+                this.typeId = "1";
+            } else if(mTypeId.equals("Single Choice")) {
+                this.typeId = "2";
+            } else if(mTypeId.equals("Multiple Choice")) {
+                this.typeId = "3";
+            }
+            if(mLastTypeId.equals("True/False")) {
+                this.lastTypeId = "1";
+            } else if(mLastTypeId.equals("Single Choice")) {
+                this.lastTypeId = "2";
+            } else if(mLastTypeId.equals("Multiple Choice")) {
+                this.lastTypeId = "3";
+            }
+            this.subQuestion1Id = mSubQuestion1Id;
+            this.subQuestion2Id = mSubQuestion2Id;
+            this.subQuestion3Id = mSubQuestion3Id;
+            this.subQuestion4Id = mSubQuestion4Id;
+            this.subQuestion1Text = mSubQuestion1Text;
+            this.subQuestion2Text = mSubQuestion2Text;
+            this.subQuestion3Text = mSubQuestion3Text;
+            this.subQuestion4Text = mSubQuestion4Text;
+            this.answers = mAnswers;
+            this.mListener  = listener;
+        }
+        @Override
+        protected Boolean doInBackground(Void... args) {
+            ServiceHandler jsonParser = new ServiceHandler();
+            // Delete subquestions and answer in database before storing new subquestions and answer
+            try {
+                Map<String, String> mDeleteSubquestion = new HashMap<>();
+                mDeleteSubquestion.put("qid", questionId);
+                JSONObject jsonDeleteSubquestion = new JSONObject(jsonParser.makeServiceCall(
+                        getString((R.string.delete_subquestions)), ServiceHandler.POST,mDeleteSubquestion));
+                Map<String, String> mDeleteAnswer = new HashMap<>();
+                mDeleteAnswer.put("qid", questionId);
+                JSONObject jsonDeleteAnswer = new JSONObject(jsonParser.makeServiceCall(
+                        getString((R.string.delete_answers)), ServiceHandler.POST,mDeleteAnswer));
+                if (jsonDeleteSubquestion.getBoolean("success")
+                        && jsonDeleteAnswer.getBoolean("success")) {
+                    try {
+                        Map<String, String> mUpdateQuestionType = new HashMap<>();
+                        mUpdateQuestionType.put("question", questionId);
+                        mUpdateQuestionType.put("type", typeId);
+                        JSONObject jsonUpdateQuestionType = new JSONObject(jsonParser.makeServiceCall(
+                                getString((R.string.update_question_type)),
+                                ServiceHandler.POST,mUpdateQuestionType));
+
+                        Map<String, String> mapConditionSubQuestion1 = new HashMap<>();
+                        mapConditionSubQuestion1.put("qid", questionId);
+                        mapConditionSubQuestion1.put("sid", subQuestion1Id);
+                        mapConditionSubQuestion1.put("text", subQuestion1Text);
+                        JSONObject jsonSubQuestion1 = new JSONObject(jsonParser.makeServiceCall(
+                                getString((R.string.add_subquestions)), ServiceHandler.POST,
+                                mapConditionSubQuestion1));
+
+                        Map<String, String> mapConditionSubQuestion2 = new HashMap<>();
+                        mapConditionSubQuestion2.put("qid", questionId);
+                        mapConditionSubQuestion2.put("sid", subQuestion2Id);
+                        mapConditionSubQuestion2.put("text", subQuestion2Text);
+                        JSONObject jsonSubQuestion2 = new JSONObject(jsonParser.makeServiceCall(
+                                getString((R.string.add_subquestions)), ServiceHandler.POST,
+                                mapConditionSubQuestion2));
+
+                        Map<String, String> mapConditionSubQuestion3 = new HashMap<>();
+                        mapConditionSubQuestion3.put("qid", questionId);
+                        mapConditionSubQuestion3.put("sid", subQuestion3Id);
+                        mapConditionSubQuestion3.put("text", subQuestion3Text);
+                        JSONObject jsonSubQuestion3 = new JSONObject(jsonParser.makeServiceCall(
+                                getString((R.string.add_subquestions)), ServiceHandler.POST,
+                                mapConditionSubQuestion3));
+
+                        Map<String, String> mapConditionSubQuestion4 = new HashMap<>();
+                        mapConditionSubQuestion4.put("qid", questionId);
+                        mapConditionSubQuestion4.put("sid", subQuestion4Id);
+                        mapConditionSubQuestion4.put("text", subQuestion4Text);
+                        JSONObject jsonSubQuestion4 = new JSONObject(jsonParser.makeServiceCall(
+                                getString((R.string.add_subquestions)), ServiceHandler.POST,
+                                mapConditionSubQuestion4));
+
+
+                        List<Boolean> updateAnswerSuccess = new ArrayList<>();
+                        for (Map.Entry<String, String> entry : answers.entrySet()) {
+                            Map<String, String> conditionAnswer = new HashMap<>();
+                            conditionAnswer.put("qid", questionId);
+                            conditionAnswer.put("aid", entry.getKey());
+                            conditionAnswer.put("text", entry.getValue());
+                            JSONObject jsonAnswer = new JSONObject(jsonParser.makeServiceCall(
+                                    getString((R.string.add_answers)),
+                                    ServiceHandler.POST, conditionAnswer));
+                            updateAnswerSuccess.add(jsonAnswer.getBoolean("success"));
+                        }
+
+                        Boolean checkInsertAnswersSuccess = true;
+                        for(int i = 0; i < updateAnswerSuccess.size(); i++) {
+                            if(!updateAnswerSuccess.get(i)) {
+                                checkInsertAnswersSuccess = false;
+                                break;
+                            }
+                        }
+                        if(jsonUpdateQuestionType.getBoolean("success") && jsonSubQuestion1.getBoolean("success")
+                                && jsonSubQuestion2.getBoolean("success") && jsonSubQuestion3.getBoolean("success")
+                                && jsonSubQuestion4.getBoolean("success") && checkInsertAnswersSuccess) {
+                            return true;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    // Insert subquestions and answer back to database when storing error
+                    Map<String, String> mapUpdateQuestionLastType = new HashMap<>();
+                    mapUpdateQuestionLastType.put("question", questionId);
+                    mapUpdateQuestionLastType.put("type", lastTypeId);
+                    JSONObject jsonUpdateQuestionLastType = new JSONObject(jsonParser.makeServiceCall(
+                            getString((R.string.update_question_type)), ServiceHandler.POST,mapUpdateQuestionLastType));
+                    Map<String, String> mInsertSubquestion1 = new HashMap<>();
+                    mInsertSubquestion1.put("qid", questionId);
+                    mInsertSubquestion1.put("sid", Integer.toString(listSubQuestions.get(0).getSubQuestionId()));
+                    mInsertSubquestion1.put("text", listSubQuestions.get(0).getSubQuestionText());
+                    JSONObject jsonInsertSubquestion1 = new JSONObject(jsonParser.makeServiceCall(
+                            getString((R.string.add_subquestions)), ServiceHandler.POST,mInsertSubquestion1));
+                    Map<String, String> mInsertSubquestion2 = new HashMap<>();
+                    mInsertSubquestion2.put("qid", questionId);
+                    mInsertSubquestion2.put("sid", Integer.toString(listSubQuestions.get(1).getSubQuestionId()));
+                    mInsertSubquestion2.put("text", listSubQuestions.get(1).getSubQuestionText());
+                    JSONObject jsonInsertSubquestion2 = new JSONObject(jsonParser.makeServiceCall(
+                            getString((R.string.add_subquestions)), ServiceHandler.POST,mInsertSubquestion2));
+                    Map<String, String> mInsertSubquestion3 = new HashMap<>();
+                    mInsertSubquestion3.put("qid", questionId);
+                    mInsertSubquestion3.put("sid", Integer.toString(listSubQuestions.get(2).getSubQuestionId()));
+                    mInsertSubquestion3.put("text", listSubQuestions.get(2).getSubQuestionText());
+                    JSONObject jsonInsertSubquestion3 = new JSONObject(jsonParser.makeServiceCall(
+                            getString((R.string.add_subquestions)), ServiceHandler.POST,mInsertSubquestion3));
+                    Map<String, String> mInsertSubquestion4 = new HashMap<>();
+                    mInsertSubquestion4.put("qid", questionId);
+                    mInsertSubquestion4.put("sid", Integer.toString(listSubQuestions.get(3).getSubQuestionId()));
+                    mInsertSubquestion4.put("text", listSubQuestions.get(3).getSubQuestionText());
+                    JSONObject jsonInsertSubquestion4 = new JSONObject(jsonParser.makeServiceCall(
+                            getString((R.string.add_subquestions)), ServiceHandler.POST,mInsertSubquestion4));
+                    List<Boolean> updateAnswerSuccess = new ArrayList<>();
+                    for (int i = 0; i < listAnswers.size(); i++) {
+                        Map<String, String> conditionAnswer = new HashMap<>();
+                        conditionAnswer.put("qid", questionId);
+                        conditionAnswer.put("aid", Integer.toString(listAnswers.get(i).getAnswerId()));
+                        conditionAnswer.put("text", listAnswers.get(i).getAnswerText());
+                        JSONObject jsonAnswer = new JSONObject(jsonParser.makeServiceCall(
+                                getString((R.string.add_answers)),
+                                ServiceHandler.POST, conditionAnswer));
+                        updateAnswerSuccess.add(jsonAnswer.getBoolean("success"));
+                    }
+
+                    Boolean checkInsertAnswersSuccess = true;
+                    for(int i = 0; i < updateAnswerSuccess.size(); i++) {
+                        if(!updateAnswerSuccess.get(i)) {
+                            checkInsertAnswersSuccess = false;
+                            break;
+                        }
+                    }
+
+                    if (!jsonUpdateQuestionLastType.getBoolean("success")
+                            || !jsonInsertSubquestion1.getBoolean("success")
+                            || !jsonInsertSubquestion2.getBoolean("success")
+                            || !jsonInsertSubquestion3.getBoolean("success")
+                            || !jsonInsertSubquestion4.getBoolean("success")
+                            || !checkInsertAnswersSuccess) {
+                        try {
+                            throw new Exception("Storing data into database error!!!");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (mListener != null)
+                mListener.myMethod(result);
+        }
+    }
+
+    private boolean checkUniqueInput(List<String> inputStrings) {
+        boolean checkUniqueness = true;
+        for(int i = 0; i < inputStrings.size() - 1; i++) {
+            for (int j = i + 1; j < inputStrings.size(); j++) {
+                if(inputStrings.get(i).equals(inputStrings.get(j))) {
+                    checkUniqueness = false;
+                    break;
+                }
+            }
+        }
+        return checkUniqueness;
     }
 
     /**
@@ -265,20 +554,19 @@ public class EditAnswerMultipleChoiceFragment extends Fragment {
         etAnswer2.setText(listSubQuestions.get(1).getSubQuestionText());
         etAnswer3.setText(listSubQuestions.get(2).getSubQuestionText());
         etAnswer4.setText(listSubQuestions.get(3).getSubQuestionText());
-        if(listAnswers.get(0).getAnswerText().equals(listSubQuestions.get(0).getSubQuestionText())) {
-            cbAnswer1.setChecked(true);
-        }
-
-        if(listAnswers.get(0).getAnswerText().equals(listSubQuestions.get(1).getSubQuestionText())) {
-            cbAnswer2.setChecked(true);
-        }
-
-        if(listAnswers.get(0).getAnswerText().equals(listSubQuestions.get(2).getSubQuestionText())) {
-            cbAnswer3.setChecked(true);
-        }
-
-        if (listAnswers.get(0).getAnswerText().equals(listSubQuestions.get(3).getSubQuestionText())) {
-            cbAnswer4.setChecked(true);
+        for(int i = 0; i < listAnswers.size(); i++) {
+            if(listAnswers.get(i).getAnswerText().equals(listSubQuestions.get(0).getSubQuestionText())) {
+                cbAnswer1.setChecked(true);
+            }
+            if(listAnswers.get(i).getAnswerText().equals(listSubQuestions.get(1).getSubQuestionText())) {
+                cbAnswer2.setChecked(true);
+            }
+            if(listAnswers.get(i).getAnswerText().equals(listSubQuestions.get(2).getSubQuestionText())) {
+                cbAnswer3.setChecked(true);
+            }
+            if(listAnswers.get(i).getAnswerText().equals(listSubQuestions.get(3).getSubQuestionText())) {
+                cbAnswer4.setChecked(true);
+            }
         }
     }
 }

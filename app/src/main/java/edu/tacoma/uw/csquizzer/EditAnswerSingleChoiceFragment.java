@@ -344,36 +344,50 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
                     Map<String, String> mapUpdateQuestionLastType = new HashMap<>();
                     mapUpdateQuestionLastType.put("question", questionId);
                     mapUpdateQuestionLastType.put("type", lastTypeId);
-                    String jsonUpdateQuestionLastType = jsonParser.makeServiceCall(
-                            getString((R.string.update_question_type)), ServiceHandler.POST,mapUpdateQuestionLastType);
+                    JSONObject jsonUpdateQuestionLastType = new JSONObject(jsonParser.makeServiceCall(
+                            getString(R.string.update_question_type),
+                            ServiceHandler.POST,mapUpdateQuestionLastType));
                     Map<String, String> mInsertSubquestion1 = new HashMap<>();
-                    mInsertSubquestion1.put("sid", Integer.toString(listSubQuestions.get(0).getSubQuestionId()));
                     mInsertSubquestion1.put("qid", questionId);
-                    String jsonInsertSubquestion1 = jsonParser.makeServiceCall(
-                            getString((R.string.add_subquestions)), ServiceHandler.POST,mInsertSubquestion1);
+                    mInsertSubquestion1.put("sid", Integer.toString(listSubQuestions.get(0).getSubQuestionId()));
+                    mInsertSubquestion1.put("text", listSubQuestions.get(0).getSubQuestionText());
+                    JSONObject jsonInsertSubquestion1 = new JSONObject(jsonParser.makeServiceCall(
+                            getString((R.string.add_subquestions)),
+                            ServiceHandler.POST,mInsertSubquestion1));
                     Map<String, String> mInsertSubquestion2 = new HashMap<>();
-                    mInsertSubquestion2.put("sid", Integer.toString(listSubQuestions.get(1).getSubQuestionId()));
                     mInsertSubquestion2.put("qid", questionId);
-                    String jsonInsertSubquestion2 = jsonParser.makeServiceCall(
-                            getString((R.string.add_subquestions)), ServiceHandler.POST,mInsertSubquestion2);
+                    mInsertSubquestion2.put("sid", Integer.toString(listSubQuestions.get(1).getSubQuestionId()));
+                    mInsertSubquestion2.put("text", listSubQuestions.get(1).getSubQuestionText());
+                    JSONObject jsonInsertSubquestion2 = new JSONObject(jsonParser.makeServiceCall(
+                            getString((R.string.add_subquestions)),
+                            ServiceHandler.POST,mInsertSubquestion2));
                     Map<String, String> mInsertSubquestion3 = new HashMap<>();
-                    mInsertSubquestion3.put("sid", Integer.toString(listSubQuestions.get(2).getSubQuestionId()));
                     mInsertSubquestion3.put("qid", questionId);
-                    String jsonInsertSubquestion3 = jsonParser.makeServiceCall(
-                            getString((R.string.add_subquestions)), ServiceHandler.POST,mInsertSubquestion3);
+                    mInsertSubquestion3.put("sid", Integer.toString(listSubQuestions.get(2).getSubQuestionId()));
+                    mInsertSubquestion3.put("text", listSubQuestions.get(2).getSubQuestionText());
+                    JSONObject jsonInsertSubquestion3 = new JSONObject(jsonParser.makeServiceCall(
+                            getString((R.string.add_subquestions)),
+                            ServiceHandler.POST,mInsertSubquestion3));
                     Map<String, String> mInsertSubquestion4 = new HashMap<>();
-                    mInsertSubquestion4.put("sid", Integer.toString(listSubQuestions.get(3).getSubQuestionId()));
                     mInsertSubquestion4.put("qid", questionId);
-                    String jsonInsertSubquestion4 = jsonParser.makeServiceCall(
-                            getString((R.string.add_subquestions)), ServiceHandler.POST,mInsertSubquestion4);
+                    mInsertSubquestion4.put("sid", Integer.toString(listSubQuestions.get(3).getSubQuestionId()));
+                    mInsertSubquestion4.put("text", listSubQuestions.get(3).getSubQuestionText());
+                    JSONObject jsonInsertSubquestion4 = new JSONObject(jsonParser.makeServiceCall(
+                            getString((R.string.add_subquestions)),
+                            ServiceHandler.POST,mInsertSubquestion4));
                     Map<String, String> mInsertAnswer = new HashMap<>();
-                    mInsertAnswer.put("aid", Integer.toString(listAnswers.get(0).getAnswerId()));
                     mInsertAnswer.put("qid", questionId);
-                    String jsonInsertAnswer = jsonParser.makeServiceCall(
-                            getString((R.string.add_answers)), ServiceHandler.POST,mInsertAnswer);
-                    if (jsonUpdateQuestionLastType == null || jsonInsertSubquestion1 == null
-                            || jsonInsertSubquestion2 == null || jsonInsertSubquestion3 == null
-                            || jsonInsertSubquestion4 == null || jsonInsertAnswer == null) {
+                    mInsertAnswer.put("aid", Integer.toString(listAnswers.get(0).getAnswerId()));
+                    mInsertAnswer.put("aid", listAnswers.get(0).getAnswerText());
+                    JSONObject jsonInsertAnswer = new JSONObject(jsonParser.makeServiceCall(
+                            getString((R.string.add_answers)),
+                            ServiceHandler.POST,mInsertAnswer));
+                    if (jsonUpdateQuestionLastType.getBoolean("success")
+                            || jsonInsertSubquestion1.getBoolean("success")
+                            || jsonInsertSubquestion2.getBoolean("success")
+                            || jsonInsertSubquestion3.getBoolean("success")
+                            || jsonInsertSubquestion4.getBoolean("success")
+                            || jsonInsertAnswer.getBoolean("success")) {
                         try {
                             throw new Exception("Storing data into database error!!!");
                         } catch (Exception e) {

@@ -276,20 +276,23 @@ public class EditAnswerTrueFalseFragment extends Fragment {
                             getString((R.string.update_question_type)),
                             ServiceHandler.POST,mapUpdateQuestionLastType));
                     Map<String, String> mInsertSubquestionTrue = new HashMap<>();
-                    mInsertSubquestionTrue.put("sid", Integer.toString(listSubQuestions.get(0).getSubQuestionId()));
                     mInsertSubquestionTrue.put("qid", questionId);
+                    mInsertSubquestionTrue.put("sid", Integer.toString(listSubQuestions.get(0).getSubQuestionId()));
+                    mInsertSubquestionTrue.put("text", listSubQuestions.get(0).getSubQuestionText());
                     JSONObject jsonInsertSubquestionTrue = new JSONObject(jsonParser.makeServiceCall(
                             getString((R.string.add_subquestions)),
                             ServiceHandler.POST,mInsertSubquestionTrue));
                     Map<String, String> mInsertSubquestionFalse = new HashMap<>();
-                    mInsertSubquestionFalse.put("sid", Integer.toString(listSubQuestions.get(1).getSubQuestionId()));
                     mInsertSubquestionFalse.put("qid", questionId);
+                    mInsertSubquestionFalse.put("sid", Integer.toString(listSubQuestions.get(1).getSubQuestionId()));
+                    mInsertSubquestionFalse.put("text", listSubQuestions.get(1).getSubQuestionText());
                     JSONObject jsonInsertSubquestionFalse = new JSONObject(jsonParser.makeServiceCall(
                             getString((R.string.add_subquestions)),
                             ServiceHandler.POST,mInsertSubquestionFalse));
                     Map<String, String> mInsertAnswer = new HashMap<>();
-                    mInsertAnswer.put("aid", Integer.toString(listAnswers.get(0).getAnswerId()));
                     mInsertAnswer.put("qid", questionId);
+                    mInsertAnswer.put("aid", Integer.toString(listAnswers.get(0).getAnswerId()));
+                    mInsertAnswer.put("aid", listAnswers.get(0).getAnswerText());
                     JSONObject jsonInsertAnswer = new JSONObject(jsonParser.makeServiceCall(
                             getString((R.string.add_answers)),
                             ServiceHandler.POST,mInsertAnswer));
