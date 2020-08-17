@@ -25,6 +25,7 @@ import edu.tacoma.uw.csquizzer.authentication.AuthenticationActivity;
 public class MainActivity extends AppCompatActivity {
     // shared preferences member variable
     private SharedPreferences mSharedPreferences;
+    private Context mContext;
 
     /**
      * Render components to GUI
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         mSharedPreferences =
                 getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
         setContentView(R.layout.activity_main);
@@ -98,10 +100,7 @@ public class MainActivity extends AppCompatActivity {
                             if (mSharedPreferences.getBoolean(getString(R.string.ADMIN), false)) {
                                 selectedFragment = new RepositoryFragment();
                             } else {
-                                Toast.makeText(getApplicationContext(),
-                                        "You must be an admin to access System menu",
-                                        Toast.LENGTH_SHORT).show();
-                                return true;
+                                selectedFragment = new UserFragment(mContext);
                             }
                             break;
                         case R.id.mnInfo:
