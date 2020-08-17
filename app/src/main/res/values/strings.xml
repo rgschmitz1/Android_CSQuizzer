@@ -164,5 +164,8 @@
     <string name="dialog_BtnOK">OK</string>
     <string name="dialog_BtnCancel">Cancel</string>
 
+    <string name="btn_Delete">Delete</string>
+    <string name="confirm_delete">Are you sure delete the item?</string>
+
 
 </resources>

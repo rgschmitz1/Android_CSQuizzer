@@ -1,20 +1,34 @@
 package edu.tacoma.uw.csquizzer;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
+import edu.tacoma.uw.csquizzer.model.SubQuestion;
 import edu.tacoma.uw.csquizzer.model.Topic;
 
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.MyViewHolder> {
@@ -61,7 +75,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Topic topic = lTopics.get(position);
         holder.tvTopicId.setText(topic.getTopicId() + ".");
-        holder.tvTopicTitle.setText(topic.getTopicDescription());
+        holder.tvTopicTitle.setText(" " + topic.getTopicDescription());
     }
 
     @Override
@@ -102,6 +116,129 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.MyViewHolder
                             .commit();
                 }
             });
+            final Button btnDeleteTopic = itemView.findViewById(R.id.btn_DeleteTopic);
+            btnDeleteTopic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+                    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    builder.setView(inflater.inflate(R.layout.confirm, null));
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+                    final Button btnOK = dialog.findViewById(R.id.btn_ok);
+                    final Button btnCancel = dialog.findViewById(R.id.btn_cancel);
+                    btnOK.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View view) {
+                            AsyncDeleteTask task = new AsyncDeleteTask(tvTopicId.getText().toString(),
+                                    dialog, new MyInterface() {
+                                @Override
+                                public void myMethod(boolean result) {
+                                    if (result == true) {
+                                        Toast.makeText(mContext, "Delete topic successfully", Toast.LENGTH_LONG).show();
+                                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                                        TopicFragment topicFragment = new TopicFragment();
+                                        activity.getSupportFragmentManager().beginTransaction()
+                                                .replace(R.id.fragment_container, topicFragment)
+                                                .commit();
+                                    } else {
+                                        Toast.makeText(mContext, "Delete topic unsuccessfully", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                            task.execute();
+                        }
+                    });
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.cancel();
+                        }
+                    });
+                }
+            });
+        }
+    }
+    public interface MyInterface {
+        public void myMethod(boolean result);
+    }
+    private class AsyncDeleteTask extends AsyncTask<Void, Void, Boolean> {
+        private MyInterface mListener;
+        private String topicId;
+        private AlertDialog dialog;
+        public AsyncDeleteTask(String mTopicId, AlertDialog mdialog, MyInterface listener) {
+            this.topicId = mTopicId.substring(0, mTopicId.length() - 1);
+            this.dialog = mdialog;
+            this.mListener  = listener;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... args) {
+            try {
+                ServiceHandler jsonParser = new ServiceHandler();
+                Map<String, String> mapConditions = new HashMap<>();
+                mapConditions.put("topicid", topicId);
+                // Read courses using GET METHOD
+                JSONObject jsonQuestionObj = new JSONObject(jsonParser.makeServiceCall(
+                        mContext.getString((R.string.get_questions_by_topic_id)), ServiceHandler.GET,
+                        mapConditions));
+                if (jsonQuestionObj != null) {
+                    //Get list questions
+                    JSONArray arrQuestions = jsonQuestionObj.getJSONArray("names");
+                    List<String> arrQuestionId = new ArrayList<>();
+                    for (int i = 0; i < arrQuestions.length(); i++) {
+                        arrQuestionId.add(((JSONObject) arrQuestions.get(i)).getString("questionid"));
+                    }
+
+                    boolean deleteAllSubAns = true;
+                    for(int i = 0; i < arrQuestionId.size();i++) {
+                        Map<String, String> mQuestion = new HashMap<>();
+                        mQuestion.put("qid", arrQuestionId.get(i));
+                        JSONObject jsonDeleteSubquestion = new JSONObject(jsonParser.makeServiceCall(
+                                mContext.getString((R.string.delete_subquestions)), ServiceHandler.POST,mQuestion));
+                        JSONObject jsonDeleteAnswer = new JSONObject(jsonParser.makeServiceCall(
+                                mContext.getString((R.string.delete_answers)), ServiceHandler.POST,mQuestion));
+                        if (jsonDeleteSubquestion.getBoolean("success")
+                                && jsonDeleteAnswer.getBoolean("success")) {
+                            Map<String, String> mQuestionId = new HashMap<>();
+                            mQuestionId.put("id", arrQuestionId.get(i));
+                            JSONObject jsonDeleteQuestion = new JSONObject(jsonParser.makeServiceCall(
+                                    mContext.getString((R.string.delete_questions)), ServiceHandler.POST,mQuestionId));
+                            if (jsonDeleteQuestion.getBoolean("success")) {
+                                deleteAllSubAns = true;
+                            } else {
+                                deleteAllSubAns = false;
+                                break;
+                            }
+                        } else {
+                            deleteAllSubAns = false;
+                            break;
+                        }
+                    }
+
+                    if(deleteAllSubAns) {
+                        Map<String, String> mTopicId = new HashMap<>();
+                        mTopicId.put("id", topicId);
+                        JSONObject jsonDeleteObj = new JSONObject(jsonParser.makeServiceCall(
+                                mContext.getString((R.string.delete_topics)), ServiceHandler.POST, mTopicId));
+                        if(jsonDeleteObj != null) {
+                            dialog.cancel();
+                            return true;
+                        }
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            dialog.cancel();
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (mListener != null)
+                mListener.myMethod(result);
         }
     }
 }

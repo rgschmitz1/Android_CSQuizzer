@@ -116,7 +116,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
         Question question = lQuestions.get(position);
         holder.tvQuestionId.setText(question.getQuestionId() + "");
         holder.tvCountNumber.setText((position + 1) + ". ");
-        holder.tvQuestionTitle.setText(question.getQuestionTitle());
+        holder.tvQuestionTitle.setText(" " + question.getQuestionTitle());
         holder.tvCourseName.setText(question.getCourseName());
         holder.tvTopicDescription.setText(question.getTopicDescription());
         holder.tvDifficultyDescription.setText(question.getDifficultyDescription());
@@ -193,37 +193,37 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             btnReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                builder.setView(inflater.inflate(R.layout.dialog_report, null));
-                final AlertDialog dialog = builder.create();
-                dialog.show();
-                final EditText etReport = dialog.findViewById(R.id.et_report);
-                final Button btnOK = dialog.findViewById(R.id.btn_ok);
-                final Button btnCancel = dialog.findViewById(R.id.btn_cancel);
-                btnOK.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                    if(etReport.getText().toString().length() > 0) {
-                        AsyncConnectTask task = new AsyncConnectTask(
-                                tvQuestionId.getText().toString(),
-                                tvQuestionTitle.getText().toString(),
-                                etReport.getText().toString(), dialog);
-                        task.execute();
-                        Toast.makeText(mContext, "Send report successful", Toast.LENGTH_SHORT)
-                                .show();
-                    } else {
-                        Toast.makeText(mContext, "Please input message", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                    }
-                });
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
-                    }
-                });
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+                    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    builder.setView(inflater.inflate(R.layout.dialog_report, null));
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+                    final EditText etReport = dialog.findViewById(R.id.et_report);
+                    final Button btnOK = dialog.findViewById(R.id.btn_ok);
+                    final Button btnCancel = dialog.findViewById(R.id.btn_cancel);
+                    btnOK.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                        if(etReport.getText().toString().length() > 0) {
+                            AsyncConnectTask task = new AsyncConnectTask(
+                                    tvQuestionId.getText().toString(),
+                                    tvQuestionTitle.getText().toString(),
+                                    etReport.getText().toString(), dialog);
+                            task.execute();
+                            Toast.makeText(mContext, "Send report successful", Toast.LENGTH_SHORT)
+                                    .show();
+                        } else {
+                            Toast.makeText(mContext, "Please input message", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                        }
+                    });
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.cancel();
+                        }
+                    });
                 }
             });
 

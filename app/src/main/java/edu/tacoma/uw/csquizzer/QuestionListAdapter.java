@@ -1,16 +1,30 @@
 package edu.tacoma.uw.csquizzer;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Question;
 
 
@@ -121,6 +135,94 @@ public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapte
                         .commit();
                 }
             });
+            final Button btnDeleteQuestion = itemView.findViewById(R.id.btn_DeleteQuestion);
+            btnDeleteQuestion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+                    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    builder.setView(inflater.inflate(R.layout.confirm, null));
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+                    final Button btnOK = dialog.findViewById(R.id.btn_ok);
+                    final Button btnCancel = dialog.findViewById(R.id.btn_cancel);
+                    btnOK.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View view) {
+                            AsyncDeleteTask task = new AsyncDeleteTask(tvQuestionId.getText().toString(),
+                                    dialog, new MyInterface() {
+                                @Override
+                                public void myMethod(boolean result) {
+                                    if (result == true) {
+                                        Toast.makeText(mContext, "Delete question successfully", Toast.LENGTH_LONG).show();
+                                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                                        QuestionFragment questionFragment = new QuestionFragment();
+                                        activity.getSupportFragmentManager().beginTransaction()
+                                                .replace(R.id.fragment_container, questionFragment)
+                                                .commit();
+                                    } else {
+                                        Toast.makeText(mContext, "Delete question unsuccessfully", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                            task.execute();
+                        }
+                    });
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.cancel();
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    public interface MyInterface {
+        public void myMethod(boolean result);
+    }
+    private class AsyncDeleteTask extends AsyncTask<Void, Void, Boolean> {
+        private MyInterface mListener;
+        private String questionId;
+        private AlertDialog dialog;
+        public AsyncDeleteTask(String mQuestionId, AlertDialog mdialog, MyInterface listener) {
+            this.questionId = mQuestionId.substring(0, mQuestionId.length() - 1);
+            this.dialog = mdialog;
+            this.mListener  = listener;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... args) {
+            try {
+                ServiceHandler jsonParser = new ServiceHandler();
+                Map<String, String> mQuestion = new HashMap<>();
+                mQuestion.put("qid", questionId);
+                JSONObject jsonDeleteSubquestion = new JSONObject(jsonParser.makeServiceCall(
+                        mContext.getString((R.string.delete_subquestions)), ServiceHandler.POST,mQuestion));
+                JSONObject jsonDeleteAnswer = new JSONObject(jsonParser.makeServiceCall(
+                        mContext.getString((R.string.delete_answers)), ServiceHandler.POST,mQuestion));
+                Map<String, String> mQuestionId = new HashMap<>();
+                mQuestionId.put("id", questionId);
+                JSONObject jsonDeleteQuestion = new JSONObject(jsonParser.makeServiceCall(
+                        mContext.getString((R.string.delete_questions)), ServiceHandler.POST,mQuestionId));
+                if (jsonDeleteSubquestion.getBoolean("success")
+                    && jsonDeleteAnswer.getBoolean("success")
+                        && jsonDeleteQuestion.getBoolean("success")) {
+                    dialog.cancel();
+                    return true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            dialog.cancel();
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (mListener != null)
+                mListener.myMethod(result);
         }
     }
 }

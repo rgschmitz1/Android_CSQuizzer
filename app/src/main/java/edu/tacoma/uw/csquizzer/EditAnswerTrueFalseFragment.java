@@ -124,19 +124,19 @@ public class EditAnswerTrueFalseFragment extends Fragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                radioTrue.setChecked(true);
-                radioFalse.setChecked(false);
+            radioTrue.setChecked(true);
+            radioFalse.setChecked(false);
             }
         });
         tvBackToList = rootView.findViewById(R.id.imb_back_to_list);
         tvBackToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                QuestionFragment questionFragment =  new QuestionFragment();
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                //Replace current fragment with a show question fragment
-                ft.replace(R.id.fragment_container, questionFragment);
-                ft.commit();
+            QuestionFragment questionFragment =  new QuestionFragment();
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            //Replace current fragment with a show question fragment
+            ft.replace(R.id.fragment_container, questionFragment);
+            ft.commit();
             }
         });
         return rootView;

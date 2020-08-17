@@ -52,9 +52,9 @@ public class AddTopicFragment extends Fragment {
                         @Override
                         public void myMethod(boolean result) {
                             if (result == true) {
-                                Toast.makeText(context, "Update topic successfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Add topic successfully", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(context, "Update topic unsuccessfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Add topic unsuccessfully", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -83,10 +83,10 @@ public class AddTopicFragment extends Fragment {
         return rootView;
     }
 
+
     public interface MyInterface {
         public void myMethod(boolean result);
     }
-
     private class AddTopic extends AsyncTask<Void, Void, Boolean> {
         private MyInterface mListener;
         Context context;

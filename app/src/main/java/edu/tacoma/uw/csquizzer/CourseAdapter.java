@@ -1,19 +1,30 @@
 package edu.tacoma.uw.csquizzer;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Course;
 import edu.tacoma.uw.csquizzer.model.Topic;
 
@@ -61,7 +72,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Course course = lCourses.get(position);
         holder.tvCourseId.setText(course.getCourseId() + ".");
-        holder.tvCourseName.setText(course.getCourseName());
+        holder.tvCourseName.setText(" " + course.getCourseName());
     }
 
     @Override
@@ -102,6 +113,129 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
                             .commit();
                 }
             });
+            final Button btnDeleteCourse = itemView.findViewById(R.id.btn_DeleteCourse);
+            btnDeleteCourse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+                    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    builder.setView(inflater.inflate(R.layout.confirm, null));
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+                    final Button btnOK = dialog.findViewById(R.id.btn_ok);
+                    final Button btnCancel = dialog.findViewById(R.id.btn_cancel);
+                    btnOK.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View view) {
+                            final AsyncDeleteTask task = new AsyncDeleteTask(tvCourseId.getText().toString(),
+                                    dialog, new MyInterface() {
+                                @Override
+                                public void myMethod(boolean result) {
+                                    if (result == true) {
+                                        Toast.makeText(mContext, "Delete course successfully", Toast.LENGTH_LONG).show();
+                                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                                        CourseFragment courseFragment = new CourseFragment();
+                                        activity.getSupportFragmentManager().beginTransaction()
+                                                .replace(R.id.fragment_container, courseFragment)
+                                                .commit();
+                                    } else {
+                                        Toast.makeText(mContext, "Delete course unsuccessfully", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                            task.execute();
+                        }
+                    });
+                    btnCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.cancel();
+                        }
+                    });
+                }
+            });
+        }
+    }
+    public interface MyInterface {
+        public void myMethod(boolean result);
+    }
+    private class AsyncDeleteTask extends AsyncTask<Void, Void, Boolean> {
+        private MyInterface mListener;
+        private String courseId;
+        private AlertDialog dialog;
+        public AsyncDeleteTask(String mCourseId, AlertDialog mdialog, MyInterface listener) {
+            this.courseId = mCourseId.substring(0, mCourseId.length() - 1);
+            this.dialog = mdialog;
+            this.mListener  = listener;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... args) {
+            try {
+                ServiceHandler jsonParser = new ServiceHandler();
+                Map<String, String> mapConditions = new HashMap<>();
+                mapConditions.put("courseid", courseId);
+                // Read courses using GET METHOD
+                JSONObject jsonQuestionObj = new JSONObject(jsonParser.makeServiceCall(
+                        mContext.getString((R.string.get_questions_by_course_id)), ServiceHandler.GET,
+                        mapConditions));
+                if (jsonQuestionObj != null) {
+                    //Get list questions
+                    JSONArray arrQuestions = jsonQuestionObj.getJSONArray("names");
+                    List<String> arrQuestionId = new ArrayList<>();
+                    for (int i = 0; i < arrQuestions.length(); i++) {
+                        arrQuestionId.add(((JSONObject) arrQuestions.get(i)).getString("questionid"));
+                    }
+
+                    boolean deleteAllSubAns = true;
+                    for(int i = 0; i < arrQuestionId.size();i++) {
+                        Map<String, String> mQuestion = new HashMap<>();
+                        mQuestion.put("qid", arrQuestionId.get(i));
+                        JSONObject jsonDeleteSubquestion = new JSONObject(jsonParser.makeServiceCall(
+                                mContext.getString((R.string.delete_subquestions)), ServiceHandler.POST,mQuestion));
+                        JSONObject jsonDeleteAnswer = new JSONObject(jsonParser.makeServiceCall(
+                                mContext.getString((R.string.delete_answers)), ServiceHandler.POST,mQuestion));
+                        if (jsonDeleteSubquestion.getBoolean("success")
+                                && jsonDeleteAnswer.getBoolean("success")) {
+                            Map<String, String> mQuestionId = new HashMap<>();
+                            mQuestionId.put("id", arrQuestionId.get(i));
+                            JSONObject jsonDeleteQuestion = new JSONObject(jsonParser.makeServiceCall(
+                                    mContext.getString((R.string.delete_questions)), ServiceHandler.POST,mQuestionId));
+                            if (jsonDeleteQuestion.getBoolean("success")) {
+                                deleteAllSubAns = true;
+                            } else {
+                                deleteAllSubAns = false;
+                                break;
+                            }
+                        } else {
+                            deleteAllSubAns = false;
+                            break;
+                        }
+                    }
+
+                    if(deleteAllSubAns) {
+                        Map<String, String> mCourseId = new HashMap<>();
+                        mCourseId.put("id", courseId);
+                        JSONObject jsonDeleteObj = new JSONObject(jsonParser.makeServiceCall(
+                                mContext.getString((R.string.delete_courses)), ServiceHandler.POST, mCourseId));
+                        if(jsonDeleteObj != null) {
+                            dialog.cancel();
+                            return true;
+                        }
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            dialog.cancel();
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (mListener != null)
+                mListener.myMethod(result);
         }
     }
 }

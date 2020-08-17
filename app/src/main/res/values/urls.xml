@@ -19,6 +19,8 @@
     <string name="delete_courses">https://phucbob-csquizzer.herokuapp.com/delete-courses</string>
 
     <!-- Question -->
+    <string name="get_questions_by_topic_id">https://phucbob-csquizzer.herokuapp.com/get-questions-by-topic-id</string>
+    <string name="get_questions_by_course_id">https://phucbob-csquizzer.herokuapp.com/get-questions-by-course-id</string>
     <string name="get_questions">https://phucbob-csquizzer.herokuapp.com/get-questions</string>
     <string name="list_questions">https://phucbob-csquizzer.herokuapp.com/list-questions</string>
     <string name="add_questions">https://phucbob-csquizzer.herokuapp.com/add-questions</string>

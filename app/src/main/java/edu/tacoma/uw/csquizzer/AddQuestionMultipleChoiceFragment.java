@@ -102,16 +102,6 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
         cbAnswer2 = rootView.findViewById(R.id.cb_subquestion_2);
         cbAnswer3 = rootView.findViewById(R.id.cb_subquestion_3);
         cbAnswer4 = rootView.findViewById(R.id.cb_subquestion_4);
-        if(cbAnswer1.isChecked()) {
-            lAnswers.add(etAnswer1.getText().toString());
-        } else if (cbAnswer2.isChecked()) {
-            lAnswers.add(etAnswer2.getText().toString());
-        } else if (cbAnswer3.isChecked()) {
-            lAnswers.add(etAnswer3.getText().toString());
-        } else if (cbAnswer4.isChecked()) {
-            lAnswers.add(etAnswer4.getText().toString());
-        }
-
         btnAddQuestion = rootView.findViewById(R.id.btn_AddQuestion);
         btnAddQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +122,18 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
                 final String getCourseName = spinnerCourses.getSelectedItem().toString();
                 final String getTopicDescription = spinnerTopics.getSelectedItem().toString();
                 final String getDifficultyDescription = spinnerDifficulties.getSelectedItem().toString();
-
+                if(cbAnswer1.isChecked()) {
+                    lAnswers.add(etAnswer1.getText().toString());
+                }
+                if (cbAnswer2.isChecked()) {
+                    lAnswers.add(etAnswer2.getText().toString());
+                }
+                if (cbAnswer3.isChecked()) {
+                    lAnswers.add(etAnswer3.getText().toString());
+                }
+                if (cbAnswer4.isChecked()) {
+                    lAnswers.add(etAnswer4.getText().toString());
+                }
                 if(checkTitleMatch) {
                     if((titleQuestion.length() != 0) && (bodyQuestion.length() != 0)
                             && (getAnswer1.length() != 0) && (getAnswer2.length() != 0)
@@ -165,9 +166,9 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
                                     @Override
                                     public void myMethod(boolean result) {
                                         if (result == true) {
-                                            Toast.makeText(context, "Update question successfully", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, "Add question successfully", Toast.LENGTH_SHORT).show();
                                         } else {
-                                            Toast.makeText(context, "Update question unsuccessfully", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, "Add question unsuccessfully", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
@@ -289,21 +290,21 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
                                 getString((R.string.add_subquestions)), ServiceHandler.POST, mAnswer2));
                         Map<String, String> mAnswer3 = new HashMap<>();
                         mAnswer3.put("qid", idQuestion);
-                        mAnswer3.put("sid", "1");
+                        mAnswer3.put("sid", "3");
                         mAnswer3.put("text", answer3);
                         JSONObject jsonAddAnswer3 = new JSONObject(jsonParser.makeServiceCall(
                                 getString((R.string.add_subquestions)), ServiceHandler.POST, mAnswer3));
                         Map<String, String> mAnswer4 = new HashMap<>();
                         mAnswer4.put("qid", idQuestion);
-                        mAnswer4.put("sid", "2");
+                        mAnswer4.put("sid", "4");
                         mAnswer4.put("text", answer4);
                         JSONObject jsonAddAnswer4 = new JSONObject(jsonParser.makeServiceCall(
                                 getString((R.string.add_subquestions)), ServiceHandler.POST, mAnswer4));
                         List<Boolean> successInsert = new ArrayList<>();
-                        for(int i = 0; i < lAnswers.size();i++) {
+                        for(int i = 0; i < lAnswers.size(); i++) {
                             Map<String, String> mAnswer = new HashMap<>();
                             mAnswer.put("qid", idQuestion);
-                            mAnswer.put("aid", "1");
+                            mAnswer.put("aid", Integer.toString(i+1));
                             mAnswer.put("text", lAnswers.get(i));
                             JSONObject jsonAddAnswer = new JSONObject(jsonParser.makeServiceCall(
                                     getString((R.string.add_answers)), ServiceHandler.POST, mAnswer));

@@ -100,16 +100,6 @@ public class AddQuestionSingleChoiceFragment extends Fragment {
         radioButtonAnswer2 = rootView.findViewById(R.id.radio_answer_2);
         radioButtonAnswer3 = rootView.findViewById(R.id.radio_answer_3);
         radioButtonAnswer4 = rootView.findViewById(R.id.radio_answer_4);
-        if(radioButtonAnswer1.isChecked()) {
-            answer = etAnswer1.getText().toString();
-        } else if (radioButtonAnswer2.isChecked()) {
-            answer = etAnswer2.getText().toString();
-        } else if (radioButtonAnswer3.isChecked()) {
-            answer = etAnswer3.getText().toString();
-        } else if (radioButtonAnswer4.isChecked()) {
-            answer = etAnswer4.getText().toString();
-        }
-
         btnAddQuestion = rootView.findViewById(R.id.btn_AddQuestion);
         btnAddQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +120,15 @@ public class AddQuestionSingleChoiceFragment extends Fragment {
             final String getCourseName = spinnerCourses.getSelectedItem().toString();
             final String getTopicDescription = spinnerTopics.getSelectedItem().toString();
             final String getDifficultyDescription = spinnerDifficulties.getSelectedItem().toString();
-
+            if(radioButtonAnswer1.isChecked()) {
+                answer = etAnswer1.getText().toString();
+            } else if (radioButtonAnswer2.isChecked()) {
+                answer = etAnswer2.getText().toString();
+            } else if (radioButtonAnswer3.isChecked()) {
+                answer = etAnswer3.getText().toString();
+            } else if (radioButtonAnswer4.isChecked()) {
+                answer = etAnswer4.getText().toString();
+            }
             if(checkTitleMatch) {
                 if((titleQuestion.length() != 0) && (bodyQuestion.length() != 0)
                         && (getAnswer1.length() != 0) && (getAnswer2.length() != 0)
@@ -163,9 +161,9 @@ public class AddQuestionSingleChoiceFragment extends Fragment {
                                 @Override
                                 public void myMethod(boolean result) {
                                     if (result == true) {
-                                        Toast.makeText(context, "Update question successfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "Add question successfully", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Toast.makeText(context, "Update question unsuccessfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "Add question unsuccessfully", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -288,13 +286,13 @@ public class AddQuestionSingleChoiceFragment extends Fragment {
                                 getString((R.string.add_subquestions)), ServiceHandler.POST, mAnswer2));
                         Map<String, String> mAnswer3 = new HashMap<>();
                         mAnswer3.put("qid", idQuestion);
-                        mAnswer3.put("sid", "1");
+                        mAnswer3.put("sid", "3");
                         mAnswer3.put("text", answer3);
                         JSONObject jsonAddAnswer3 = new JSONObject(jsonParser.makeServiceCall(
                                 getString((R.string.add_subquestions)), ServiceHandler.POST, mAnswer3));
                         Map<String, String> mAnswer4 = new HashMap<>();
                         mAnswer4.put("qid", idQuestion);
-                        mAnswer4.put("sid", "2");
+                        mAnswer4.put("sid", "4");
                         mAnswer4.put("text", answer4);
                         JSONObject jsonAddAnswer4 = new JSONObject(jsonParser.makeServiceCall(
                                 getString((R.string.add_subquestions)), ServiceHandler.POST, mAnswer4));

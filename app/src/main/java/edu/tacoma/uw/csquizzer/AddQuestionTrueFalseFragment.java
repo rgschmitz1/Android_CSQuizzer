@@ -90,11 +90,6 @@ public class AddQuestionTrueFalseFragment extends Fragment {
         tvQuestionBody = rootView.findViewById(R.id.et_QuestionBody);
         radioButtonTrue = rootView.findViewById(R.id.radio_true);
         radioButtonFalse = rootView.findViewById(R.id.radio_false);
-        if(radioButtonTrue.isChecked()) {
-            answer = "True";
-        } else if (radioButtonFalse.isChecked()) {
-            answer = "False";
-        }
         btnAddQuestion = rootView.findViewById(R.id.btn_AddQuestion);
         btnAddQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +106,11 @@ public class AddQuestionTrueFalseFragment extends Fragment {
             final String getCourseName = spinnerCourses.getSelectedItem().toString();
             final String getTopicDescription = spinnerTopics.getSelectedItem().toString();
             final String getDifficultyDescription = spinnerDifficulties.getSelectedItem().toString();
+            if(radioButtonTrue.isChecked()) {
+                answer = "True";
+            } else if (radioButtonFalse.isChecked()) {
+                answer = "False";
+            }
             if(checkTitleMatch) {
                 if((titleQuestion.length() != 0) && (bodyQuestion.length() != 0)
                         && !getCourseName.equals("--- Choose Course ---")
@@ -140,9 +140,9 @@ public class AddQuestionTrueFalseFragment extends Fragment {
                         @Override
                         public void myMethod(boolean result) {
                             if (result == true) {
-                                Toast.makeText(context, "Update question successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Add question successfully", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(context, "Update question unsuccessfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Add question unsuccessfully", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

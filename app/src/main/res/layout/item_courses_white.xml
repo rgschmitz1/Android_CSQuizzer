@@ -8,6 +8,10 @@
     android:layout_marginRight="1dp"
     android:layout_marginLeft="1dp"
     android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/row_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/tv_CourseId"
         android:layout_width="wrap_content"
@@ -19,4 +23,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/row_2"
+        android:layout_below="@id/row_1"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_DeleteCourse"
+            android:text="@string/btn_Delete"
+            android:textSize="@dimen/size_12dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 </RelativeLayout>

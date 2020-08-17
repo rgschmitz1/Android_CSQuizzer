@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -175,14 +176,25 @@ public class EditAnswerMultipleChoiceFragment extends Fragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                etAnswer1.setText("");
+                etAnswer2.setText("");
+                etAnswer3.setText("");
+                etAnswer4.setText("");
+                cbAnswer1.setChecked(false);
+                cbAnswer2.setChecked(false);
+                cbAnswer3.setChecked(false);
+                cbAnswer4.setChecked(false);
             }
         });
         tvBackToList = rootView.findViewById(R.id.imb_back_to_list);
         tvBackToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                QuestionFragment questionFragment =  new QuestionFragment();
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                //Replace current fragment with a show question fragment
+                ft.replace(R.id.fragment_container, questionFragment);
+                ft.commit();
             }
         });
         return rootView;
