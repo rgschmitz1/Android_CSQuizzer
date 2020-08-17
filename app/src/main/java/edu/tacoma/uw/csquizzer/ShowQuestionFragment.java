@@ -132,7 +132,7 @@ public class ShowQuestionFragment extends Fragment {
             if(!arg0[1].equals("--- Choose Topic ---")) {
                 mapConditions.put("topic",arg0[1]);
             }
-            if(!arg0[2].equals("--- Choose Difficulty Questions ---")) {
+            if(!arg0[2].equals("--- Choose Difficulty ---")) {
                 mapConditions.put("difficulty",arg0[2]);
             }
             if(!arg0[3].equals("--- Choose Number Questions ---")) {

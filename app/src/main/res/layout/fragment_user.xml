@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UserFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <EditText
+        android:id="@+id/old_password"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_height="wrap_content"
+        android:padding="@dimen/size_8dp"
+        android:layout_marginTop="16dp"
+        android:inputType="textPassword"
+        android:textSize="@dimen/size_20sp"
+        android:hint="@string/old_password"
+        android:importantForAutofill="no" />
+    <EditText
+        android:id="@+id/new_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/old_password"
+        android:padding="@dimen/size_8dp"
+        android:inputType="textPassword"
+        android:textSize="@dimen/size_20sp"
+        android:hint="@string/new_password"
+        android:importantForAutofill="no" />
+    <EditText
+        android:id="@+id/confirm_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/new_password"
+        android:padding="@dimen/size_8dp"
+        android:inputType="textPassword"
+        android:textSize="@dimen/size_20sp"
+        android:hint="@string/confirm_password"
+        android:importantForAutofill="no" />
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/confirm_password"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:text="@string/btn_submit"
+        android:textSize="@dimen/size_20sp" />
+</RelativeLayout>
