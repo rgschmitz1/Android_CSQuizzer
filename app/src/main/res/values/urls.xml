@@ -4,6 +4,7 @@
     <string name="post_register">https://phucbob-csquizzer.herokuapp.com/register</string>
     <string name="report_question">https://phucbob-csquizzer.herokuapp.com/report</string>
     <string name="post_reset">https://phucbob-csquizzer.herokuapp.com/reset-password</string>
+    <string name="update_password">https://phucbob-csquizzer.herokuapp.com/update-password</string>
 
     <!-- Topics -->
     <string name="get_topics">https://phucbob-csquizzer.herokuapp.com/get-topics</string>
