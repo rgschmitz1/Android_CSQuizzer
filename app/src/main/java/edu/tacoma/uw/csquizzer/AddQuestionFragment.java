@@ -6,14 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+/**
+ * The purpose of AddQuestionFragment module is to choose type of question
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class AddQuestionFragment extends Fragment {
     private Context context;
     private ImageButton tvBackToList;
@@ -24,6 +29,17 @@ public class AddQuestionFragment extends Fragment {
         this.context = mContext;
     }
 
+    /**
+     * * Render components to GUI
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,43 +50,43 @@ public class AddQuestionFragment extends Fragment {
         btnSubmitQuestionTypes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!spinnerChooseQuestionTypes.getSelectedItem().equals("--- Choose Type Questions ---")) {
-                    if(spinnerChooseQuestionTypes.getSelectedItem().equals("True/False")) {
-                        AddQuestionTrueFalseFragment addQuestionTrueFalseFragment =
-                                new AddQuestionTrueFalseFragment(context, "1");
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        //Replace current fragment with a show question fragment
-                        ft.replace(R.id.fragment_container, addQuestionTrueFalseFragment);
-                        ft.commit();
-                    } else if (spinnerChooseQuestionTypes.getSelectedItem().equals("Single Choice")) {
-                        AddQuestionSingleChoiceFragment addQuestionSingleChoiceFragment =
-                                new AddQuestionSingleChoiceFragment(context, "2");
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        //Replace current fragment with a show question fragment
-                        ft.replace(R.id.fragment_container, addQuestionSingleChoiceFragment);
-                        ft.commit();
-                    } else if (spinnerChooseQuestionTypes.getSelectedItem().equals("Multiple Choice")) {
-                        AddQuestionMultipleChoiceFragment addQuestionMultipleChoiceFragment =
-                                new AddQuestionMultipleChoiceFragment(context, "3");
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        //Replace current fragment with a show question fragment
-                        ft.replace(R.id.fragment_container, addQuestionMultipleChoiceFragment);
-                        ft.commit();
-                    }
-                } else {
-                    Toast.makeText(context, "Please choose a question type", Toast.LENGTH_SHORT).show();
+            if(!spinnerChooseQuestionTypes.getSelectedItem().equals("--- Choose Type Questions ---")) {
+                if(spinnerChooseQuestionTypes.getSelectedItem().equals("True/False")) {
+                    AddQuestionTrueFalseFragment addQuestionTrueFalseFragment =
+                            new AddQuestionTrueFalseFragment(context, "1");
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    //Replace current fragment with a show question fragment
+                    ft.replace(R.id.fragment_container, addQuestionTrueFalseFragment);
+                    ft.commit();
+                } else if (spinnerChooseQuestionTypes.getSelectedItem().equals("Single Choice")) {
+                    AddQuestionSingleChoiceFragment addQuestionSingleChoiceFragment =
+                            new AddQuestionSingleChoiceFragment(context, "2");
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    //Replace current fragment with a show question fragment
+                    ft.replace(R.id.fragment_container, addQuestionSingleChoiceFragment);
+                    ft.commit();
+                } else if (spinnerChooseQuestionTypes.getSelectedItem().equals("Multiple Choice")) {
+                    AddQuestionMultipleChoiceFragment addQuestionMultipleChoiceFragment =
+                            new AddQuestionMultipleChoiceFragment(context, "3");
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    //Replace current fragment with a show question fragment
+                    ft.replace(R.id.fragment_container, addQuestionMultipleChoiceFragment);
+                    ft.commit();
                 }
+            } else {
+                Toast.makeText(context, "Please choose a question type", Toast.LENGTH_SHORT).show();
+            }
             }
         });
         tvBackToList = rootView.findViewById(R.id.imb_back_to_list);
         tvBackToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                QuestionFragment questionFragment =  new QuestionFragment();
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                //Replace current fragment with a show question fragment
-                ft.replace(R.id.fragment_container, questionFragment);
-                ft.commit();
+            QuestionFragment questionFragment =  new QuestionFragment();
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            //Replace current fragment with a show question fragment
+            ft.replace(R.id.fragment_container, questionFragment);
+            ft.commit();
             }
         });
         return rootView;

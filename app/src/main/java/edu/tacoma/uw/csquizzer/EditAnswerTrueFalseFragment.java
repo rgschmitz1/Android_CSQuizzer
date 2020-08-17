@@ -4,40 +4,35 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Answer;
-import edu.tacoma.uw.csquizzer.model.Course;
-import edu.tacoma.uw.csquizzer.model.Difficulty;
 import edu.tacoma.uw.csquizzer.model.SubQuestion;
-import edu.tacoma.uw.csquizzer.model.Topic;
-import edu.tacoma.uw.csquizzer.model.Type;
 
+/**
+ * The purpose of EditAnswerTrueFalseFragment module is to edit answers of a question
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class EditAnswerTrueFalseFragment extends Fragment {
     private Context context;
     private String questionId;
@@ -75,6 +70,17 @@ public class EditAnswerTrueFalseFragment extends Fragment {
         }
     }
 
+    /**
+     * * Render components to GUI
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -103,8 +109,9 @@ public class EditAnswerTrueFalseFragment extends Fragment {
                     textAnswer = "True";
                 }
                 if((idQuestion.length() != 0)) {
-                    EditAnswer task = new EditAnswer(context, idQuestion, type, lastType, idSubQuestionTrue, idSubQuestionFalse,
-                            textSubQuestionTrue, textSubQuestionFalse, idAnswer, textAnswer, new MyInterface() {
+                    EditAnswer task = new EditAnswer(context, idQuestion, type, lastType,
+                            idSubQuestionTrue, idSubQuestionFalse, textSubQuestionTrue,
+                            textSubQuestionFalse, idAnswer, textAnswer, new MyInterface() {
                         @Override
                         public void myMethod(boolean result) {
                             if (result == true) {
@@ -146,6 +153,13 @@ public class EditAnswerTrueFalseFragment extends Fragment {
         public void myMethod(boolean result);
     }
 
+    /**
+     * The EditAnswer AsyncTask to edit answers in database
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-17
+     */
     private class EditAnswer extends AsyncTask<Void, Void, Boolean> {
         private MyInterface mListener;
         Context context;
@@ -200,7 +214,8 @@ public class EditAnswerTrueFalseFragment extends Fragment {
                 Map<String, String> mDeleteAnswer = new HashMap<>();
                 mDeleteAnswer.put("qid", questionId);
                 JSONObject jsonDeleteAnswer = new JSONObject(jsonParser.makeServiceCall(
-                        getString(R.string.delete_answers), ServiceHandler.POST,mDeleteAnswer));
+                        getString(R.string.delete_answers),
+                        ServiceHandler.POST, mDeleteAnswer));
                 if (jsonDeleteSubquestion.getBoolean("success")
                                                 && jsonDeleteAnswer.getBoolean("success")) {
                     Map<String, String> mapUpdateQuestionType = new HashMap<>();
@@ -208,21 +223,21 @@ public class EditAnswerTrueFalseFragment extends Fragment {
                     mapUpdateQuestionType.put("type", typeId);
                     JSONObject jsonUpdateQuestionType = new JSONObject(jsonParser.makeServiceCall(
                             getString((R.string.update_question_type)),
-                            ServiceHandler.POST,mapUpdateQuestionType));
+                            ServiceHandler.POST, mapUpdateQuestionType));
                     Map<String, String> mapConditionSubQuestionTrue = new HashMap<>();
                     mapConditionSubQuestionTrue.put("qid", questionId);
                     mapConditionSubQuestionTrue.put("sid", subQuestionTrueId);
                     mapConditionSubQuestionTrue.put("text", subQuestionTrueText);
                     JSONObject jsonSubQuestionTrue = new JSONObject(jsonParser.makeServiceCall(
                             getString((R.string.add_subquestions)),
-                            ServiceHandler.POST,mapConditionSubQuestionTrue));
+                            ServiceHandler.POST, mapConditionSubQuestionTrue));
                     Map<String, String> mapConditionSubQuestionFalse = new HashMap<>();
                     mapConditionSubQuestionFalse.put("qid", questionId);
                     mapConditionSubQuestionFalse.put("sid", subQuestionFalseId);
                     mapConditionSubQuestionFalse.put("text", subQuestionFalseText);
                     JSONObject jsonSubQuestionFalse = new JSONObject(jsonParser.makeServiceCall(
                             getString((R.string.add_subquestions)),
-                            ServiceHandler.POST,mapConditionSubQuestionFalse));
+                            ServiceHandler.POST, mapConditionSubQuestionFalse));
                     Map<String, String> mapConditionAnswer = new HashMap<>();
                     mapConditionAnswer.put("qid", questionId);
                     mapConditionAnswer.put("aid", answerId);
@@ -235,8 +250,10 @@ public class EditAnswerTrueFalseFragment extends Fragment {
                     JSONObject jsonAnswer = new JSONObject(jsonParser.makeServiceCall(
                             getString((R.string.add_answers)),
                             ServiceHandler.POST,mapConditionAnswer));
-                    if (jsonUpdateQuestionType.getBoolean("success") && jsonSubQuestionTrue.getBoolean("success")
-                            && jsonSubQuestionFalse.getBoolean("success") && jsonAnswer.getBoolean("success")) {
+                    if (jsonUpdateQuestionType.getBoolean("success")
+                            && jsonSubQuestionTrue.getBoolean("success")
+                            && jsonSubQuestionFalse.getBoolean("success")
+                            && jsonAnswer.getBoolean("success")) {
                             return true;
                     }
                 } else {
@@ -268,8 +285,10 @@ public class EditAnswerTrueFalseFragment extends Fragment {
                     JSONObject jsonInsertAnswer = new JSONObject(jsonParser.makeServiceCall(
                             getString((R.string.add_answers)),
                             ServiceHandler.POST,mInsertAnswer));
-                    if (!jsonUpdateQuestionLastType.getBoolean("success") || !jsonInsertSubquestionTrue.getBoolean("success")
-                            || !jsonInsertSubquestionFalse.getBoolean("success") || !jsonInsertAnswer.getBoolean("success")) {
+                    if (!jsonUpdateQuestionLastType.getBoolean("success")
+                            || !jsonInsertSubquestionTrue.getBoolean("success")
+                            || !jsonInsertSubquestionFalse.getBoolean("success")
+                            || !jsonInsertAnswer.getBoolean("success")) {
                         try {
                             throw new Exception("Storing data into database error!!!");
                         } catch (Exception e) {

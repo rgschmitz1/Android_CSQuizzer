@@ -4,10 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,24 +16,27 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Course;
 import edu.tacoma.uw.csquizzer.model.Difficulty;
 import edu.tacoma.uw.csquizzer.model.Topic;
-import edu.tacoma.uw.csquizzer.model.Type;
 
+/**
+ * The purpose of AddQuestionMultipleChoiceFragment module is to add a new true false choice question
+ * to database
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class AddQuestionTrueFalseFragment extends Fragment {
     private ImageButton tvBackToList;
     private EditText tvQuestionTitle;
@@ -56,17 +57,15 @@ public class AddQuestionTrueFalseFragment extends Fragment {
     private List<Topic> lTopics;
     ProgressDialog pDialog;
 
-
     public AddQuestionTrueFalseFragment(Context mContext, String mTypeId) {
         this.context = mContext;
         this.typeId = mTypeId;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Store list courses, topics, difficulty
+        // Store list question title, answers, courses, topics, difficulties
         lQuestionTitle = new ArrayList<>();
         lCourses = new ArrayList<>();
         lTopics = new ArrayList<>();
@@ -77,6 +76,17 @@ public class AddQuestionTrueFalseFragment extends Fragment {
         new GetData().execute();
     }
 
+    /**
+     * * Render components to GUI
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -186,7 +196,14 @@ public class AddQuestionTrueFalseFragment extends Fragment {
     public interface MyInterface {
         public void myMethod(boolean result);
     }
-
+    /**
+     * The AddQuestion AsyncTask to store json data (question title, question body,
+     * subquestions, answers) to database
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-17
+     */
     private class AddQuestion extends AsyncTask<Void, Void, Boolean> {
         private MyInterface listener;
         Context context;
@@ -278,7 +295,7 @@ public class AddQuestionTrueFalseFragment extends Fragment {
      *
      * @author  Phuc Pham N
      * @version 1.0
-     * @since   2020-08-05
+     * @since   2020-08-17
      */
     private class GetData extends AsyncTask<Void, Void, Void> {
         /**
@@ -286,7 +303,7 @@ public class AddQuestionTrueFalseFragment extends Fragment {
          *
          * @author  Phuc Pham N
          * @version 1.0
-         * @since   2020-08-05
+         * @since   2020-08-17
          */
         @Override
         protected void onPreExecute() {
@@ -305,7 +322,7 @@ public class AddQuestionTrueFalseFragment extends Fragment {
          * @param arg0 there are no argument
          * @author  Phuc Pham N
          * @version 1.0
-         * @since   2020-08-05
+         * @since   2020-08-17
          */
         @Override
         protected Void doInBackground(Void... arg0) {
@@ -361,7 +378,7 @@ public class AddQuestionTrueFalseFragment extends Fragment {
          * @param result
          * @author  Phuc Pham N
          * @version 1.0
-         * @since   2020-08-05
+         * @since   2020-08-17
          */
         @Override
         protected void onPostExecute(Void result) {
@@ -376,7 +393,7 @@ public class AddQuestionTrueFalseFragment extends Fragment {
      * Attach data to spinners
      * @author  Phuc Pham N
      * @version 1.0
-     * @since   2020-08-05
+     * @since   2020-08-17
      */
     private void populateSpinner() {
         //Get list course name and attach to course spinner

@@ -4,32 +4,32 @@ import android.app.ProgressDialog;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Course;
-import edu.tacoma.uw.csquizzer.model.Topic;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * The purpose of CourseFragment module is to list out courses and add action listener to recycler
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class CourseFragment extends Fragment implements SearchView.OnQueryTextListener{
     View rootView;
     private RecyclerView recyclerView;
@@ -153,7 +153,7 @@ public class CourseFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     /**
-     * ItemDecoration - thiết lập khoảng cách giữa các phần tử với nhau
+     * Add top margin only for the first item to avoid double space between items
      */
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         private final int mSpace;

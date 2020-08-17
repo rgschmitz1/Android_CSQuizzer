@@ -129,7 +129,7 @@ public class TopicFragment extends Fragment implements SearchView.OnQueryTextLis
         }
 
         /**
-         * Finish reading json data and attach them to recyler
+         * Finish reading json data and attach them to recycler
          * @param result
          * @author  Phuc Pham N
          * @version 1.0
@@ -145,7 +145,7 @@ public class TopicFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     /**
-     * ItemDecoration - thiết lập khoảng cách giữa các phần tử với nhau
+     * Add top margin only for the first item to avoid double space between items
      */
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         private final int mSpace;
@@ -167,7 +167,7 @@ public class TopicFragment extends Fragment implements SearchView.OnQueryTextLis
 
 
     /**
-     * Attach data to cycler
+     * Attach data to recycler
      * @author  Phuc Pham N
      * @version 1.0
      * @since   2020-08-05

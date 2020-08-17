@@ -9,27 +9,28 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Question;
 
-
+/**
+ * The QuestionListAdapter renders question information to recycler.
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-05
+ */
 public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapter.MyViewHolder> {
-    private List<Question> lQuestions = new ArrayList<>();
+    private List<Question> lQuestions;
     private List<Question> queryQuestions = new ArrayList<>();
     private Context mContext;
     public static final int TYPE1 = 0;
@@ -40,6 +41,15 @@ public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapte
         this.queryQuestions.addAll(lQuestions);
     }
 
+    /**
+     * Get question in a list at position, and return a type of question.
+     *
+     * @param position the current position of the recycler.
+     * @return type of question 0: true/ false, 1: single choice, 2: multiple choice
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-05
+     */
     @Override
     public int getItemViewType(int position) {
         if (position % 2 == 0)
@@ -48,6 +58,16 @@ public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapte
             return TYPE1;
     }
 
+    /**
+     * Based on type of question, render view on GUI
+     *
+     * @param parent MainActivity
+     * @param viewType type of question
+     * @return viewHolder
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-05
+     */
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -67,11 +87,22 @@ public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapte
         return new QuestionListAdapter.MyViewHolder(view);
     }
 
+    /**
+     * We have three templates and the different between
+     * them is type of questions (true/false, single choice, multiple choice)
+     * Render view on recycler.
+     *
+     * @param holder recycler
+     * @param position type of question
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-05
+     */
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Question question = lQuestions.get(position);
         holder.tvQuestionId.setText(question.getQuestionId() + ".");
-        holder.tvQuestionTitle.setText(question.getQuestionTitle());
+        holder.tvQuestionTitle.setText(" " + question.getQuestionTitle());
         holder.tvQuestionBody.setText(question.getQuestionBody());
         holder.tvCourseName.setText(question.getCourseName());
         holder.tvTopicDescription.setText(question.getTopicDescription());
@@ -149,23 +180,23 @@ public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapte
                     btnOK.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(final View view) {
-                            AsyncDeleteTask task = new AsyncDeleteTask(tvQuestionId.getText().toString(),
-                                    dialog, new MyInterface() {
-                                @Override
-                                public void myMethod(boolean result) {
-                                    if (result == true) {
-                                        Toast.makeText(mContext, "Delete question successfully", Toast.LENGTH_LONG).show();
-                                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                                        QuestionFragment questionFragment = new QuestionFragment();
-                                        activity.getSupportFragmentManager().beginTransaction()
-                                                .replace(R.id.fragment_container, questionFragment)
-                                                .commit();
-                                    } else {
-                                        Toast.makeText(mContext, "Delete question unsuccessfully", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
-                            task.execute();
+                        AsyncDeleteTask task = new AsyncDeleteTask(tvQuestionId.getText().toString(),
+                            dialog, new MyInterface() {
+                        @Override
+                        public void myMethod(boolean result) {
+                            if (result == true) {
+                                Toast.makeText(mContext, "Delete question successfully", Toast.LENGTH_LONG).show();
+                                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                                QuestionFragment questionFragment = new QuestionFragment();
+                                activity.getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.fragment_container, questionFragment)
+                                        .commit();
+                            } else {
+                                Toast.makeText(mContext, "Delete question unsuccessfully", Toast.LENGTH_LONG).show();
+                            }
+                            }
+                        });
+                        task.execute();
                         }
                     });
                     btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -182,13 +213,21 @@ public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapte
     public interface MyInterface {
         public void myMethod(boolean result);
     }
+
+    /**
+     * The AsyncDeleteTask class to delete a question
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-17
+     */
     private class AsyncDeleteTask extends AsyncTask<Void, Void, Boolean> {
         private MyInterface mListener;
         private String questionId;
         private AlertDialog dialog;
-        public AsyncDeleteTask(String mQuestionId, AlertDialog mdialog, MyInterface listener) {
+        public AsyncDeleteTask(String mQuestionId, AlertDialog mDialog, MyInterface listener) {
             this.questionId = mQuestionId.substring(0, mQuestionId.length() - 1);
-            this.dialog = mdialog;
+            this.dialog = mDialog;
             this.mListener  = listener;
         }
 

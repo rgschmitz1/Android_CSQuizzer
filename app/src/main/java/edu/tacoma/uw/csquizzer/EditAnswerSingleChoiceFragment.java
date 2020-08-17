@@ -4,10 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,26 +16,25 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Answer;
-import edu.tacoma.uw.csquizzer.model.Course;
-import edu.tacoma.uw.csquizzer.model.Difficulty;
 import edu.tacoma.uw.csquizzer.model.SubQuestion;
-import edu.tacoma.uw.csquizzer.model.Topic;
-import edu.tacoma.uw.csquizzer.model.Type;
 
+/**
+ * The purpose of EditAnswerSingleChoiceFragment module is to edit answers of a question
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class EditAnswerSingleChoiceFragment extends Fragment {
-
     private Context context;
     private String questionId;
     private String questionTitle;
@@ -80,6 +77,17 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
         }
     }
 
+    /**
+     * * Render components to GUI
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -103,53 +111,53 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
         btnUpdateAnswers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String idQuestion = tvQuestionId.getText().toString();
-                String idSubQuestion1 = "1";
-                String idSubQuestion2 = "2";
-                String idSubQuestion3 = "3";
-                String idSubQuestion4 = "4";
-                String textSubQuestion1 = etAnswer1.getText().toString();
-                String textSubQuestion2 = etAnswer2.getText().toString();
-                String textSubQuestion3 = etAnswer3.getText().toString();
-                String textSubQuestion4 = etAnswer4.getText().toString();;
-                String idAnswer = "1";
-                String textAnswer = radioAnswer1.getText().toString();
-                if(radioAnswer2.isChecked()) {
-                    textAnswer = radioAnswer2.getText().toString();
-                } else if(radioAnswer3.isChecked()) {
-                    textAnswer = radioAnswer3.getText().toString();
-                } else if (radioAnswer4.isChecked()) {
-                    textAnswer = radioAnswer4.getText().toString();
-                }
-                if((idQuestion.length() != 0) && (textSubQuestion1.length() != 0)
-                        && (textSubQuestion2.length() != 0) && (textSubQuestion3.length() != 0)
-                        && (textSubQuestion4.length() != 0) && (textAnswer.length() != 0)) {
-                    List<String> subQuestions = new ArrayList<>();
-                    subQuestions.add(textSubQuestion1);
-                    subQuestions.add(textSubQuestion2);
-                    subQuestions.add(textSubQuestion3);
-                    subQuestions.add(textSubQuestion4);
-                    if(checkUniqueInput(subQuestions)) {
-                        EditAnswer task = new EditAnswer(context, idQuestion, type, lastType, idSubQuestion1, idSubQuestion2,
-                                idSubQuestion3, idSubQuestion4, textSubQuestion1, textSubQuestion2,
-                                textSubQuestion3, textSubQuestion4, idAnswer, textAnswer,
-                                new MyInterface() {
-                            @Override
-                            public void myMethod(boolean result) {
-                                if (result == true) {
-                                    Toast.makeText(context, "Update answer successfully", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(context, "Update answer unsuccessfully", Toast.LENGTH_SHORT).show();
-                                }
+            String idQuestion = tvQuestionId.getText().toString();
+            String idSubQuestion1 = "1";
+            String idSubQuestion2 = "2";
+            String idSubQuestion3 = "3";
+            String idSubQuestion4 = "4";
+            String textSubQuestion1 = etAnswer1.getText().toString();
+            String textSubQuestion2 = etAnswer2.getText().toString();
+            String textSubQuestion3 = etAnswer3.getText().toString();
+            String textSubQuestion4 = etAnswer4.getText().toString();;
+            String idAnswer = "1";
+            String textAnswer = radioAnswer1.getText().toString();
+            if(radioAnswer2.isChecked()) {
+                textAnswer = radioAnswer2.getText().toString();
+            } else if(radioAnswer3.isChecked()) {
+                textAnswer = radioAnswer3.getText().toString();
+            } else if (radioAnswer4.isChecked()) {
+                textAnswer = radioAnswer4.getText().toString();
+            }
+            if((idQuestion.length() != 0) && (textSubQuestion1.length() != 0)
+                    && (textSubQuestion2.length() != 0) && (textSubQuestion3.length() != 0)
+                    && (textSubQuestion4.length() != 0) && (textAnswer.length() != 0)) {
+                List<String> subQuestions = new ArrayList<>();
+                subQuestions.add(textSubQuestion1);
+                subQuestions.add(textSubQuestion2);
+                subQuestions.add(textSubQuestion3);
+                subQuestions.add(textSubQuestion4);
+                if(checkUniqueInput(subQuestions)) {
+                    EditAnswer task = new EditAnswer(context, idQuestion, type, lastType,
+                            idSubQuestion1, idSubQuestion2, idSubQuestion3, idSubQuestion4,
+                            textSubQuestion1, textSubQuestion2, textSubQuestion3, textSubQuestion4,
+                            idAnswer, textAnswer, new MyInterface() {
+                        @Override
+                        public void myMethod(boolean result) {
+                            if (result == true) {
+                                Toast.makeText(context, "Update answer successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, "Update answer unsuccessfully", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                        task.execute();
-                    }else {
-                        Toast.makeText(context, "Please input unique answers", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(context, "Please input data for an answer", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    task.execute();
+                }else {
+                    Toast.makeText(context, "Please input unique answers", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(context, "Please input data for an answer", Toast.LENGTH_SHORT).show();
+            }
             }
         });
         btnCancel = rootView.findViewById(R.id.btn_CancelQuestion);
@@ -184,6 +192,13 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
         public void myMethod(boolean result);
     }
 
+    /**
+     * The EditAnswer AsyncTask to edit answers in database
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-17
+     */
     private class EditAnswer extends AsyncTask<Void, Void, Boolean> {
         private MyInterface mListener;
         Context context;
@@ -202,9 +217,10 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
         String answerText;
 
         public EditAnswer(Context mContext, String mQuestionId, String mTypeId, String mLastTypeId,
-                          String mSubQuestion1Id, String mSubQuestion2Id, String mSubQuestion3Id, String mSubQuestion4Id,
-                          String mSubQuestion1Text, String mSubQuestion2Text, String mSubQuestion3Text, String mSubQuestion4Text,
-                          String mAnswerId, String mAnswerText, MyInterface listener) {
+                          String mSubQuestion1Id, String mSubQuestion2Id, String mSubQuestion3Id,
+                          String mSubQuestion4Id, String mSubQuestion1Text, String mSubQuestion2Text,
+                          String mSubQuestion3Text, String mSubQuestion4Text, String mAnswerId,
+                          String mAnswerText, MyInterface listener) {
             this.context = mContext;
             this.questionId = mQuestionId;
             if(mTypeId.equals("True/False")) {
@@ -231,7 +247,7 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
             this.subQuestion4Text = mSubQuestion4Text;
             this.answerId = mAnswerId;
             this.answerText = mAnswerText;
-            this.mListener  = listener;
+            this.mListener = listener;
         }
         @Override
         protected Boolean doInBackground(Void... args) {
@@ -241,11 +257,13 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
                 Map<String, String> mDeleteSubquestion = new HashMap<>();
                 mDeleteSubquestion.put("qid", questionId);
                 JSONObject jsonDeleteSubquestion = new JSONObject(jsonParser.makeServiceCall(
-                        getString((R.string.delete_subquestions)), ServiceHandler.POST,mDeleteSubquestion));
+                        getString((R.string.delete_subquestions)),
+                        ServiceHandler.POST, mDeleteSubquestion));
                 Map<String, String> mDeleteAnswer = new HashMap<>();
                 mDeleteAnswer.put("qid", questionId);
                 JSONObject jsonDeleteAnswer = new JSONObject(jsonParser.makeServiceCall(
-                        getString((R.string.delete_answers)), ServiceHandler.POST,mDeleteAnswer));
+                        getString((R.string.delete_answers)),
+                        ServiceHandler.POST, mDeleteAnswer));
                 if (jsonDeleteSubquestion.getBoolean("success")
                                                 && jsonDeleteAnswer.getBoolean("success")) {
                     try {
@@ -254,39 +272,39 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
                         mUpdateQuestionType.put("type", typeId);
                         JSONObject jsonUpdateQuestionType = new JSONObject(jsonParser.makeServiceCall(
                                 getString((R.string.update_question_type)),
-                                ServiceHandler.POST,mUpdateQuestionType));
+                                ServiceHandler.POST, mUpdateQuestionType));
 
                         Map<String, String> mapConditionSubQuestion1 = new HashMap<>();
                         mapConditionSubQuestion1.put("qid", questionId);
                         mapConditionSubQuestion1.put("sid", subQuestion1Id);
                         mapConditionSubQuestion1.put("text", subQuestion1Text);
                         JSONObject jsonSubQuestion1 = new JSONObject(jsonParser.makeServiceCall(
-                                getString((R.string.add_subquestions)), ServiceHandler.POST,
-                                mapConditionSubQuestion1));
+                                getString((R.string.add_subquestions)),
+                                ServiceHandler.POST, mapConditionSubQuestion1));
 
                         Map<String, String> mapConditionSubQuestion2 = new HashMap<>();
                         mapConditionSubQuestion2.put("qid", questionId);
                         mapConditionSubQuestion2.put("sid", subQuestion2Id);
                         mapConditionSubQuestion2.put("text", subQuestion2Text);
                         JSONObject jsonSubQuestion2 = new JSONObject(jsonParser.makeServiceCall(
-                                getString((R.string.add_subquestions)), ServiceHandler.POST,
-                                mapConditionSubQuestion2));
+                                getString((R.string.add_subquestions)),
+                                ServiceHandler.POST, mapConditionSubQuestion2));
 
                         Map<String, String> mapConditionSubQuestion3 = new HashMap<>();
                         mapConditionSubQuestion3.put("qid", questionId);
                         mapConditionSubQuestion3.put("sid", subQuestion3Id);
                         mapConditionSubQuestion3.put("text", subQuestion3Text);
                         JSONObject jsonSubQuestion3 = new JSONObject(jsonParser.makeServiceCall(
-                                getString((R.string.add_subquestions)), ServiceHandler.POST,
-                                mapConditionSubQuestion3));
+                                getString((R.string.add_subquestions)),
+                                ServiceHandler.POST, mapConditionSubQuestion3));
 
                         Map<String, String> mapConditionSubQuestion4 = new HashMap<>();
                         mapConditionSubQuestion4.put("qid", questionId);
                         mapConditionSubQuestion4.put("sid", subQuestion4Id);
                         mapConditionSubQuestion4.put("text", subQuestion4Text);
                         JSONObject jsonSubQuestion4 = new JSONObject(jsonParser.makeServiceCall(
-                                getString((R.string.add_subquestions)), ServiceHandler.POST,
-                                mapConditionSubQuestion4));
+                                getString((R.string.add_subquestions)),
+                                ServiceHandler.POST, mapConditionSubQuestion4));
 
                         Map<String, String> mapConditionAnswer = new HashMap<>();
                         mapConditionAnswer.put("qid", questionId);
@@ -304,9 +322,12 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
                         JSONObject jsonAnswer = new JSONObject(jsonParser.makeServiceCall(
                                 getString((R.string.add_answers)),
                                 ServiceHandler.POST, mapConditionAnswer));
-                        if(jsonUpdateQuestionType.getBoolean("success") && jsonSubQuestion1.getBoolean("success")
-                                && jsonSubQuestion2.getBoolean("success") && jsonSubQuestion3.getBoolean("success")
-                                && jsonSubQuestion4.getBoolean("success") && jsonAnswer.getBoolean("success")) {
+                        if(jsonUpdateQuestionType.getBoolean("success")
+                                && jsonSubQuestion1.getBoolean("success")
+                                && jsonSubQuestion2.getBoolean("success")
+                                && jsonSubQuestion3.getBoolean("success")
+                                && jsonSubQuestion4.getBoolean("success")
+                                && jsonAnswer.getBoolean("success")) {
                             return true;
                         }
                     } catch (JSONException e) {
@@ -380,7 +401,11 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
         }
     }
 
-
+    /**
+     * Check unique answers
+     * @param inputStrings list of answers
+     * @return
+     */
     private boolean checkUniqueInput(List<String> inputStrings) {
         boolean checkUniqueness = true;
         for(int i = 0; i < inputStrings.size() - 1; i++) {
@@ -436,10 +461,12 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
             mapConditions.put("qid", questionId);
             // Read courses using GET METHOD
             String jsonSubquestions = jsonParser.makeServiceCall(
-                    getString((R.string.get_subquestions)), ServiceHandler.GET, mapConditions);
+                    getString((R.string.get_subquestions)),
+                    ServiceHandler.GET, mapConditions);
             // Read topics using GET METHOD
             String jsonAnswer = jsonParser.makeServiceCall(
-                    getString((R.string.get_answers)), ServiceHandler.GET, mapConditions);
+                    getString((R.string.get_answers)),
+                    ServiceHandler.GET, mapConditions);
             if (jsonSubquestions != null && jsonAnswer != null) {
                 try {
                     //Convert courses data string to JSON

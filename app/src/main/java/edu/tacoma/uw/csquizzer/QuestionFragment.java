@@ -27,6 +27,13 @@ import edu.tacoma.uw.csquizzer.model.Question;
 import edu.tacoma.uw.csquizzer.model.SubQuestion;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * The purpose of QuestionFragment module is to list out question and add action listener to recycler
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class QuestionFragment extends Fragment implements SearchView.OnQueryTextListener{
     View rootView;
     private RecyclerView recyclerView;
@@ -185,7 +192,7 @@ public class QuestionFragment extends Fragment implements SearchView.OnQueryText
     }
 
     /**
-     * ItemDecoration - thiết lập khoảng cách giữa các phần tử với nhau
+     * Add top margin only for the first item to avoid double space between items
      */
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         private final int mSpace;

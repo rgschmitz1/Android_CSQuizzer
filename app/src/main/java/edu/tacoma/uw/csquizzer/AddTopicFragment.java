@@ -3,10 +3,8 @@ package edu.tacoma.uw.csquizzer;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +16,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 
+/**
+ * The purpose of AddTopicFragment module is to add a new topic to database
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class AddTopicFragment extends Fragment {
     ImageButton tvBackToList;
     EditText tvTopicDescription;
@@ -32,6 +36,17 @@ public class AddTopicFragment extends Fragment {
         this.context = mContext;
     }
 
+    /**
+     * * Render components to GUI
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,6 +102,13 @@ public class AddTopicFragment extends Fragment {
     public interface MyInterface {
         public void myMethod(boolean result);
     }
+    /**
+     * The AddTopic AsyncTask to store json data (topic title, topic description) to database
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-17
+     */
     private class AddTopic extends AsyncTask<Void, Void, Boolean> {
         private MyInterface mListener;
         Context context;

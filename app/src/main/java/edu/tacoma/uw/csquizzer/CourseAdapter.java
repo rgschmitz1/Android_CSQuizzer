@@ -9,27 +9,29 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Course;
-import edu.tacoma.uw.csquizzer.model.Topic;
 
+/**
+ * The purpose of CourseAdapter module is to list out courses and perform actions in recyclerview
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHolder> {
-    private List<Course> lCourses = new ArrayList<>();
+    private List<Course> lCourses;
     private List<Course> queryCourses = new ArrayList<>();
     private Context mContext;
     public static final int TYPE1 = 0;
@@ -41,6 +43,15 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
         this.queryCourses.addAll(lCourses);
     }
 
+    /**
+     * Get question in a list at position, and return a type of question.
+     *
+     * @param position the current position of the recycler.
+     * @return layout of a item
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public int getItemViewType(int position) {
         if (position % 2 == 0)
@@ -49,6 +60,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
             return TYPE1;
     }
 
+    /**
+     * Render view on GUI
+     *
+     * @param parent MainActivity
+     * @param viewType type of question
+     * @return viewHolder
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-05
+     */
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -68,6 +89,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
         return new CourseAdapter.MyViewHolder(view);
     }
 
+    /**
+     * We have two templates and the different between them is color
+     * Render view on recycler.
+     *
+     * @param holder recycler
+     * @param position type of question
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Course course = lCourses.get(position);
@@ -107,7 +138,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
                 @Override
                 public void onClick(View v) {
                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                    EditCourseFragment editCourseFragment = new EditCourseFragment(mContext, tvCourseId.getText().toString(), tvCourseName.getText().toString());
+                    EditCourseFragment editCourseFragment = new EditCourseFragment(mContext,
+                            tvCourseId.getText().toString(), tvCourseName.getText().toString());
                     activity.getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container, editCourseFragment)
                             .commit();
@@ -132,14 +164,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
                                 @Override
                                 public void myMethod(boolean result) {
                                     if (result == true) {
-                                        Toast.makeText(mContext, "Delete course successfully", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(mContext, "Delete course successfully",
+                                                Toast.LENGTH_LONG).show();
                                         AppCompatActivity activity = (AppCompatActivity) view.getContext();
                                         CourseFragment courseFragment = new CourseFragment();
                                         activity.getSupportFragmentManager().beginTransaction()
                                                 .replace(R.id.fragment_container, courseFragment)
                                                 .commit();
                                     } else {
-                                        Toast.makeText(mContext, "Delete course unsuccessfully", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(mContext, "Delete course unsuccessfully",
+                                                Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
@@ -159,6 +193,14 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
     public interface MyInterface {
         public void myMethod(boolean result);
     }
+
+    /**
+     * The AsyncDeleteTask AsyncTask to delete a course to database
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-17
+     */
     private class AsyncDeleteTask extends AsyncTask<Void, Void, Boolean> {
         private MyInterface mListener;
         private String courseId;
@@ -177,8 +219,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
                 mapConditions.put("courseid", courseId);
                 // Read courses using GET METHOD
                 JSONObject jsonQuestionObj = new JSONObject(jsonParser.makeServiceCall(
-                        mContext.getString((R.string.get_questions_by_course_id)), ServiceHandler.GET,
-                        mapConditions));
+                        mContext.getString((R.string.get_questions_by_course_id)),
+                        ServiceHandler.GET, mapConditions));
                 if (jsonQuestionObj != null) {
                     //Get list questions
                     JSONArray arrQuestions = jsonQuestionObj.getJSONArray("names");
@@ -192,15 +234,18 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
                         Map<String, String> mQuestion = new HashMap<>();
                         mQuestion.put("qid", arrQuestionId.get(i));
                         JSONObject jsonDeleteSubquestion = new JSONObject(jsonParser.makeServiceCall(
-                                mContext.getString((R.string.delete_subquestions)), ServiceHandler.POST,mQuestion));
+                                mContext.getString((R.string.delete_subquestions)),
+                                ServiceHandler.POST,mQuestion));
                         JSONObject jsonDeleteAnswer = new JSONObject(jsonParser.makeServiceCall(
-                                mContext.getString((R.string.delete_answers)), ServiceHandler.POST,mQuestion));
+                                mContext.getString((R.string.delete_answers)),
+                                ServiceHandler.POST,mQuestion));
                         if (jsonDeleteSubquestion.getBoolean("success")
                                 && jsonDeleteAnswer.getBoolean("success")) {
                             Map<String, String> mQuestionId = new HashMap<>();
                             mQuestionId.put("id", arrQuestionId.get(i));
                             JSONObject jsonDeleteQuestion = new JSONObject(jsonParser.makeServiceCall(
-                                    mContext.getString((R.string.delete_questions)), ServiceHandler.POST,mQuestionId));
+                                    mContext.getString((R.string.delete_questions)),
+                                    ServiceHandler.POST,mQuestionId));
                             if (jsonDeleteQuestion.getBoolean("success")) {
                                 deleteAllSubAns = true;
                             } else {
@@ -217,7 +262,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
                         Map<String, String> mCourseId = new HashMap<>();
                         mCourseId.put("id", courseId);
                         JSONObject jsonDeleteObj = new JSONObject(jsonParser.makeServiceCall(
-                                mContext.getString((R.string.delete_courses)), ServiceHandler.POST, mCourseId));
+                                mContext.getString((R.string.delete_courses)),
+                                ServiceHandler.POST, mCourseId));
                         if(jsonDeleteObj != null) {
                             dialog.cancel();
                             return true;

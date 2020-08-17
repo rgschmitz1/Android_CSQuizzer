@@ -4,10 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,26 +15,28 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Course;
 import edu.tacoma.uw.csquizzer.model.Difficulty;
 import edu.tacoma.uw.csquizzer.model.Topic;
-import edu.tacoma.uw.csquizzer.model.Type;
 
-
+/**
+ * The purpose of AddQuestionMultipleChoiceFragment module is to add a new multiple choice question
+ * to database
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class AddQuestionMultipleChoiceFragment extends Fragment {
     private ImageButton tvBackToList;
     private EditText etQuestionTitle;
@@ -71,7 +71,7 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Store list courses, topics, difficulty
+        // Store list question title, answers, courses, topics, difficulties
         lQuestionTitle = new ArrayList<>();
         lAnswers = new ArrayList<>();
         lCourses = new ArrayList<>();
@@ -83,6 +83,17 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
         new GetData().execute();
     }
 
+    /**
+     * * Render components to GUI
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,79 +117,79 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
         btnAddQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String titleQuestion = etQuestionTitle.getText().toString();
-                boolean checkTitleMatch = true;
-                for (String title : lQuestionTitle) {
-                    if(title.equals(titleQuestion)) {
-                        checkTitleMatch = false;
-                        break;
+            final String titleQuestion = etQuestionTitle.getText().toString();
+            boolean checkTitleMatch = true;
+            for (String title : lQuestionTitle) {
+                if(title.equals(titleQuestion)) {
+                    checkTitleMatch = false;
+                    break;
+                }
+            }
+            final String bodyQuestion = etQuestionBody.getText().toString();
+            final String getAnswer1 = etAnswer1.getText().toString();
+            final String getAnswer2 = etAnswer2.getText().toString();
+            final String getAnswer3 = etAnswer3.getText().toString();
+            final String getAnswer4 = etAnswer4.getText().toString();
+            final String getCourseName = spinnerCourses.getSelectedItem().toString();
+            final String getTopicDescription = spinnerTopics.getSelectedItem().toString();
+            final String getDifficultyDescription = spinnerDifficulties.getSelectedItem().toString();
+            if(cbAnswer1.isChecked()) {
+                lAnswers.add(etAnswer1.getText().toString());
+            }
+            if (cbAnswer2.isChecked()) {
+                lAnswers.add(etAnswer2.getText().toString());
+            }
+            if (cbAnswer3.isChecked()) {
+                lAnswers.add(etAnswer3.getText().toString());
+            }
+            if (cbAnswer4.isChecked()) {
+                lAnswers.add(etAnswer4.getText().toString());
+            }
+            if(checkTitleMatch) {
+                if((titleQuestion.length() != 0) && (bodyQuestion.length() != 0)
+                        && (getAnswer1.length() != 0) && (getAnswer2.length() != 0)
+                        && (getAnswer3.length() != 0) && (getAnswer4.length() != 0)
+                        && !getCourseName.equals("--- Choose Course ---")
+                        && !getTopicDescription.equals("--- Choose Topic ---")
+                        && !getDifficultyDescription.equals("--- Choose Difficulty ---")) {
+                    String idCourse = "";
+                    for (Course course : lCourses) {
+                        if(course.getCourseName().equals(getCourseName)) {
+                            idCourse = Integer.toString(course.getCourseId());
+                        }
                     }
-                }
-                final String bodyQuestion = etQuestionBody.getText().toString();
-                final String getAnswer1 = etAnswer1.getText().toString();
-                final String getAnswer2 = etAnswer2.getText().toString();
-                final String getAnswer3 = etAnswer3.getText().toString();
-                final String getAnswer4 = etAnswer4.getText().toString();
-                final String getCourseName = spinnerCourses.getSelectedItem().toString();
-                final String getTopicDescription = spinnerTopics.getSelectedItem().toString();
-                final String getDifficultyDescription = spinnerDifficulties.getSelectedItem().toString();
-                if(cbAnswer1.isChecked()) {
-                    lAnswers.add(etAnswer1.getText().toString());
-                }
-                if (cbAnswer2.isChecked()) {
-                    lAnswers.add(etAnswer2.getText().toString());
-                }
-                if (cbAnswer3.isChecked()) {
-                    lAnswers.add(etAnswer3.getText().toString());
-                }
-                if (cbAnswer4.isChecked()) {
-                    lAnswers.add(etAnswer4.getText().toString());
-                }
-                if(checkTitleMatch) {
-                    if((titleQuestion.length() != 0) && (bodyQuestion.length() != 0)
-                            && (getAnswer1.length() != 0) && (getAnswer2.length() != 0)
-                            && (getAnswer3.length() != 0) && (getAnswer4.length() != 0)
-                            && !getCourseName.equals("--- Choose Course ---")
-                            && !getTopicDescription.equals("--- Choose Topic ---")
-                            && !getDifficultyDescription.equals("--- Choose Difficulty ---")) {
-                        String idCourse = "";
-                        for (Course course : lCourses) {
-                            if(course.getCourseName().equals(getCourseName)) {
-                                idCourse = Integer.toString(course.getCourseId());
-                            }
+                    String idTopic = "";
+                    for (Topic topic : lTopics) {
+                        if(topic.getTopicDescription().equals(getTopicDescription)) {
+                            idTopic = Integer.toString(topic.getTopicId());
                         }
-                        String idTopic = "";
-                        for (Topic topic : lTopics) {
-                            if(topic.getTopicDescription().equals(getTopicDescription)) {
-                                idTopic = Integer.toString(topic.getTopicId());
-                            }
-                        }
-                        String idDifficulty = "1";
-                        if(getDifficultyDescription.equals("Medium")) {
-                            idDifficulty = "2";
-                        } else if (getDifficultyDescription.equals("Hard")) {
-                            idDifficulty = "3";
-                        }
-                        AddQuestion task = new AddQuestion(context, titleQuestion, bodyQuestion,
-                                getAnswer1, getAnswer2, getAnswer3, getAnswer4,
-                                idCourse, idTopic, idDifficulty, typeId, lAnswers,
-                                new MyInterface() {
-                                    @Override
-                                    public void myMethod(boolean result) {
-                                        if (result == true) {
-                                            Toast.makeText(context, "Add question successfully", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(context, "Add question unsuccessfully", Toast.LENGTH_SHORT).show();
-                                        }
+                    }
+                    String idDifficulty = "1";
+                    if(getDifficultyDescription.equals("Medium")) {
+                        idDifficulty = "2";
+                    } else if (getDifficultyDescription.equals("Hard")) {
+                        idDifficulty = "3";
+                    }
+                    AddQuestion task = new AddQuestion(context, titleQuestion, bodyQuestion,
+                            getAnswer1, getAnswer2, getAnswer3, getAnswer4,
+                            idCourse, idTopic, idDifficulty, typeId, lAnswers,
+                            new MyInterface() {
+                                @Override
+                                public void myMethod(boolean result) {
+                                    if (result == true) {
+                                        Toast.makeText(context, "Add question successfully", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(context, "Add question unsuccessfully", Toast.LENGTH_SHORT).show();
                                     }
-                                });
-                        task.execute();
-                    } else {
-                        Toast.makeText(context, "Please input data for a question", Toast.LENGTH_SHORT).show();
-                    }
+                                }
+                            });
+                    task.execute();
                 } else {
-                    Toast.makeText(context, "Title question does exist in database", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Please input data for a question", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(context, "Title question does exist in database", Toast.LENGTH_SHORT).show();
+            }
             }
         });
         btnCancel = rootView.findViewById(R.id.btn_CancelQuestion);
@@ -217,7 +228,14 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
     public interface MyInterface {
         public void myMethod(boolean result);
     }
-
+    /**
+     * The AddQuestion AsyncTask to store json data (question title, question body,
+     * subquestions, answers) to database
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-17
+     */
     private class AddQuestion extends AsyncTask<Void, Void, Boolean> {
         private MyInterface listener;
         Context context;
@@ -231,7 +249,7 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
         String topicId;
         String difficultyId;
         String typeId;
-        List<String> lAnswers = new ArrayList<>();
+        List<String> lAnswers;
 
         public AddQuestion(Context mContext, String mQuestionTitle,  String mQuestionBody,
                            String mAnswer1, String mAnswer2, String mAnswer3, String mAnswer4,
@@ -251,8 +269,6 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
             this.lAnswers = mLAnswers;
             this.listener  = mListener;
         }
-
-
 
         @Override
         protected Boolean doInBackground(Void... args) {
@@ -319,10 +335,10 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
                         }
 
                         if(jsonAddAnswer1.getBoolean("success")
-                                && jsonAddAnswer2.getBoolean("success")
-                                && jsonAddAnswer3.getBoolean("success")
-                                && jsonAddAnswer4.getBoolean("success")
-                                && checkInsertAnswersSuccess) {
+                            && jsonAddAnswer2.getBoolean("success")
+                            && jsonAddAnswer3.getBoolean("success")
+                            && jsonAddAnswer4.getBoolean("success")
+                            && checkInsertAnswersSuccess) {
                             return true;
                         }
                     }
@@ -345,7 +361,7 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
      *
      * @author  Phuc Pham N
      * @version 1.0
-     * @since   2020-08-05
+     * @since   2020-08-17
      */
     private class GetData extends AsyncTask<Void, Void, Void> {
         /**
@@ -353,7 +369,7 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
          *
          * @author  Phuc Pham N
          * @version 1.0
-         * @since   2020-08-05
+         * @since   2020-08-17
          */
         @Override
         protected void onPreExecute() {
@@ -372,7 +388,7 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
          * @param arg0 there are no argument
          * @author  Phuc Pham N
          * @version 1.0
-         * @since   2020-08-05
+         * @since   2020-08-17
          */
         @Override
         protected Void doInBackground(Void... arg0) {
@@ -428,7 +444,7 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
          * @param result
          * @author  Phuc Pham N
          * @version 1.0
-         * @since   2020-08-05
+         * @since   2020-08-17
          */
         @Override
         protected void onPostExecute(Void result) {
@@ -443,7 +459,7 @@ public class AddQuestionMultipleChoiceFragment extends Fragment {
      * Attach data to spinners
      * @author  Phuc Pham N
      * @version 1.0
-     * @since   2020-08-05
+     * @since   2020-08-17
      */
     private void populateSpinner() {
         //Get list course name and attach to course spinner

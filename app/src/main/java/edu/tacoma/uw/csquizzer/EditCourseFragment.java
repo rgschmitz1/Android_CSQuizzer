@@ -11,18 +11,21 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 
+/**
+ * The purpose of EditCourseFragment module is to edit course
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class EditCourseFragment extends Fragment {
     TextView tvCourseId;
     ImageButton tvBackToList;
@@ -38,6 +41,17 @@ public class EditCourseFragment extends Fragment {
         this.courseName = mCourseName;
     }
 
+    /**
+     * * Render components to GUI
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,18 +111,24 @@ public class EditCourseFragment extends Fragment {
         public void myMethod(boolean result);
     }
 
+    /**
+     * The EditCourse AsyncTask to edit course in database
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-17
+     */
     private class EditCourse extends AsyncTask<Void, Void, Boolean> {
         private MyInterface mListener;
         Context context;
         String courseId;
         String courseName;
 
-
         public EditCourse(Context mContext, String mCourseId, String mCourseName, MyInterface listener) {
             this.context = mContext;
             this.courseId = mCourseId;
             this.courseName = mCourseName;
-            this.mListener  = listener;
+            this.mListener = listener;
         }
         @Override
         protected Boolean doInBackground(Void... args) {

@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +30,13 @@ import edu.tacoma.uw.csquizzer.model.Difficulty;
 import edu.tacoma.uw.csquizzer.model.Topic;
 import edu.tacoma.uw.csquizzer.model.Type;
 
+/**
+ * The purpose of EditQuestionFragment module is to edit a question
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class EditQuestionFragment extends Fragment {
     private TextView tvQuestionId;
     private ImageButton tvBackToList;
@@ -69,6 +75,15 @@ public class EditQuestionFragment extends Fragment {
         this.typeDescription = typeDescription;
     }
 
+    /**
+     * * Render components to GUI
+     *
+     * @param savedInstanceState
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,43 +148,43 @@ public class EditQuestionFragment extends Fragment {
                         && !topic.equals("--- Choose Topic ---")
                         && !difficulty.equals("--- Choose Difficulty ---")
                         && !type.equals("--- Choose Type ---")) {
-                    EditQuestion task = new EditQuestion(context, idQuestion, titleQuestion, bodyQuestion,
-                            course, topic, difficulty, new MyInterface() {
+                    EditQuestion task = new EditQuestion(context, idQuestion, titleQuestion,
+                            bodyQuestion, course, topic, difficulty, new MyInterface() {
                         @Override
                         public void myMethod(boolean result) {
-                                if (result == true) {
-                                    if(type.equals("True/False")) {
-                                        EditAnswerTrueFalseFragment editAnswerTrueFalseFragment =
-                                                new EditAnswerTrueFalseFragment(
-                                                        context, idQuestion, titleQuestion,
-                                                        bodyQuestion, type, typeDescription);
-                                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                        //Replace current fragment with a show question fragment
-                                        ft.replace(R.id.fragment_container, editAnswerTrueFalseFragment);
-                                        ft.commit();
-                                    } else if (type.equals("Single Choice")) {
-                                        EditAnswerSingleChoiceFragment editAnswerSingleChoiceFragment =
-                                                new EditAnswerSingleChoiceFragment(
-                                                        context, idQuestion, titleQuestion,
-                                                        bodyQuestion, type, typeDescription);
-                                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                        //Replace current fragment with a show question fragment
-                                        ft.replace(R.id.fragment_container, editAnswerSingleChoiceFragment);
-                                        ft.commit();
-                                    } else if (type.equals("Multiple Choice")) {
-                                        EditAnswerMultipleChoiceFragment editAnswerMultipleChoiceFragment =
-                                                new EditAnswerMultipleChoiceFragment(
-                                                        context, idQuestion, titleQuestion,
-                                                        bodyQuestion, type, typeDescription);
-                                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                        //Replace current fragment with a show question fragment
-                                        ft.replace(R.id.fragment_container, editAnswerMultipleChoiceFragment);
-                                        ft.commit();
-                                    }
-                                } else {
-                                    Toast.makeText(context, "Update question unsuccessfully", Toast.LENGTH_SHORT).show();
+                            if (result == true) {
+                                if(type.equals("True/False")) {
+                                    EditAnswerTrueFalseFragment editAnswerTrueFalseFragment =
+                                            new EditAnswerTrueFalseFragment(
+                                                    context, idQuestion, titleQuestion,
+                                                    bodyQuestion, type, typeDescription);
+                                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                    //Replace current fragment with a show question fragment
+                                    ft.replace(R.id.fragment_container, editAnswerTrueFalseFragment);
+                                    ft.commit();
+                                } else if (type.equals("Single Choice")) {
+                                    EditAnswerSingleChoiceFragment editAnswerSingleChoiceFragment =
+                                            new EditAnswerSingleChoiceFragment(
+                                                    context, idQuestion, titleQuestion,
+                                                    bodyQuestion, type, typeDescription);
+                                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                    //Replace current fragment with a show question fragment
+                                    ft.replace(R.id.fragment_container, editAnswerSingleChoiceFragment);
+                                    ft.commit();
+                                } else if (type.equals("Multiple Choice")) {
+                                    EditAnswerMultipleChoiceFragment editAnswerMultipleChoiceFragment =
+                                            new EditAnswerMultipleChoiceFragment(
+                                                    context, idQuestion, titleQuestion,
+                                                    bodyQuestion, type, typeDescription);
+                                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                    //Replace current fragment with a show question fragment
+                                    ft.replace(R.id.fragment_container, editAnswerMultipleChoiceFragment);
+                                    ft.commit();
                                 }
+                            } else {
+                                Toast.makeText(context, "Update question unsuccessfully", Toast.LENGTH_SHORT).show();
                             }
+                        }
                     });
                     task.execute();
                 } else {
@@ -203,6 +218,13 @@ public class EditQuestionFragment extends Fragment {
         public void myMethod(boolean result);
     }
 
+    /**
+     * The EditQuestion AsyncTask to edit a question in database
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-17
+     */
     private class EditQuestion extends AsyncTask<Void, Void, Boolean> {
         private MyInterface mListener;
         Context context;
@@ -257,7 +279,8 @@ public class EditQuestionFragment extends Fragment {
             mapConditions.put("difficulty", idDifficulty);
 
             String jsonQuestion = jsonParser.makeServiceCall(
-                    getString((R.string.update_questions)), ServiceHandler.POST,mapConditions);
+                    getString((R.string.update_questions)),
+                    ServiceHandler.POST,mapConditions);
             if (jsonQuestion != null) {
                 try {
                     JSONObject jsonQuestionObj = new JSONObject(jsonQuestion);
@@ -317,10 +340,12 @@ public class EditQuestionFragment extends Fragment {
             ServiceHandler jsonParser = new ServiceHandler();
             // Read courses using GET METHOD
             String jsonCourse = jsonParser.makeServiceCall(
-                    getString((R.string.get_courses)), ServiceHandler.GET);
+                    getString((R.string.get_courses)),
+                    ServiceHandler.GET);
             // Read topics using GET METHOD
             String jsonTopic = jsonParser.makeServiceCall(
-                    getString((R.string.get_topics)), ServiceHandler.GET);
+                    getString((R.string.get_topics)),
+                    ServiceHandler.GET);
 
             if (jsonCourse != null && jsonTopic != null) {
                 try {
@@ -406,14 +431,16 @@ public class EditQuestionFragment extends Fragment {
         }
 
         // Creating adapter for spinner
-        ArrayAdapter<String> spinnerCourseAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, courseNames);
+        ArrayAdapter<String> spinnerCourseAdapter = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_item, courseNames);
         spinnerCourseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // attaching data adapter to spinner
         spinnerCourses.setAdapter(spinnerCourseAdapter);
         spinnerCourses.setSelection(coursePos);
 
         // Creating adapter for spinner
-        ArrayAdapter<String> spinnerTopicAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, topicDescriptions);
+        ArrayAdapter<String> spinnerTopicAdapter = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_item, topicDescriptions);
         spinnerTopicAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // attaching data adapter to spinner
         spinnerTopics.setAdapter(spinnerTopicAdapter);

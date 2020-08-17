@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 
+/**
+ * The purpose of EditTopicFragment module is to edit a topic
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class EditTopicFragment extends Fragment {
     TextView tvTopicId;
     ImageButton tvBackToList;
@@ -36,6 +41,17 @@ public class EditTopicFragment extends Fragment {
         this.topicDescription = mTopicDescription;
     }
 
+    /**
+     * * Render components to GUI
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,6 +111,13 @@ public class EditTopicFragment extends Fragment {
         public void myMethod(boolean result);
     }
 
+    /**
+     * The EditTopic AsyncTask to edit topic in database
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-17
+     */
     private class EditTopic extends AsyncTask<Void, Void, Boolean> {
         private MyInterface mListener;
         Context context;
@@ -115,7 +138,8 @@ public class EditTopicFragment extends Fragment {
             mapConditions.put("id", topicId);
             mapConditions.put("description", topicDescription);
             String jsonTopic = jsonParser.makeServiceCall(
-                    getString((R.string.update_topics)), ServiceHandler.POST,mapConditions);
+                    getString((R.string.update_topics)),
+                    ServiceHandler.POST,mapConditions);
             if (jsonTopic != null) {
                 try {
                     JSONObject jsonTopicObj = new JSONObject(jsonTopic);

@@ -10,18 +10,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 
+/**
+ * The purpose of AddCourseFragment module is to add a new course to database
+ *
+ * @author  Phuc Pham N
+ * @version 1.0
+ * @since   2020-08-17
+ */
 public class AddCourseFragment extends Fragment {
     ImageButton tvBackToList;
     EditText tvCourseName;
@@ -33,6 +36,17 @@ public class AddCourseFragment extends Fragment {
         this.context = mContext;
     }
 
+    /**
+     * * Render components to GUI
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view
+     *
+     * @author  Phuc Pham N
+     * @since   2020-08-17
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,9 +67,9 @@ public class AddCourseFragment extends Fragment {
                         @Override
                         public void myMethod(boolean result) {
                             if (result == true) {
-                                Toast.makeText(context, "Update course successfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Add course successfully", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(context, "Update course unsuccessfully", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Add course unsuccessfully", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -88,6 +102,13 @@ public class AddCourseFragment extends Fragment {
         public void myMethod(boolean result);
     }
 
+    /**
+     * The AddCourse AsyncTask to store json data (course id, course name) to database
+     *
+     * @author  Phuc Pham N
+     * @version 1.0
+     * @since   2020-08-17
+     */
     private class AddCourse extends AsyncTask<Void, Void, Boolean> {
         private MyInterface mListener;
         Context context;

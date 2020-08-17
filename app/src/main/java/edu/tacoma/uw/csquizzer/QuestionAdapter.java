@@ -50,7 +50,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
     /**
      * Get question in a list at position, and return a type of question.
      *
-     * @param position the current position of the recyler.
+     * @param position the current position of the recycler.
      * @return type of question 0: true/ false, 1: single choice, 2: multiple choice
      *
      * @author  Phuc Pham N
@@ -98,7 +98,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
     /**
      * We have three templates and the different between
      * them is type of questions (true/false, single choice, multiple choice)
-     * Render view on recyler.
+     * Render view on recycler.
      *
      * @param holder recycler
      * @param position type of question
@@ -125,15 +125,51 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             holder.rbTrue.setText(R.string.tv_true);
             holder.rbFalse.setText(R.string.tv_false);
         } else if (question.getTypeDescription().equals("Single Choice")) {
-            holder.rbSubQuestion1.setText(question.getListSubQuestions().get(0).getSubQuestionText());
-            holder.rbSubQuestion2.setText(question.getListSubQuestions().get(1).getSubQuestionText());
-            holder.rbSubQuestion3.setText(question.getListSubQuestions().get(2).getSubQuestionText());
-            holder.rbSubQuestion4.setText(question.getListSubQuestions().get(3).getSubQuestionText());
+            if(question.getListSubQuestions().get(0) == null) {
+                holder.rbSubQuestion1.setText("Please report question error");
+            } else {
+                holder.rbSubQuestion1.setText(question.getListSubQuestions().get(0).getSubQuestionText());
+            }
+
+            if(question.getListSubQuestions().get(1) == null) {
+                holder.rbSubQuestion2.setText("Please report question error");
+            } else {
+                holder.rbSubQuestion2.setText(question.getListSubQuestions().get(1).getSubQuestionText());
+            }
+            if(question.getListSubQuestions().get(2) == null) {
+                holder.rbSubQuestion3.setText("Please report question error");
+            } else {
+                holder.rbSubQuestion3.setText(question.getListSubQuestions().get(2).getSubQuestionText());
+            }
+
+            if (question.getListSubQuestions().get(3) == null) {
+                holder.rbSubQuestion4.setText("Please report question error");
+            } else {
+                holder.rbSubQuestion4.setText(question.getListSubQuestions().get(3).getSubQuestionText());
+            }
         } else if (lQuestions.get(position).getTypeDescription().equals("Multiple Choice")) {
-            holder.cbSubQuestion1.setText(question.getListSubQuestions().get(0).getSubQuestionText());
-            holder.cbSubQuestion2.setText(question.getListSubQuestions().get(1).getSubQuestionText());
-            holder.cbSubQuestion3.setText(question.getListSubQuestions().get(2).getSubQuestionText());
-            holder.cbSubQuestion4.setText(question.getListSubQuestions().get(3).getSubQuestionText());
+            if(question.getListSubQuestions().get(0) == null) {
+                holder.cbSubQuestion1.setText("Please report question error");
+            } else {
+                holder.cbSubQuestion1.setText(question.getListSubQuestions().get(0).getSubQuestionText());
+            }
+
+            if(question.getListSubQuestions().get(1) == null) {
+                holder.cbSubQuestion2.setText("Please report question error");
+            } else {
+                holder.cbSubQuestion2.setText(question.getListSubQuestions().get(1).getSubQuestionText());
+            }
+            if(question.getListSubQuestions().get(2) == null) {
+                holder.cbSubQuestion3.setText("Please report question error");
+            } else {
+                holder.cbSubQuestion3.setText(question.getListSubQuestions().get(2).getSubQuestionText());
+            }
+
+            if (question.getListSubQuestions().get(3) == null) {
+                holder.cbSubQuestion4.setText("Please report question error");
+            } else {
+                holder.cbSubQuestion4.setText(question.getListSubQuestions().get(3).getSubQuestionText());
+            }
         }
     }
 
@@ -193,122 +229,122 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             btnReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-                    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    builder.setView(inflater.inflate(R.layout.dialog_report, null));
-                    final AlertDialog dialog = builder.create();
-                    dialog.show();
-                    final EditText etReport = dialog.findViewById(R.id.et_report);
-                    final Button btnOK = dialog.findViewById(R.id.btn_ok);
-                    final Button btnCancel = dialog.findViewById(R.id.btn_cancel);
-                    btnOK.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                        if(etReport.getText().toString().length() > 0) {
-                            AsyncConnectTask task = new AsyncConnectTask(
-                                    tvQuestionId.getText().toString(),
-                                    tvQuestionTitle.getText().toString(),
-                                    etReport.getText().toString(), dialog);
-                            task.execute();
-                            Toast.makeText(mContext, "Send report successful", Toast.LENGTH_SHORT)
-                                    .show();
-                        } else {
-                            Toast.makeText(mContext, "Please input message", Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                        }
-                    });
-                    btnCancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            dialog.cancel();
-                        }
-                    });
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                builder.setView(inflater.inflate(R.layout.dialog_report, null));
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+                final EditText etReport = dialog.findViewById(R.id.et_report);
+                final Button btnOK = dialog.findViewById(R.id.btn_ok);
+                final Button btnCancel = dialog.findViewById(R.id.btn_cancel);
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                    if(etReport.getText().toString().length() > 0) {
+                        AsyncConnectTask task = new AsyncConnectTask(
+                                tvQuestionId.getText().toString(),
+                                tvQuestionTitle.getText().toString(),
+                                etReport.getText().toString(), dialog);
+                        task.execute();
+                        Toast.makeText(mContext, "Send report successful", Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        Toast.makeText(mContext, "Please input message", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
                 }
             });
 
             btnShowAnswer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // Disable the check answer button once the user selects it
-                    Map<String, Question> mQuestions = convertListToMapOfQuestions(lQuestions);
-                    List<Answer> answer = mQuestions.get(tvQuestionId.getText().toString()).getListAnswers();
-                    String answerText = answer.get(0).getAnswerText();
-                    List<RadioButton> radioButtons = new ArrayList<>();
-                    final int green = mContext.getResources().getColor(R.color.Green);
-                    final int red = mContext.getResources().getColor(R.color.Red);
+                // Disable the check answer button once the user selects it
+                Map<String, Question> mQuestions = convertListToMapOfQuestions(lQuestions);
+                List<Answer> answer = mQuestions.get(tvQuestionId.getText().toString()).getListAnswers();
+                String answerText = answer.get(0).getAnswerText();
+                List<RadioButton> radioButtons = new ArrayList<>();
+                final int green = mContext.getResources().getColor(R.color.Green);
+                final int red = mContext.getResources().getColor(R.color.Red);
 
-                    // Display correct answer in green, display incorrect selection in red
-                    switch (mQuestions.get(tvQuestionId.getText().toString()).getTypeDescription()) {
-                        case "True/False":
-                            if (!rbTrue.isChecked() && !rbFalse.isChecked()) {
-                                Toast.makeText(mContext, "Make a selection and try again.",
-                                        Toast.LENGTH_SHORT).show();
-                                break;
+                // Display correct answer in green, display incorrect selection in red
+                switch (mQuestions.get(tvQuestionId.getText().toString()).getTypeDescription()) {
+                    case "True/False":
+                        if (!rbTrue.isChecked() && !rbFalse.isChecked()) {
+                            Toast.makeText(mContext, "Make a selection and try again.",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        btnShowAnswer.setEnabled(false);
+                        radioButtons.addAll(Arrays.asList(rbTrue, rbFalse));
+                        for (RadioButton radioButton : radioButtons) {
+                            radioButton.setEnabled(false);
+                            if (answerText.equals(radioButton.getText().toString())) {
+                                radioButton.setTypeface(null, Typeface.BOLD_ITALIC);
+                                radioButton.setTextColor(green);
+                            } else if (radioButton.isChecked()) {
+                                radioButton.setTextColor(red);
                             }
-                            btnShowAnswer.setEnabled(false);
-                            radioButtons.addAll(Arrays.asList(rbTrue, rbFalse));
-                            for (RadioButton radioButton : radioButtons) {
-                                radioButton.setEnabled(false);
-                                if (answerText.equals(radioButton.getText().toString())) {
-                                    radioButton.setTypeface(null, Typeface.BOLD_ITALIC);
-                                    radioButton.setTextColor(green);
-                                } else if (radioButton.isChecked()) {
-                                    radioButton.setTextColor(red);
+                        }
+                        break;
+                    case "Single Choice":
+                        if (!rbSubQuestion1.isChecked() &&
+                                !rbSubQuestion2.isChecked() &&
+                                !rbSubQuestion3.isChecked() &&
+                                !rbSubQuestion4.isChecked()) {
+                            Toast.makeText(mContext, "Make a selection and try again.",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        btnShowAnswer.setEnabled(false);
+                        radioButtons.addAll(Arrays.asList(rbSubQuestion1, rbSubQuestion2,
+                                rbSubQuestion3, rbSubQuestion4));
+                        for (RadioButton radioButton : radioButtons) {
+                            radioButton.setEnabled(false);
+                            if (answerText.equals(radioButton.getText().toString())) {
+                                radioButton.setTypeface(null, Typeface.BOLD_ITALIC);
+                                radioButton.setTextColor(green);
+                            } else if (radioButton.isChecked()) {
+                                radioButton.setTextColor(red);
+                            }
+                        }
+                        break;
+                    case "Multiple Choice":
+                        if (!cbSubQuestion1.isChecked() &&
+                                !cbSubQuestion2.isChecked() &&
+                                !cbSubQuestion3.isChecked() &&
+                                !cbSubQuestion4.isChecked()) {
+                            Toast.makeText(mContext, "Make a selection and try again.",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        btnShowAnswer.setEnabled(false);
+                        List<CheckBox> checkBoxes = new ArrayList<>(
+                                Arrays.asList(cbSubQuestion1, cbSubQuestion2,
+                                cbSubQuestion3, cbSubQuestion4));
+                        for (int i = 0; i < checkBoxes.size(); i++) {
+                            CheckBox checkBox = checkBoxes.get(i);
+                            checkBox.setEnabled(false);
+                            if (checkBox.isChecked())
+                                checkBox.setTextColor(red);
+                            for (int j = 0; j < answer.size(); j++) {
+                                if (checkBox.getText().toString().equals(
+                                        answer.get(j).getAnswerText())) {
+                                    checkBox.setTypeface(null, Typeface.BOLD_ITALIC);
+                                    checkBox.setTextColor(green);
+                                    break;
                                 }
                             }
-                            break;
-                        case "Single Choice":
-                            if (!rbSubQuestion1.isChecked() &&
-                                    !rbSubQuestion2.isChecked() &&
-                                    !rbSubQuestion3.isChecked() &&
-                                    !rbSubQuestion4.isChecked()) {
-                                Toast.makeText(mContext, "Make a selection and try again.",
-                                        Toast.LENGTH_SHORT).show();
-                                break;
-                            }
-                            btnShowAnswer.setEnabled(false);
-                            radioButtons.addAll(Arrays.asList(rbSubQuestion1, rbSubQuestion2,
-                                    rbSubQuestion3, rbSubQuestion4));
-                            for (RadioButton radioButton : radioButtons) {
-                                radioButton.setEnabled(false);
-                                if (answerText.equals(radioButton.getText().toString())) {
-                                    radioButton.setTypeface(null, Typeface.BOLD_ITALIC);
-                                    radioButton.setTextColor(green);
-                                } else if (radioButton.isChecked()) {
-                                    radioButton.setTextColor(red);
-                                }
-                            }
-                            break;
-                        case "Multiple Choice":
-                            if (!cbSubQuestion1.isChecked() &&
-                                    !cbSubQuestion2.isChecked() &&
-                                    !cbSubQuestion3.isChecked() &&
-                                    !cbSubQuestion4.isChecked()) {
-                                Toast.makeText(mContext, "Make a selection and try again.",
-                                        Toast.LENGTH_SHORT).show();
-                                break;
-                            }
-                            btnShowAnswer.setEnabled(false);
-                            List<CheckBox> checkBoxes = new ArrayList<>(
-                                    Arrays.asList(cbSubQuestion1, cbSubQuestion2,
-                                    cbSubQuestion3, cbSubQuestion4));
-                            for (int i = 0; i < checkBoxes.size(); i++) {
-                                CheckBox checkBox = checkBoxes.get(i);
-                                checkBox.setEnabled(false);
-                                if (checkBox.isChecked())
-                                    checkBox.setTextColor(red);
-                                for (int j = 0; j < answer.size(); j++) {
-                                    if (checkBox.getText().toString().equals(
-                                            answer.get(j).getAnswerText())) {
-                                        checkBox.setTypeface(null, Typeface.BOLD_ITALIC);
-                                        checkBox.setTextColor(green);
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
-                    }
+                        }
+                        break;
+                }
                 }
             });
         }
@@ -322,6 +358,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
         return mQuestions;
     }
 
+    /**
+     * Report a question
+     */
     private class AsyncConnectTask extends AsyncTask<Void, Void, Void> {
         private String qid;
         private String title;
