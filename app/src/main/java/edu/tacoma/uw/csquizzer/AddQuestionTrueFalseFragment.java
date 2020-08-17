@@ -37,7 +37,6 @@ import edu.tacoma.uw.csquizzer.model.Topic;
 import edu.tacoma.uw.csquizzer.model.Type;
 
 public class AddQuestionTrueFalseFragment extends Fragment {
-    private TextView tvQuestionId;
     private ImageButton tvBackToList;
     private EditText tvQuestionTitle;
     private EditText tvQuestionBody;
@@ -160,8 +159,13 @@ public class AddQuestionTrueFalseFragment extends Fragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                tvQuestionTitle.setText("");
-//                tvQuestionBody.setText("");
+                tvQuestionTitle.setText("");
+                tvQuestionBody.setText("");
+                spinnerCourses.setSelection(0);
+                spinnerTopics.setSelection(0);
+                spinnerDifficulties.setSelection(0);
+                radioButtonTrue.setChecked(true);
+                radioButtonFalse.setChecked(false);
             }
         });
         tvBackToList = rootView.findViewById(R.id.imb_back_to_list);
