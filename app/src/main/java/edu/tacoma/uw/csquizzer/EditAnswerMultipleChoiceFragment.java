@@ -42,25 +42,14 @@ public class EditAnswerMultipleChoiceFragment extends Fragment {
     private String questionId;
     private String questionTitle;
     private String questionBody;
-    private String course;
-    private String topic;
-    private String difficulty;
     private String type;
     private String lastType;
-    private List<Course> listCourses = new ArrayList<>();
-    private List<Topic> listTopics = new ArrayList<>();
-    private List<Difficulty> listDifficulties = new ArrayList<>();
-    private List<Type> listTypes = new ArrayList<>();
     private List<Answer> listAnswers = new ArrayList<>();
     private List<SubQuestion> listSubQuestions = new ArrayList<>();
     private ImageButton tvBackToList;
     private TextView tvQuestionId;
     private TextView tvQuestionTitle;
     private TextView tvQuestionBody;
-    private TextView tvCourseName;
-    private TextView tvTopicDescription;
-    private TextView tvDifficultyDescription;
-    private TextView tvTypeDescription;
     private EditText etAnswer1;
     private EditText etAnswer2;
     private EditText etAnswer3;
@@ -73,23 +62,14 @@ public class EditAnswerMultipleChoiceFragment extends Fragment {
     private Button btnCancel;
     ProgressDialog pDialog;
 
-    public EditAnswerMultipleChoiceFragment(Context mContext, String mQuestionId, String mQuestionTitle, String mQuestionBody,
-                                            String mCourse, String mTopic, String mDifficulty, String mType, String mLastType,
-                                            List<Course> lCourses, List<Topic> lTopics, List<Difficulty> lDifficulties,
-                                            List<Type> lTypes) {
+    public EditAnswerMultipleChoiceFragment(Context mContext, String mQuestionId, String mQuestionTitle,
+                                            String mQuestionBody, String mType, String mLastType) {
         this.context = mContext;
         this.questionId = mQuestionId;
         this.questionTitle = mQuestionTitle;
         this.questionBody = mQuestionBody;
-        this.course = mCourse;
-        this.topic = mTopic;
-        this.difficulty = mDifficulty;
         this.type = mType;
         this.lastType = mLastType;
-        this.listCourses = lCourses;
-        this.listTopics = lTopics;
-        this.listDifficulties = lDifficulties;
-        this.listTypes = lTypes;
     }
 
     @Override
@@ -111,14 +91,6 @@ public class EditAnswerMultipleChoiceFragment extends Fragment {
         tvQuestionTitle.setText(questionTitle);
         tvQuestionBody = rootView.findViewById(R.id.tv_QuestionBody);
         tvQuestionBody.setText(questionBody);
-        tvCourseName = rootView.findViewById(R.id.tv_CourseName);
-        tvCourseName.setText(course);
-        tvTopicDescription = rootView.findViewById(R.id.tv_TopicDescription);
-        tvTopicDescription.setText(topic);
-        tvDifficultyDescription = rootView.findViewById(R.id.tv_DifficultyDescription);
-        tvDifficultyDescription.setText(difficulty);
-        tvTypeDescription = rootView.findViewById(R.id.tv_TypeDescription);
-        tvTypeDescription.setText(type);
         etAnswer1 = rootView.findViewById(R.id.et_answer_1);
         etAnswer2 = rootView.findViewById(R.id.et_answer_2);
         etAnswer3 = rootView.findViewById(R.id.et_answer_3);

@@ -42,25 +42,14 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
     private String questionId;
     private String questionTitle;
     private String questionBody;
-    private String course;
-    private String topic;
-    private String difficulty;
     private String type;
     private String lastType;
-    private List<Course> listCourses = new ArrayList<>();
-    private List<Topic> listTopics = new ArrayList<>();
-    private List<Difficulty> listDifficulties = new ArrayList<>();
-    private List<Type> listTypes = new ArrayList<>();
     private List<Answer> listAnswers = new ArrayList<>();
     private List<SubQuestion> listSubQuestions = new ArrayList<>();
     private ImageButton tvBackToList;
     private TextView tvQuestionId;
     private TextView tvQuestionTitle;
     private TextView tvQuestionBody;
-    private TextView tvCourseName;
-    private TextView tvTopicDescription;
-    private TextView tvDifficultyDescription;
-    private TextView tvTypeDescription;
     private EditText etAnswer1;
     private EditText etAnswer2;
     private EditText etAnswer3;
@@ -73,23 +62,14 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
     private Button btnCancel;
     ProgressDialog pDialog;
 
-    public EditAnswerSingleChoiceFragment(Context mContext, String mQuestionId, String mQuestionTitle, String mQuestionBody,
-                                       String mCourse, String mTopic, String mDifficulty, String mType, String mLastType,
-                                       List<Course> lCourses, List<Topic> lTopics, List<Difficulty> lDifficulties,
-                                       List<Type> lTypes) {
+    public EditAnswerSingleChoiceFragment(Context mContext, String mQuestionId, String mQuestionTitle,
+                                          String mQuestionBody, String mType, String mLastType) {
         this.context = mContext;
         this.questionId = mQuestionId;
         this.questionTitle = mQuestionTitle;
         this.questionBody = mQuestionBody;
-        this.course = mCourse;
-        this.topic = mTopic;
-        this.difficulty = mDifficulty;
         this.type = mType;
         this.lastType = mLastType;
-        this.listCourses = lCourses;
-        this.listTopics = lTopics;
-        this.listDifficulties = lDifficulties;
-        this.listTypes = lTypes;
     }
 
     @Override
@@ -111,14 +91,6 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
         tvQuestionTitle.setText(questionTitle);
         tvQuestionBody = rootView.findViewById(R.id.tv_QuestionBody);
         tvQuestionBody.setText(questionBody);
-        tvCourseName = rootView.findViewById(R.id.tv_CourseName);
-        tvCourseName.setText(course);
-        tvTopicDescription = rootView.findViewById(R.id.tv_TopicDescription);
-        tvTopicDescription.setText(topic);
-        tvDifficultyDescription = rootView.findViewById(R.id.tv_DifficultyDescription);
-        tvDifficultyDescription.setText(difficulty);
-        tvTypeDescription = rootView.findViewById(R.id.tv_TypeDescription);
-        tvTypeDescription.setText(type);
         etAnswer1 = rootView.findViewById(R.id.et_answer_1);
         etAnswer2 = rootView.findViewById(R.id.et_answer_2);
         etAnswer3 = rootView.findViewById(R.id.et_answer_3);
@@ -160,7 +132,8 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
                     if(checkUniqueInput(subQuestions)) {
                         EditAnswer task = new EditAnswer(context, idQuestion, type, lastType, idSubQuestion1, idSubQuestion2,
                                 idSubQuestion3, idSubQuestion4, textSubQuestion1, textSubQuestion2,
-                                textSubQuestion3, textSubQuestion4, idAnswer, textAnswer, new EditQuestionFragment.MyInterface() {
+                                textSubQuestion3, textSubQuestion4, idAnswer, textAnswer,
+                                new MyInterface() {
                             @Override
                             public void myMethod(boolean result) {
                                 if (result == true) {
@@ -212,7 +185,7 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
     }
 
     private class EditAnswer extends AsyncTask<Void, Void, Boolean> {
-        private EditQuestionFragment.MyInterface mListener;
+        private MyInterface mListener;
         Context context;
         String questionId;
         String typeId;
@@ -231,7 +204,7 @@ public class EditAnswerSingleChoiceFragment extends Fragment {
         public EditAnswer(Context mContext, String mQuestionId, String mTypeId, String mLastTypeId,
                           String mSubQuestion1Id, String mSubQuestion2Id, String mSubQuestion3Id, String mSubQuestion4Id,
                           String mSubQuestion1Text, String mSubQuestion2Text, String mSubQuestion3Text, String mSubQuestion4Text,
-                          String mAnswerId, String mAnswerText, EditQuestionFragment.MyInterface listener) {
+                          String mAnswerId, String mAnswerText, MyInterface listener) {
             this.context = mContext;
             this.questionId = mQuestionId;
             if(mTypeId.equals("True/False")) {

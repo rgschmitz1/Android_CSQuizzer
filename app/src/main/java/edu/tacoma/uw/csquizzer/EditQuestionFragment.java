@@ -141,9 +141,8 @@ public class EditQuestionFragment extends Fragment {
                                     if(type.equals("True/False")) {
                                         EditAnswerTrueFalseFragment editAnswerTrueFalseFragment =
                                                 new EditAnswerTrueFalseFragment(
-                                                context, idQuestion, titleQuestion, bodyQuestion,
-                                                course, topic, difficulty, type, typeDescription,
-                                                lCourses, lTopics, lDifficulties, lTypes);
+                                                        context, idQuestion, titleQuestion,
+                                                        bodyQuestion, type, typeDescription);
                                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
                                         //Replace current fragment with a show question fragment
                                         ft.replace(R.id.fragment_container, editAnswerTrueFalseFragment);
@@ -151,9 +150,8 @@ public class EditQuestionFragment extends Fragment {
                                     } else if (type.equals("Single Choice")) {
                                         EditAnswerSingleChoiceFragment editAnswerSingleChoiceFragment =
                                                 new EditAnswerSingleChoiceFragment(
-                                                        context, idQuestion, titleQuestion, bodyQuestion,
-                                                        course, topic, difficulty, type, typeDescription,
-                                                        lCourses, lTopics, lDifficulties, lTypes);
+                                                        context, idQuestion, titleQuestion,
+                                                        bodyQuestion, type, typeDescription);
                                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
                                         //Replace current fragment with a show question fragment
                                         ft.replace(R.id.fragment_container, editAnswerSingleChoiceFragment);
@@ -161,9 +159,8 @@ public class EditQuestionFragment extends Fragment {
                                     } else if (type.equals("Multiple Choice")) {
                                         EditAnswerMultipleChoiceFragment editAnswerMultipleChoiceFragment =
                                                 new EditAnswerMultipleChoiceFragment(
-                                                        context, idQuestion, titleQuestion, bodyQuestion,
-                                                        course, topic, difficulty, type, typeDescription,
-                                                        lCourses, lTopics, lDifficulties, lTypes);
+                                                        context, idQuestion, titleQuestion,
+                                                        bodyQuestion, type, typeDescription);
                                         final FragmentTransaction ft = getFragmentManager().beginTransaction();
                                         //Replace current fragment with a show question fragment
                                         ft.replace(R.id.fragment_container, editAnswerMultipleChoiceFragment);

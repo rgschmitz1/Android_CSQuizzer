@@ -230,7 +230,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             btnShowAnswer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     // Disable the check answer button once the user selects it
                     Map<String, Question> mQuestions = convertListToMapOfQuestions(lQuestions);
                     List<Answer> answer = mQuestions.get(tvQuestionId.getText().toString()).getListAnswers();

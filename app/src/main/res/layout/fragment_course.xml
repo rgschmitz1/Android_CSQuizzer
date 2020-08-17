@@ -32,8 +32,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="64dp"
+            android:layout_marginRight="@dimen/size_8dp"
+            android:layout_marginBottom="@dimen/size_16dp"
             app:srcCompat="@android:drawable/ic_menu_add" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </FrameLayout>

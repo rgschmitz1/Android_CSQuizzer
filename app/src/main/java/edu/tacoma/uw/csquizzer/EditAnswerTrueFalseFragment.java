@@ -43,48 +43,28 @@ public class EditAnswerTrueFalseFragment extends Fragment {
     private String questionId;
     private String questionTitle;
     private String questionBody;
-    private String course;
-    private String topic;
-    private String difficulty;
     private String type;
     private String lastType;
-    private List<Course> listCourses = new ArrayList<>();
-    private List<Topic> listTopics = new ArrayList<>();
-    private List<Difficulty> listDifficulties = new ArrayList<>();
-    private List<Type> listTypes = new ArrayList<>();
     private List<Answer> listAnswers = new ArrayList<>();
     private List<SubQuestion> listSubQuestions = new ArrayList<>();
     private ImageButton tvBackToList;
     private TextView tvQuestionId;
     private TextView tvQuestionTitle;
     private TextView tvQuestionBody;
-    private TextView tvCourseName;
-    private TextView tvTopicDescription;
-    private TextView tvDifficultyDescription;
-    private TextView tvTypeDescription;
     private RadioButton radioTrue;
     private RadioButton radioFalse;
     private Button btnUpdateAnswers;
     private Button btnCancel;
     ProgressDialog pDialog;
 
-    public EditAnswerTrueFalseFragment(Context mContext, String mQuestionId, String mQuestionTitle, String mQuestionBody,
-                                       String mCourse, String mTopic, String mDifficulty, String mType, String mLastType,
-                                       List<Course> lCourses, List<Topic> lTopics, List<Difficulty> lDifficulties,
-                                       List<Type> lTypes) {
+    public EditAnswerTrueFalseFragment(Context mContext, String mQuestionId, String mQuestionTitle,
+                                       String mQuestionBody, String mType, String mLastType) {
         this.context = mContext;
         this.questionId = mQuestionId;
         this.questionTitle = mQuestionTitle;
         this.questionBody = mQuestionBody;
-        this.course = mCourse;
-        this.topic = mTopic;
-        this.difficulty = mDifficulty;
         this.type = mType;
         this.lastType = mLastType;
-        this.listCourses = lCourses;
-        this.listTopics = lTopics;
-        this.listDifficulties = lDifficulties;
-        this.listTypes = lTypes;
     }
 
     @Override
@@ -106,14 +86,6 @@ public class EditAnswerTrueFalseFragment extends Fragment {
         tvQuestionTitle.setText(questionTitle);
         tvQuestionBody = rootView.findViewById(R.id.tv_QuestionBody);
         tvQuestionBody.setText(questionBody);
-        tvCourseName = rootView.findViewById(R.id.tv_CourseName);
-        tvCourseName.setText(course);
-        tvTopicDescription = rootView.findViewById(R.id.tv_TopicDescription);
-        tvTopicDescription.setText(topic);
-        tvDifficultyDescription = rootView.findViewById(R.id.tv_DifficultyDescription);
-        tvDifficultyDescription.setText(difficulty);
-        tvTypeDescription = rootView.findViewById(R.id.tv_TypeDescription);
-        tvTypeDescription.setText(type);
         radioTrue = rootView.findViewById(R.id.radio_true);
         radioFalse = rootView.findViewById(R.id.radio_false);
         btnUpdateAnswers = rootView.findViewById(R.id.btn_UpdateAnswers);
@@ -132,7 +104,7 @@ public class EditAnswerTrueFalseFragment extends Fragment {
                 }
                 if((idQuestion.length() != 0)) {
                     EditAnswer task = new EditAnswer(context, idQuestion, type, lastType, idSubQuestionTrue, idSubQuestionFalse,
-                            textSubQuestionTrue, textSubQuestionFalse, idAnswer, textAnswer, new EditQuestionFragment.MyInterface() {
+                            textSubQuestionTrue, textSubQuestionFalse, idAnswer, textAnswer, new MyInterface() {
                         @Override
                         public void myMethod(boolean result) {
                             if (result == true) {
@@ -175,7 +147,7 @@ public class EditAnswerTrueFalseFragment extends Fragment {
     }
 
     private class EditAnswer extends AsyncTask<Void, Void, Boolean> {
-        private EditQuestionFragment.MyInterface mListener;
+        private MyInterface mListener;
         Context context;
         String questionId;
         String typeId;
@@ -190,7 +162,7 @@ public class EditAnswerTrueFalseFragment extends Fragment {
         public EditAnswer(Context mContext, String mQuestionId, String mTypeId, String mLastTypeId,
                           String mSubQuestionTrueId, String mSubQuestionFalseId, String mSubQuestionTrueText,
                           String mSubQuestionFalseText, String mAnswerId, String mAnswerText,
-                          EditQuestionFragment.MyInterface listener) {
+                          MyInterface listener) {
             this.context = mContext;
             this.questionId = mQuestionId;
             if(mTypeId.equals("True/False")) {

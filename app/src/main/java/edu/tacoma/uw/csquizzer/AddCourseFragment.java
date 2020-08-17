@@ -25,8 +25,8 @@ import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 public class AddCourseFragment extends Fragment {
     ImageButton tvBackToList;
     EditText tvCourseName;
-    Button btnSubmit;
-    Button btnCancel;
+    Button btnAddCourse;
+    Button btnCancelCourse;
     Context context;
 
     public AddCourseFragment(Context mContext) {
@@ -39,8 +39,8 @@ public class AddCourseFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_add_course, container, false);
         tvCourseName = rootView.findViewById(R.id.et_CourseName);
-        btnSubmit = rootView.findViewById(R.id.btn_SubmitCourse);
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
+        btnAddCourse = rootView.findViewById(R.id.btn_AddCourse);
+        btnAddCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String courseName = tvCourseName.getText().toString();
@@ -63,8 +63,8 @@ public class AddCourseFragment extends Fragment {
                 }
             }
         });
-        btnCancel = rootView.findViewById(R.id.btn_CancelCourse);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        btnCancelCourse = rootView.findViewById(R.id.btn_CancelCourse);
+        btnCancelCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tvCourseName.setText("");

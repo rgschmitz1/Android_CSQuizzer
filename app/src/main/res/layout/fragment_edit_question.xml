@@ -3,20 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/size_8dp"
     tools:context=".EditTopicFragment">
     <RelativeLayout
+        android:orientation="vertical"
+        android:padding="@dimen/size_8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="horizontal"
             android:background="@color/colorPrimary"
             android:id="@id/row_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Edit Question"
+                android:text="@string/tv_EditAQuestion"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:padding="@dimen/size_8dp"
@@ -35,24 +35,21 @@
         <LinearLayout
             android:id="@+id/row_2"
             android:layout_below="@id/row_1"
+            android:layout_marginTop="@dimen/size_16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Question ID #"
-                android:padding="@dimen/size_4dp"
+                android:text="@string/tv_EditQuestionId"
+                android:padding="@dimen/size_8dp"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
-                android:layout_marginLeft="@dimen/size_12dp"
-                android:layout_marginTop="@dimen/size_12dp"
                 android:textSize="@dimen/size_12dp"
-                android:layout_width="100dp"
+                android:layout_width="@dimen/size_100dp"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/tv_QuestionId"
-                android:padding="@dimen/size_4dp"
-                android:layout_marginTop="@dimen/size_12dp"
                 android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
+                android:padding="@dimen/size_8dp"
                 android:textSize="@dimen/size_12dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"/>
@@ -63,10 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Question Title"
-                android:padding="@dimen/size_4dp"
-                android:layout_marginLeft="@dimen/size_12dp"
-                android:layout_marginTop="@dimen/size_12dp"
+                android:text="@string/tv_EditQuestionTitle"
+                android:padding="@dimen/size_8dp"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:textSize="@dimen/size_12dp"
@@ -75,8 +70,7 @@
             <EditText
                 android:id="@+id/et_QuestionTitle"
                 android:background="@drawable/edittext"
-                android:layout_marginTop="@dimen/size_12dp"
-                android:padding="@dimen/size_4dp"
+                android:padding="@dimen/size_8dp"
                 android:textSize="@dimen/size_12dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"/>
@@ -87,10 +81,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Question Body"
-                android:padding="@dimen/size_4dp"
-                android:layout_marginLeft="@dimen/size_12dp"
+                android:text="@string/tv_EditQuestionBody"
                 android:layout_marginTop="@dimen/size_36dp"
+                android:padding="@dimen/size_8dp"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:textSize="@dimen/size_12dp"
@@ -101,10 +94,10 @@
                 android:gravity="top"
                 android:background="@drawable/edittext"
                 android:layout_marginTop="@dimen/size_12dp"
-                android:padding="@dimen/size_4dp"
+                android:padding="@dimen/size_8dp"
                 android:textSize="@dimen/size_12dp"
                 android:inputType="textMultiLine"
-                android:lines="10"
+                android:lines="6"
                 android:scrollbars="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"/>
@@ -112,13 +105,12 @@
         <LinearLayout
             android:id="@+id/row_5"
             android:layout_below="@id/row_4"
-            android:layout_marginTop="@dimen/size_12dp"
+            android:layout_marginTop="@dimen/size_8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Course"
-                android:padding="@dimen/size_4dp"
-                android:layout_marginLeft="@dimen/size_12dp"
+                android:text="@string/tv_EditQuestionCourse"
+                android:padding="@dimen/size_8dp"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:textSize="@dimen/size_12dp"
@@ -138,9 +130,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Topic"
-                android:padding="@dimen/size_4dp"
-                android:layout_marginLeft="@dimen/size_12dp"
+                android:text="@string/tv_EditQuestionTopic"
+                android:padding="@dimen/size_8dp"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:textSize="@dimen/size_12dp"
@@ -160,9 +151,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Difficulty"
-                android:padding="@dimen/size_4dp"
-                android:layout_marginLeft="@dimen/size_12dp"
+                android:text="@string/tv_EditQuestionDifficulty"
+                android:padding="@dimen/size_8dp"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:textSize="@dimen/size_12dp"
@@ -183,9 +173,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Type"
-                android:padding="@dimen/size_4dp"
-                android:layout_marginLeft="@dimen/size_12dp"
+                android:text="@string/tv_EditQuestionType"
+                android:padding="@dimen/size_8dp"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:textSize="@dimen/size_12dp"
@@ -201,7 +190,7 @@
                 android:spinnerMode="dropdown"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_marginTop="@dimen/size_48dp"
+            android:layout_marginTop="@dimen/size_8dp"
             android:id="@+id/row_9"
             android:layout_below="@id/row_8"
             android:layout_width="match_parent"
@@ -212,12 +201,12 @@
                 android:id="@+id/btn_UpdateQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update Answers"/>
+                android:text="@string/tv_EditUpdateAnswers"/>
             <Button
                 android:id="@+id/btn_CancelQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Clear"/>
+                android:text="@string/tv_ClearAnswers"/>
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>

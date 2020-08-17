@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Report question problem"
+        android:text="@string/dialog_ReportTitle"
         android:padding="@dimen/size_8dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -19,7 +19,7 @@
         android:background="@android:drawable/editbox_dropdown_light_frame"
         android:gravity="top"
         android:textSize="@dimen/size_12dp"
-        android:hint="Enter a message here ..."
+        android:hint="@string/dialog_ReportMessage"
         android:inputType="textMultiLine"
         android:lines="8"
         android:scrollbars="vertical"
@@ -36,11 +36,11 @@
             android:textSize="@dimen/size_16dp"
             android:textColor="@color/white"
             style="?android:attr/borderlessButtonStyle"
-            android:text="OK"
+            android:text="@string/dialog_BtnOK"
             android:textStyle="bold"/>
         <Button
             android:id="@+id/btn_cancel"
-            android:text="Cancel"
+            android:text="@string/dialog_BtnCancel"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

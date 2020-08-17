@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/size_8dp"
     tools:context=".AddQuestionFragment">
     <RelativeLayout
         android:orientation="vertical"
+        android:padding="@dimen/size_8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Choose A Question Type"
+                android:text="@string/tv_ChooseAQuestionType"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:padding="@dimen/size_8dp"
@@ -35,8 +35,9 @@
         <LinearLayout
             android:id="@+id/row_2"
             android:layout_below="@id/row_1"
-            android:padding="@dimen/size_48dp"
-            android:layout_marginTop="@dimen/size_48dp"
+            android:layout_marginTop="@dimen/size_16dp"
+            android:paddingLeft="@dimen/size_48dp"
+            android:paddingRight="@dimen/size_48dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Spinner
@@ -49,9 +50,9 @@
                 android:spinnerMode="dropdown"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_marginTop="@dimen/size_48dp"
             android:id="@+id/row_3"
             android:layout_below="@id/row_2"
+            android:layout_marginTop="@dimen/size_8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -60,7 +61,7 @@
                 android:id="@+id/btn_SubmitQuestionTypes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Submit"/>
+                android:text="@string/tv_SubmitAQuestionType"/>
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>
