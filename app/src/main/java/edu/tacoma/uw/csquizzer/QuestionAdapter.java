@@ -2,6 +2,7 @@ package edu.tacoma.uw.csquizzer;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import java.util.Map;
 import edu.tacoma.uw.csquizzer.helper.ServiceHandler;
 import edu.tacoma.uw.csquizzer.model.Answer;
 import edu.tacoma.uw.csquizzer.model.Question;
+import edu.tacoma.uw.csquizzer.model.SubQuestion;
 
 /**
  * The QuestionAdapter renders question information to recycler.
@@ -121,55 +123,41 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
         holder.tvTopicDescription.setText(question.getTopicDescription());
         holder.tvDifficultyDescription.setText(question.getDifficultyDescription());
         holder.tvQuestionBody.setText(question.getQuestionBody());
-        if (question.getTypeDescription().equals("True/False")) {
-            holder.rbTrue.setText(R.string.tv_true);
-            holder.rbFalse.setText(R.string.tv_false);
-        } else if (question.getTypeDescription().equals("Single Choice")) {
-            if(question.getListSubQuestions().get(0) == null) {
-                holder.rbSubQuestion1.setText("Please report question error");
-            } else {
-                holder.rbSubQuestion1.setText(question.getListSubQuestions().get(0).getSubQuestionText());
-            }
-
-            if(question.getListSubQuestions().get(1) == null) {
-                holder.rbSubQuestion2.setText("Please report question error");
-            } else {
-                holder.rbSubQuestion2.setText(question.getListSubQuestions().get(1).getSubQuestionText());
-            }
-            if(question.getListSubQuestions().get(2) == null) {
-                holder.rbSubQuestion3.setText("Please report question error");
-            } else {
-                holder.rbSubQuestion3.setText(question.getListSubQuestions().get(2).getSubQuestionText());
-            }
-
-            if (question.getListSubQuestions().get(3) == null) {
-                holder.rbSubQuestion4.setText("Please report question error");
-            } else {
-                holder.rbSubQuestion4.setText(question.getListSubQuestions().get(3).getSubQuestionText());
-            }
-        } else if (lQuestions.get(position).getTypeDescription().equals("Multiple Choice")) {
-            if(question.getListSubQuestions().get(0) == null) {
-                holder.cbSubQuestion1.setText("Please report question error");
-            } else {
-                holder.cbSubQuestion1.setText(question.getListSubQuestions().get(0).getSubQuestionText());
-            }
-
-            if(question.getListSubQuestions().get(1) == null) {
-                holder.cbSubQuestion2.setText("Please report question error");
-            } else {
-                holder.cbSubQuestion2.setText(question.getListSubQuestions().get(1).getSubQuestionText());
-            }
-            if(question.getListSubQuestions().get(2) == null) {
-                holder.cbSubQuestion3.setText("Please report question error");
-            } else {
-                holder.cbSubQuestion3.setText(question.getListSubQuestions().get(2).getSubQuestionText());
-            }
-
-            if (question.getListSubQuestions().get(3) == null) {
-                holder.cbSubQuestion4.setText("Please report question error");
-            } else {
-                holder.cbSubQuestion4.setText(question.getListSubQuestions().get(3).getSubQuestionText());
-            }
+        switch (question.getTypeDescription()) {
+            case "True/False":
+                holder.rbTrue.setText(R.string.tv_true);
+                holder.rbFalse.setText(R.string.tv_false);
+                break;
+            case "Single Choice":
+                List<RadioButton> radioButtons = new ArrayList<>(Arrays.asList(
+                        holder.rbSubQuestion1, holder.rbSubQuestion2,
+                        holder.rbSubQuestion3, holder.rbSubQuestion4));
+                for (int i=0; i<radioButtons.size(); i++) {
+                    SubQuestion subQuestion = question.getListSubQuestions().get(i);
+                    String msg;
+                    if (subQuestion == null) {
+                        msg="Please report question error";
+                    } else {
+                        msg=subQuestion.getSubQuestionText();
+                    }
+                    radioButtons.get(i).setText(msg);
+                }
+                break;
+            case "Multiple Choice":
+                List<CheckBox> checkBoxes = new ArrayList<>(Arrays.asList(
+                        holder.cbSubQuestion1, holder.cbSubQuestion2,
+                        holder.cbSubQuestion3, holder.cbSubQuestion4));
+                for (int i=0; i<checkBoxes.size(); i++) {
+                    SubQuestion subQuestion = question.getListSubQuestions().get(i);
+                    String msg;
+                    if (subQuestion == null) {
+                        msg="Please report question error";
+                    } else {
+                        msg=subQuestion.getSubQuestionText();
+                    }
+                    checkBoxes.get(i).setText(msg);
+                }
+                break;
         }
     }
 
@@ -241,10 +229,15 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
                     @Override
                     public void onClick(View view) {
                     if(etReport.getText().toString().length() > 0) {
+                        SharedPreferences sp = mContext.getSharedPreferences(
+                                mContext.getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
                         AsyncConnectTask task = new AsyncConnectTask(
                                 tvQuestionId.getText().toString(),
                                 tvQuestionTitle.getText().toString(),
-                                etReport.getText().toString(), dialog);
+                                etReport.getText().toString(),
+                                sp.getString(mContext.getString(R.string.USERNAME),
+                                        "undefined"),
+                                dialog);
                         task.execute();
                         Toast.makeText(mContext, "Send report successful", Toast.LENGTH_SHORT)
                                 .show();
@@ -365,11 +358,13 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
         private String qid;
         private String title;
         private String message;
+        private String user;
         private AlertDialog dialog;
-        public AsyncConnectTask(String mQid, String mTitle, String mMessage, AlertDialog mdialog) {
+        public AsyncConnectTask(String mQid, String mTitle, String mMessage, String mUser, AlertDialog mdialog) {
             this.qid = mQid;
             this.title = mTitle;
             this.message = mMessage;
+            this.user = mUser;
             this.dialog = mdialog;
         }
 
@@ -380,6 +375,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             mapConditions.put("qid", this.qid);
             mapConditions.put("title", this.title);
             mapConditions.put("message", this.message);
+            mapConditions.put("user", this.user);
             jsonParser.makeServiceCall(mContext.getString((R.string.report_question)),
                     ServiceHandler.POST, mapConditions);
             dialog.cancel();
