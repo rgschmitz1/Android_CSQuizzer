@@ -148,38 +148,47 @@ public class AddQuestionSingleChoiceFragment extends Fragment {
                         && !getCourseName.equals("--- Choose Course ---")
                         && !getTopicDescription.equals("--- Choose Topic ---")
                         && !getDifficultyDescription.equals("--- Choose Difficulty ---")) {
-                    String idCourse = "";
-                    for (Course course : lCourses) {
-                        if(course.getCourseName().equals(getCourseName)) {
-                            idCourse = Integer.toString(course.getCourseId());
+                    List<String> subQuestions = new ArrayList<>();
+                    subQuestions.add(getAnswer1);
+                    subQuestions.add(getAnswer2);
+                    subQuestions.add(getAnswer3);
+                    subQuestions.add(getAnswer4);
+                    if(checkUniqueInput(subQuestions)) {
+                        String idCourse = "";
+                        for (Course course : lCourses) {
+                            if(course.getCourseName().equals(getCourseName)) {
+                                idCourse = Integer.toString(course.getCourseId());
+                            }
                         }
-                    }
-                    String idTopic = "";
-                    for (Topic topic : lTopics) {
-                        if(topic.getTopicDescription().equals(getTopicDescription)) {
-                            idTopic = Integer.toString(topic.getTopicId());
+                        String idTopic = "";
+                        for (Topic topic : lTopics) {
+                            if(topic.getTopicDescription().equals(getTopicDescription)) {
+                                idTopic = Integer.toString(topic.getTopicId());
+                            }
                         }
-                    }
-                    String idDifficulty = "1";
-                    if(getDifficultyDescription.equals("Medium")) {
-                        idDifficulty = "2";
-                    } else if (getDifficultyDescription.equals("Hard")) {
-                        idDifficulty = "3";
-                    }
-                    AddQuestion task = new AddQuestion(context, titleQuestion, bodyQuestion,
-                            getAnswer1, getAnswer2, getAnswer3, getAnswer4,
-                            idCourse, idTopic, idDifficulty, typeId, answer,
-                            new MyInterface() {
-                                @Override
-                                public void myMethod(boolean result) {
-                                    if (result == true) {
-                                        Toast.makeText(context, "Add question successfully", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(context, "Add question unsuccessfully", Toast.LENGTH_SHORT).show();
+                        String idDifficulty = "1";
+                        if(getDifficultyDescription.equals("Medium")) {
+                            idDifficulty = "2";
+                        } else if (getDifficultyDescription.equals("Hard")) {
+                            idDifficulty = "3";
+                        }
+                        AddQuestion task = new AddQuestion(context, titleQuestion, bodyQuestion,
+                                getAnswer1, getAnswer2, getAnswer3, getAnswer4,
+                                idCourse, idTopic, idDifficulty, typeId, answer,
+                                new MyInterface() {
+                                    @Override
+                                    public void myMethod(boolean result) {
+                                        if (result == true) {
+                                            Toast.makeText(context, "Add question successfully", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(context, "Add question unsuccessfully", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
-                    task.execute();
+                                });
+                        task.execute();
+                    }else {
+                        Toast.makeText(context, "Please input unique answers", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(context, "Please input data for a question", Toast.LENGTH_SHORT).show();
                 }
@@ -338,6 +347,24 @@ public class AddQuestionSingleChoiceFragment extends Fragment {
             if (listener != null)
                 listener.myMethod(result);
         }
+    }
+
+    /**
+     * Check unique answers
+     * @param inputStrings list of answers
+     * @return
+     */
+    private boolean checkUniqueInput(List<String> inputStrings) {
+        boolean checkUniqueness = true;
+        for(int i = 0; i < inputStrings.size() - 1; i++) {
+            for (int j = i + 1; j < inputStrings.size(); j++) {
+                if(inputStrings.get(i).equals(inputStrings.get(j))) {
+                    checkUniqueness = false;
+                    break;
+                }
+            }
+        }
+        return checkUniqueness;
     }
 
 
