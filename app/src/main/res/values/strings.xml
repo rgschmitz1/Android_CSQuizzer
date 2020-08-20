@@ -27,7 +27,7 @@
 
     <!-- About Us Fragment -->
     <string name="developer">Developer</string>
-    <string name="developer_1">Bob Schimtz</string>
+    <string name="developer_1">Bob Schmitz</string>
     <string name="developer_2">Phuc Pham N</string>
 
     <!-- Persistent preferences -->
@@ -160,7 +160,7 @@
 
     <!-- Dialog report -->
     <string name="dialog_ReportTitle">Report question problem</string>
-    <string name="dialog_ReportMessage">Enter a message here ...</string>
+    <string name="dialog_ReportMessage">Enter a message here …</string>
     <string name="dialog_BtnOK">OK</string>
     <string name="dialog_BtnCancel">Cancel</string>
 
